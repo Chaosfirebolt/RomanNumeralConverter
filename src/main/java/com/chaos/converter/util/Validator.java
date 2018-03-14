@@ -1,8 +1,5 @@
 package com.chaos.converter.util;
 
-import com.chaos.converter.constants.IntegerType;
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -10,31 +7,20 @@ import java.util.regex.Pattern;
  */
 public class Validator {
 
-    private static final Pattern ARABIC_PATTERN = Pattern.compile("^\\d+$");
-    private static final Pattern ROMAN_PATTERN = Pattern.compile("^[IVXLCDM]+$");
+    private static final Integer MIN = 1;
+    private static final Integer MAX = 3999;
 
-    public static void validateInput(String number) {
-        if (number == null || number.isEmpty()) {
-            throw new IllegalArgumentException("Number can't be null or empty.");
+    public static String numberFormat(String representation, Pattern pattern) {
+        if (!pattern.matcher(representation).find()) {
+            throw new NumberFormatException("Number does not match required format for string: " + representation);
         }
+        return representation;
     }
 
-    public static void validateArabic(String number, IntegerType integerType) {
-        validate(number, ARABIC_PATTERN, integerType);
-        int num = Integer.parseInt(number);
-        if (num < 1 || num > 3999) {
-            throw new IllegalArgumentException("Number must be in range 1 to 3999.");
+    public static Integer range(Integer arabic) {
+        if (arabic < MIN || arabic > MAX) {
+            throw new IllegalArgumentException(String.format("Valid range for roman integers is from %d to %d inclusive.", MIN, MAX));
         }
-    }
-
-    public static void validateRoman(String number, IntegerType integerType) {
-        validate(number, ROMAN_PATTERN, integerType);
-    }
-
-    private static void validate(String number, Pattern pattern, IntegerType integerType) {
-        Matcher matcher = pattern.matcher(number.trim());
-        if (!matcher.find()) {
-            throw new NumberFormatException(String.format("Invalid format of %s integer.", integerType.name()));
-        }
+        return arabic;
     }
 }

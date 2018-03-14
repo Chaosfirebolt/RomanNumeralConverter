@@ -1,27 +1,46 @@
 package com.chaos.converter;
 
 import com.chaos.converter.constants.IntegerType;
+import com.chaos.converter.constants.Patterns;
+import com.chaos.converter.parser.ParserContainer;
+import com.chaos.converter.parser.impl.AbstractParser;
+import com.chaos.converter.util.Validator;
+
+import java.util.Objects;
 
 /**
  * Created by ChaosFire on 1.3.2018 г.
  */
 public class RomanInteger implements Comparable<RomanInteger> {
 
-    public static final RomanInteger ONE = new RomanInteger("I", 1);
-    public static final RomanInteger FIVE = new RomanInteger("V", 5);
-    public static final RomanInteger TEN = new RomanInteger("X", 10);
-    public static final RomanInteger FIFTY = new RomanInteger("L", 50);
-    public static final RomanInteger HUNDRED = new RomanInteger("C", 100);
-    public static final RomanInteger FIVE_HUNDRED = new RomanInteger("D", 500);
-    public static final RomanInteger THOUSAND = new RomanInteger("M", 1000);
+    public static final RomanInteger ONE = new RomanInteger("I", 1, Integer.hashCode(1));
+    public static final RomanInteger FIVE = new RomanInteger("V", 5, Integer.hashCode(5));
+    public static final RomanInteger TEN = new RomanInteger("X", 10, Integer.hashCode(10));
+    public static final RomanInteger FIFTY = new RomanInteger("L", 50, Integer.hashCode(50));
+    public static final RomanInteger HUNDRED = new RomanInteger("C", 100, Integer.hashCode(100));
+    public static final RomanInteger FIVE_HUNDRED = new RomanInteger("D", 500, Integer.hashCode(500));
+    public static final RomanInteger THOUSAND = new RomanInteger("M", 1000, Integer.hashCode(1000));
 
     private final String romanRepresentation;
     private final Integer arabicRepresentation;
     private Integer hash;
 
-    private RomanInteger(String romanRepresentation, Integer arabicRepresentation) {
+    public RomanInteger(String romanRepresentation, Integer arabicRepresentation) {
+        this(validate(romanRepresentation, Objects.requireNonNull(arabicRepresentation)));
+    }
+
+    public RomanInteger(String romanRepresentation, String arabicRepresentation) {
+        this(validate(romanRepresentation, Integer.parseInt(Objects.requireNonNull(arabicRepresentation))));
+    }
+
+    private RomanInteger(RomanInteger romanInteger) {
+        this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation, romanInteger.hash);
+    }
+
+    private RomanInteger(String romanRepresentation, Integer arabicRepresentation, Integer hash) {
         this.romanRepresentation = romanRepresentation;
         this.arabicRepresentation = arabicRepresentation;
+        this.hash = hash;
     }
 
     @Override
@@ -51,35 +70,68 @@ public class RomanInteger implements Comparable<RomanInteger> {
         return this.arabicRepresentation.compareTo(other.arabicRepresentation);
     }
 
-    public String toStringArabic() {
-        return this.arabicRepresentation.toString();
+    public Integer getArabic() {
+        return this.arabicRepresentation;
     }
 
     public static RomanInteger parse(String number) {
-        throw new UnsupportedOperationException();
+        IntegerType type = resolveType(number);
+        return ParserContainer.getInstance().getParser(type).parse(number);
     }
 
     public static RomanInteger parse(String number, IntegerType integerType) {
-        throw new UnsupportedOperationException();
+        return ParserContainer.getInstance().getParser(integerType).parse(number);
+    }
+
+    private static IntegerType resolveType(String number) {
+        try {
+            Validator.numberFormat(number, Patterns.ARABIC_PATTERN);
+            return IntegerType.ARABIC;
+        } catch (NumberFormatException ignored) {
+        }
+        Validator.numberFormat(number, Patterns.ROMAN_PATTERN);
+        return IntegerType.ROMAN;
     }
 
     public RomanInteger add(RomanInteger anotherInteger) {
-        throw new UnsupportedOperationException();
+        Integer result = this.arabicRepresentation + anotherInteger.arabicRepresentation;
+        return parseResult(result);
     }
 
     public RomanInteger subtract(RomanInteger anotherInteger) {
-        throw new UnsupportedOperationException();
+        Integer result = this.arabicRepresentation - anotherInteger.arabicRepresentation;
+        return parseResult(result);
     }
 
     public RomanInteger multiply(RomanInteger anotherInteger) {
-        throw new UnsupportedOperationException();
+        Integer result = this.arabicRepresentation * anotherInteger.arabicRepresentation;
+        return parseResult(result);
     }
 
     public RomanInteger divide(RomanInteger anotherInteger) {
-        throw new UnsupportedOperationException();
+        Integer result = this.arabicRepresentation / anotherInteger.arabicRepresentation;
+        return parseResult(result);
     }
 
     public RomanInteger remainder(RomanInteger anotherInteger) {
-        throw new UnsupportedOperationException();
+        Integer result = this.arabicRepresentation % anotherInteger.arabicRepresentation;
+        return parseResult(result);
+    }
+
+    private static RomanInteger parseResult(Integer result) {
+        try {
+            return ParserContainer.getInstance().getParser(IntegerType.ARABIC).parse(result.toString());
+        } catch (IllegalArgumentException exc) {
+            return null;
+        }
+    }
+
+    private static RomanInteger validate(String romanRepresentation, Integer arabicRepresentation) {
+        AbstractParser romanParser = ParserContainer.getInstance().getParser(IntegerType.ROMAN);
+        RomanInteger romanInteger = romanParser.parse(romanRepresentation);
+        if (!romanInteger.arabicRepresentation.equals(arabicRepresentation)) {
+            throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
+        }
+        return romanInteger;
     }
 }

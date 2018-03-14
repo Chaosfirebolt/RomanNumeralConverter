@@ -5,8 +5,8 @@ package com.chaos.converter.constants;
  */
 public enum IntegerType {
 
-    ARABIC("Arabic"),
-    ROMAN("Roman");
+    ARABIC("ArabicParser"),
+    ROMAN("RomanParser");
 
     private String parser;
 
