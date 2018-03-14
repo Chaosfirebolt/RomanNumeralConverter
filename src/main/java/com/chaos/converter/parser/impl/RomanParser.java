@@ -5,9 +5,9 @@ import com.chaos.converter.RomanInteger;
 /**
  * Created by ChaosFire on 01-Mar-18
  */
-public class RomanParser extends AbstractParser {
+class RomanParser extends AbstractParser {
 
-    public RomanParser() {
+    RomanParser() {
         super();
     }
 

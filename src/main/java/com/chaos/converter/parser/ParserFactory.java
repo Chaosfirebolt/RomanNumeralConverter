@@ -25,12 +25,13 @@ public class ParserFactory {
         }
         Constructor<AbstractParser> constructor;
         try {
-            constructor = parserClass.getConstructor();
+            constructor = parserClass.getDeclaredConstructor();
         } catch (NoSuchMethodException exc) {
             throw new InvalidParserException(ERROR_MESSAGE, exc);
         }
         AbstractParser instance;
         try {
+            constructor.setAccessible(true);
             instance = constructor.newInstance();
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException exc) {
             throw new InvalidParserException(ERROR_MESSAGE, exc);
