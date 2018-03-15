@@ -1,6 +1,6 @@
 package com.chaos.converter.parser.impl;
 
-import com.chaos.converter.RomanInteger;
+import com.chaos.converter.util.DataTransferObject;
 
 /**
  * Created by ChaosFire on 01-Mar-18
@@ -12,7 +12,7 @@ class RomanParser extends AbstractParser {
     }
 
     @Override
-    public RomanInteger parse(String number) {
+    public DataTransferObject parse(String number) {
         throw new UnsupportedOperationException();
     }
 }

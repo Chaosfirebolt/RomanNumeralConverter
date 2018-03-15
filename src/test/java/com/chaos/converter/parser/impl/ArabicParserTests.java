@@ -1,6 +1,6 @@
 package com.chaos.converter.parser.impl;
 
-import com.chaos.converter.RomanInteger;
+import com.chaos.converter.util.DataTransferObject;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -21,8 +21,8 @@ public class ArabicParserTests {
         String input = "1776";
 
         String expected = "MDCCLXXVI";
-        RomanInteger result = this.arabicParser.parse(input);
-        assertEquals(expected, result.toString());
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
     }
 
     @Test
@@ -30,8 +30,8 @@ public class ArabicParserTests {
         String input = "1954";
 
         String expected = "MCMLIV";
-        RomanInteger result = this.arabicParser.parse(input);
-        assertEquals(expected, result.toString());
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
     }
 
     @Test
@@ -39,8 +39,8 @@ public class ArabicParserTests {
         String input = "1990";
 
         String expected = "MCMXC";
-        RomanInteger result = this.arabicParser.parse(input);
-        assertEquals(expected, result.toString());
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
     }
 
     @Test
@@ -48,8 +48,8 @@ public class ArabicParserTests {
         String input = "2014";
 
         String expected = "MMXIV";
-        RomanInteger result = this.arabicParser.parse(input);
-        assertEquals(expected, result.toString());
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
     }
 
     @Test
@@ -57,8 +57,8 @@ public class ArabicParserTests {
         String input = "39";
 
         String expected = "XXXIX";
-        RomanInteger result = this.arabicParser.parse(input);
-        assertEquals(expected, result.toString());
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
     }
 
     @Test
@@ -66,8 +66,8 @@ public class ArabicParserTests {
         String input = "246";
 
         String expected = "CCXLVI";
-        RomanInteger result = this.arabicParser.parse(input);
-        assertEquals(expected, result.toString());
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
     }
 
     @Test
@@ -75,8 +75,8 @@ public class ArabicParserTests {
         String input = "207";
 
         String expected = "CCVII";
-        RomanInteger result = this.arabicParser.parse(input);
-        assertEquals(expected, result.toString());
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
     }
 
     @Test
@@ -84,7 +84,46 @@ public class ArabicParserTests {
         String input = "1066";
 
         String expected = "MLXVI";
-        RomanInteger result = this.arabicParser.parse(input);
-        assertEquals(expected, result.toString());
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
+    }
+
+    @Test
+    public void validInput_ShouldReturnCorrect_Test9() {
+        String input = "3498";
+
+        String expected = "MMMCDXCVIII";
+        DataTransferObject result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void invalidInput_intValueTooLow_ShouldThrowException() {
+        String input = "-1";
+        this.arabicParser.parse(input);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void invalidInput_intValueTooHigh_ShouldThrowException() {
+        String input = "4125";
+        this.arabicParser.parse(input);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void invalidInput_WrongNumberFormat_ShouldThrowException_Test1() {
+        String input = "MX";
+        this.arabicParser.parse(input);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void invalidInput_WrongNumberFormat_ShouldThrowException_Test2() {
+        String input = "f";
+        this.arabicParser.parse(input);
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void invalidInput_WrongNumberFormat_ShouldThrowException_Test3() {
+        String input = "";
+        this.arabicParser.parse(input);
     }
 }

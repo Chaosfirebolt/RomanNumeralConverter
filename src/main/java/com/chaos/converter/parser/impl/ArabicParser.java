@@ -1,7 +1,7 @@
 package com.chaos.converter.parser.impl;
 
-import com.chaos.converter.RomanInteger;
 import com.chaos.converter.constants.Patterns;
+import com.chaos.converter.util.DataTransferObject;
 import com.chaos.converter.util.PairMap;
 import com.chaos.converter.util.Validator;
 
@@ -18,7 +18,7 @@ class ArabicParser extends AbstractParser {
     }
 
     @Override
-    public RomanInteger parse(String number) {
+    public DataTransferObject parse(String number) {
         Integer arabicValue = Validator.range(Integer.parseInt(Validator.numberFormat(number, Patterns.ARABIC_PATTERN)));
         StringBuilder roman = new StringBuilder();
         NavigableMap<Integer, String> arabToRoman = PairMap.getInstance().getArabicToRoman();
@@ -41,6 +41,6 @@ class ArabicParser extends AbstractParser {
                 }
             }
         }
-        return new RomanInteger(roman.toString(), arabicValue);
+        return new DataTransferObject(roman.toString(), arabicValue);
     }
 }

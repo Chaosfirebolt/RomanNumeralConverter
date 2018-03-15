@@ -4,6 +4,7 @@ import com.chaos.converter.constants.IntegerType;
 import com.chaos.converter.constants.Patterns;
 import com.chaos.converter.parser.ParserContainer;
 import com.chaos.converter.parser.impl.AbstractParser;
+import com.chaos.converter.util.DataTransferObject;
 import com.chaos.converter.util.Validator;
 
 import java.util.Objects;
@@ -76,11 +77,13 @@ public class RomanInteger implements Comparable<RomanInteger> {
 
     public static RomanInteger parse(String number) {
         IntegerType type = resolveType(number);
-        return ParserContainer.getInstance().getParser(type).parse(number);
+        DataTransferObject dto =  ParserContainer.getInstance().getParser(type).parse(number);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), null);
     }
 
     public static RomanInteger parse(String number, IntegerType integerType) {
-        return ParserContainer.getInstance().getParser(integerType).parse(number);
+        DataTransferObject dto = ParserContainer.getInstance().getParser(integerType).parse(number);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), null);
     }
 
     private static IntegerType resolveType(String number) {
@@ -120,7 +123,8 @@ public class RomanInteger implements Comparable<RomanInteger> {
 
     private static RomanInteger parseResult(Integer result) {
         try {
-            return ParserContainer.getInstance().getParser(IntegerType.ARABIC).parse(result.toString());
+            DataTransferObject dto = ParserContainer.getInstance().getParser(IntegerType.ARABIC).parse(result.toString());
+            return new RomanInteger(dto.getRoman(), dto.getArabic(), null);
         } catch (IllegalArgumentException exc) {
             return null;
         }
@@ -128,10 +132,10 @@ public class RomanInteger implements Comparable<RomanInteger> {
 
     private static RomanInteger validate(String romanRepresentation, Integer arabicRepresentation) {
         AbstractParser romanParser = ParserContainer.getInstance().getParser(IntegerType.ROMAN);
-        RomanInteger romanInteger = romanParser.parse(romanRepresentation);
-        if (!romanInteger.arabicRepresentation.equals(arabicRepresentation)) {
+        DataTransferObject dto = romanParser.parse(romanRepresentation);
+        if (!dto.getArabic().equals(arabicRepresentation)) {
             throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
         }
-        return romanInteger;
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), null);
     }
 }
