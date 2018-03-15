@@ -92,7 +92,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
             return IntegerType.ARABIC;
         } catch (NumberFormatException ignored) {
         }
-        Validator.numberFormat(number, Patterns.ROMAN_PATTERN);
+        Validator.numberFormat(number.toUpperCase(), Patterns.ROMAN_PATTERN);
         return IntegerType.ROMAN;
     }
 
