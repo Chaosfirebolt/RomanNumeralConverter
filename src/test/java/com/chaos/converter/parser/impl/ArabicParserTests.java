@@ -18,7 +18,7 @@ public class ArabicParserTests {
 
     @Test
     public void validInput_ShouldReturnCorrect_Test1() {
-        String input = "1776";
+        String input = " 1776";
 
         String expected = "MDCCLXXVI";
         DataTransferObject result = this.arabicParser.parse(input);
@@ -27,7 +27,7 @@ public class ArabicParserTests {
 
     @Test
     public void validInput_ShouldReturnCorrect_Test2() {
-        String input = "1954";
+        String input = "1954 ";
 
         String expected = "MCMLIV";
         DataTransferObject result = this.arabicParser.parse(input);

@@ -19,6 +19,7 @@ class ArabicParser extends AbstractParser {
 
     @Override
     public DataTransferObject parse(String number) {
+        number = number.trim();
         Integer arabicValue = Validator.range(Integer.parseInt(Validator.numberFormat(number, Patterns.ARABIC_PATTERN)));
         StringBuilder roman = new StringBuilder();
         NavigableMap<Integer, String> arabToRoman = PairMap.getInstance().getArabicToRoman();
