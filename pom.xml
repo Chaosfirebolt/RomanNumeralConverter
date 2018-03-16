@@ -7,6 +7,8 @@
     <groupId>com.chaos</groupId>
     <artifactId>roman-numeral-converter</artifactId>
     <version>1.0</version>
+    <packaging>jar</packaging>
+
     <build>
         <plugins>
             <plugin>
@@ -25,6 +27,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
