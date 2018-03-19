@@ -1,8 +1,8 @@
-package com.chaos.converter.parser;
+package com.github.chaosfirebolt.converter.parser;
 
-import com.chaos.converter.constants.IntegerType;
-import com.chaos.converter.exc.InvalidParserException;
-import com.chaos.converter.parser.impl.AbstractParser;
+import com.github.chaosfirebolt.converter.constants.IntegerType;
+import com.github.chaosfirebolt.converter.exc.InvalidParserException;
+import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +17,7 @@ public class ParserFactory {
     /**
      * Package containing parser classes.
      */
-    private static final String PACKAGE = "com.chaos.converter.parser.impl.";
+    private static final String PACKAGE = "com.github.chaosfirebolt.converter.parser.impl.";
     private static final String ERROR_MESSAGE = "Invalid parser class.";
 
     /**

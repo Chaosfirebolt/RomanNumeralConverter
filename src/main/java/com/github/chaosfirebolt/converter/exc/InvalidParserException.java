@@ -1,4 +1,4 @@
-package com.chaos.converter.exc;
+package com.github.chaosfirebolt.converter.exc;
 
 /**
  * Created by ChaosFire on 01-Mar-18

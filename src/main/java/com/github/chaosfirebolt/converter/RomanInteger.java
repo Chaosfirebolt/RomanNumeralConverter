@@ -1,11 +1,11 @@
-package com.chaos.converter;
+package com.github.chaosfirebolt.converter;
 
-import com.chaos.converter.constants.IntegerType;
-import com.chaos.converter.constants.Patterns;
-import com.chaos.converter.parser.ParserContainer;
-import com.chaos.converter.parser.impl.AbstractParser;
-import com.chaos.converter.util.DataTransferObject;
-import com.chaos.converter.util.Validator;
+import com.github.chaosfirebolt.converter.constants.IntegerType;
+import com.github.chaosfirebolt.converter.constants.Patterns;
+import com.github.chaosfirebolt.converter.parser.ParserContainer;
+import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
+import com.github.chaosfirebolt.converter.util.DataTransferObject;
+import com.github.chaosfirebolt.converter.util.Validator;
 
 import java.util.Objects;
 

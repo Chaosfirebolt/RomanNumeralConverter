@@ -1,4 +1,4 @@
-package com.chaos.converter.util;
+package com.github.chaosfirebolt.converter.util;
 
 import java.util.regex.Pattern;
 

@@ -1,6 +1,6 @@
-package com.chaos.converter.parser.impl;
+package com.github.chaosfirebolt.converter.parser.impl;
 
-import com.chaos.converter.util.DataTransferObject;
+import com.github.chaosfirebolt.converter.util.DataTransferObject;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

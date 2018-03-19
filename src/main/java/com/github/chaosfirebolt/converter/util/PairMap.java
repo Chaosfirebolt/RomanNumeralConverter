@@ -1,6 +1,6 @@
-package com.chaos.converter.util;
+package com.github.chaosfirebolt.converter.util;
 
-import com.chaos.converter.RomanInteger;
+import com.github.chaosfirebolt.converter.RomanInteger;
 
 import java.util.*;
 

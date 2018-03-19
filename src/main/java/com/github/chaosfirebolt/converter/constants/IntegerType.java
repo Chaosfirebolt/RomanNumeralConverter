@@ -1,4 +1,4 @@
-package com.chaos.converter.constants;
+package com.github.chaosfirebolt.converter.constants;
 
 /**
  * Created by ChaosFire on 01-Mar-18

@@ -1,7 +1,7 @@
-package com.chaos.converter.parser;
+package com.github.chaosfirebolt.converter.parser;
 
-import com.chaos.converter.constants.IntegerType;
-import com.chaos.converter.parser.impl.AbstractParser;
+import com.github.chaosfirebolt.converter.constants.IntegerType;
+import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
 
 import java.util.HashMap;
 import java.util.Map;

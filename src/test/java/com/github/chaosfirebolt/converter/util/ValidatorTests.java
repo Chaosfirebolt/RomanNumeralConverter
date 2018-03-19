@@ -1,6 +1,6 @@
-package com.chaos.converter.util;
+package com.github.chaosfirebolt.converter.util;
 
-import com.chaos.converter.constants.Patterns;
+import com.github.chaosfirebolt.converter.constants.Patterns;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

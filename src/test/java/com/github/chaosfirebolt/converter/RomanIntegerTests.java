@@ -1,6 +1,6 @@
-package com.chaos.converter;
+package com.github.chaosfirebolt.converter;
 
-import com.chaos.converter.constants.IntegerType;
+import com.github.chaosfirebolt.converter.constants.IntegerType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

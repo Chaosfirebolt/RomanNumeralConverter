@@ -1,6 +1,6 @@
-package com.chaos.converter.parser.impl;
+package com.github.chaosfirebolt.converter.parser.impl;
 
-import com.chaos.converter.util.DataTransferObject;
+import com.github.chaosfirebolt.converter.util.DataTransferObject;
 
 /**
  * Created by ChaosFire on 01-Mar-18

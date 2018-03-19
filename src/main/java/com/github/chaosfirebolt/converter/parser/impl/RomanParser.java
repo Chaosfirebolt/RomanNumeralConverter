@@ -1,9 +1,9 @@
-package com.chaos.converter.parser.impl;
+package com.github.chaosfirebolt.converter.parser.impl;
 
-import com.chaos.converter.constants.Patterns;
-import com.chaos.converter.util.DataTransferObject;
-import com.chaos.converter.util.PairMap;
-import com.chaos.converter.util.Validator;
+import com.github.chaosfirebolt.converter.constants.Patterns;
+import com.github.chaosfirebolt.converter.util.DataTransferObject;
+import com.github.chaosfirebolt.converter.util.PairMap;
+import com.github.chaosfirebolt.converter.util.Validator;
 
 import java.util.Map;
 
