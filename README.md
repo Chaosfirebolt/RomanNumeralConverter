@@ -2,7 +2,7 @@
 Library for converting roman numerals to arabic and vice versa.
 
 # Usage
-Main class dealing with roman numerals is [RomanInteger](src/main/java/com/chaos/converter/RomanInteger.java).
+Main class dealing with roman numerals is [RomanInteger](src/main/java/com/github/chaosfirebolt/converter/RomanInteger.java).
 It provides constants for basic numerals, used in roman system, public constructors, parsing methods, overrides for hashCode and equals, implementation of Comparable and simple arithmethic operations. RomanInteger objects are immutable.
 
 # Examples
