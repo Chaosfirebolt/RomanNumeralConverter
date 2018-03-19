@@ -36,12 +36,7 @@ class RomanParser extends AbstractParser {
                     add = false;
                 }
             }
-
-            if (add) {
-                arabic += current;
-            } else {
-                arabic -= current;
-            }
+            arabic = add ? Validator.range(arabic + current) : Validator.range(arabic - current);
         }
         return new DataTransferObject(number, Validator.range(arabic));
     }
