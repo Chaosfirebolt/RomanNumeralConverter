@@ -2,7 +2,6 @@ package com.github.chaosfirebolt.converter.parser;
 
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.exc.InvalidParserException;
-import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

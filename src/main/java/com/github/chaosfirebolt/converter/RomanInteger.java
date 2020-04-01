@@ -2,8 +2,8 @@ package com.github.chaosfirebolt.converter;
 
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.constants.Patterns;
+import com.github.chaosfirebolt.converter.parser.AbstractParser;
 import com.github.chaosfirebolt.converter.parser.ParserContainer;
-import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
 import com.github.chaosfirebolt.converter.util.DataTransferObject;
 import com.github.chaosfirebolt.converter.util.Validator;
 

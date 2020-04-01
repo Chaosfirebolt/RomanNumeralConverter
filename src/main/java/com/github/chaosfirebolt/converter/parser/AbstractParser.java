@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.parser.impl;
+package com.github.chaosfirebolt.converter.parser;
 
 import com.github.chaosfirebolt.converter.util.DataTransferObject;
 
@@ -9,7 +9,7 @@ import com.github.chaosfirebolt.converter.util.DataTransferObject;
  */
 public abstract class AbstractParser {
 
-    AbstractParser() {
+    protected AbstractParser() {
     }
 
     /**
