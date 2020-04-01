@@ -1,6 +1,7 @@
 package com.github.chaosfirebolt.converter.parser.impl;
 
 import com.github.chaosfirebolt.converter.constants.Patterns;
+import com.github.chaosfirebolt.converter.parser.AbstractParser;
 import com.github.chaosfirebolt.converter.util.DataTransferObject;
 import com.github.chaosfirebolt.converter.util.PairMap;
 import com.github.chaosfirebolt.converter.util.Validator;
