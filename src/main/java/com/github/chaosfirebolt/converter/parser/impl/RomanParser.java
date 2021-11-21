@@ -14,9 +14,9 @@ import java.util.Map;
  * @see DataTransferObject
  * @see AbstractParser
  */
-class RomanParser extends AbstractParser {
+public class RomanParser extends AbstractParser {
 
-    RomanParser() {
+    public RomanParser() {
         super();
     }
 

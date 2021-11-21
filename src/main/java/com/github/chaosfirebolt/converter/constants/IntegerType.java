@@ -1,5 +1,11 @@
 package com.github.chaosfirebolt.converter.constants;
 
+import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
+import com.github.chaosfirebolt.converter.parser.impl.ArabicParser;
+import com.github.chaosfirebolt.converter.parser.impl.RomanParser;
+
+import java.util.function.Supplier;
+
 /**
  * Created by ChaosFire on 01-Mar-18
  *
@@ -10,22 +16,22 @@ public enum IntegerType {
     /**
      * Representation for arabic format integers.
      */
-    ARABIC("ArabicParser"),
+    ARABIC(ArabicParser::new),
     /**
      * Representation for roman format integers.
      */
-    ROMAN("RomanParser");
+    ROMAN(RomanParser::new);
 
     /**
-     * Name of the class, parsing strings to objects containing arabic and roman representation of the same number.
+     * Supplier for instances of parsers.
      */
-    private String parser;
+    private final Supplier<AbstractParser> supplier;
 
-    IntegerType(String parser) {
-        this.parser = parser;
+    IntegerType(Supplier<AbstractParser> supplier) {
+        this.supplier = supplier;
     }
 
-    public String getParser() {
-        return this.parser;
+    public AbstractParser getParser() {
+        return this.supplier.get();
     }
 }

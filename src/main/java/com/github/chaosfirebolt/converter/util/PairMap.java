@@ -19,11 +19,11 @@ public final class PairMap {
     /**
      * Roman to arabic unmodifiable mapping.
      */
-    private Map<String, Integer> romanToArabic;
+    private final Map<String, Integer> romanToArabic;
     /**
      * Arabic to roman unmodifiable mapping.
      */
-    private NavigableMap<Integer, String> arabicToRoman;
+    private final NavigableMap<Integer, String> arabicToRoman;
 
     private PairMap(Map<String, Integer> romanToArabic, NavigableMap<Integer, String> arabicToRoman) {
         this.romanToArabic = romanToArabic;

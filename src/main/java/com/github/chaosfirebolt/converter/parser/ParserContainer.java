@@ -22,7 +22,7 @@ public class ParserContainer {
     /**
      * Holds integer types and their corresponding parser implementations.
      */
-    private Map<IntegerType, AbstractParser> parserMap;
+    private final Map<IntegerType, AbstractParser> parserMap;
 
     private ParserContainer() {
         this.parserMap = new HashMap<>();

@@ -15,9 +15,9 @@ import java.util.NavigableMap;
  * @see DataTransferObject
  * @see AbstractParser
  */
-class ArabicParser extends AbstractParser {
+public class ArabicParser extends AbstractParser {
 
-    ArabicParser() {
+    public ArabicParser() {
         super();
     }
 

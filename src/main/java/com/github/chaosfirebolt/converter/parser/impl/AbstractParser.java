@@ -9,7 +9,7 @@ import com.github.chaosfirebolt.converter.util.DataTransferObject;
  */
 public abstract class AbstractParser {
 
-    AbstractParser() {
+    protected AbstractParser() {
     }
 
     /**
