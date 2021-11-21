@@ -50,6 +50,11 @@ public class RomanInteger implements Comparable<RomanInteger> {
     public static final RomanInteger THOUSAND = new RomanInteger("M", 1000, Integer.hashCode(1000));
 
     /**
+     * Default value for hash cache.
+     */
+    private static final int DEFAULT_HASH = 0;
+
+    /**
      * Roman numeral representation for this RomanInteger object.
      * Null values are not permitted.
      */
@@ -60,9 +65,9 @@ public class RomanInteger implements Comparable<RomanInteger> {
      */
     private final Integer arabicRepresentation;
     /**
-     * Cache for the hash code. Defaults to null.
+     * Cache for the hash code. Defaults to 0.
      */
-    private Integer hash;
+    private int hash;
 
     /**
      * Initializes new {@link RomanInteger} object with provided roman string and arabic integer.
@@ -98,7 +103,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
         this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation, romanInteger.hash);
     }
 
-    private RomanInteger(String romanRepresentation, Integer arabicRepresentation, Integer hash) {
+    private RomanInteger(String romanRepresentation, Integer arabicRepresentation, int hash) {
         this.romanRepresentation = romanRepresentation;
         this.arabicRepresentation = arabicRepresentation;
         this.hash = hash;
@@ -106,7 +111,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
 
     @Override
     public int hashCode() {
-        if (this.hash == null) {
+        if (this.hash == DEFAULT_HASH) {
             this.hash = this.arabicRepresentation.hashCode();
         }
         return this.hash;
@@ -178,7 +183,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
     public static RomanInteger parse(String number) {
         IntegerType type = resolveType(Objects.requireNonNull(number));
         DataTransferObject dto =  ParserContainer.getInstance().getParser(type).parse(number);
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), null);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
     }
 
     /**
@@ -194,7 +199,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      */
     public static RomanInteger parse(String number, IntegerType integerType) {
         DataTransferObject dto = ParserContainer.getInstance().getParser(Objects.requireNonNull(integerType)).parse(Objects.requireNonNull(number));
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), null);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
     }
 
     private static IntegerType resolveType(String number) {
@@ -270,7 +275,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
     private static RomanInteger parseResult(Integer result) {
         try {
             DataTransferObject dto = ParserContainer.getInstance().getParser(IntegerType.ARABIC).parse(result.toString());
-            return new RomanInteger(dto.getRoman(), dto.getArabic(), null);
+            return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
         } catch (IllegalArgumentException exc) {
             return null;
         }
@@ -282,6 +287,6 @@ public class RomanInteger implements Comparable<RomanInteger> {
         if (!dto.getArabic().equals(arabicRepresentation)) {
             throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
         }
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), null);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
     }
 }

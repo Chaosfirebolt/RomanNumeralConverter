@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ArabicParserTests {
 
-    private ArabicParser arabicParser;
+    private final ArabicParser arabicParser;
 
     public ArabicParserTests() {
         this.arabicParser = new ArabicParser();
