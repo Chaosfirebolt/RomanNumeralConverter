@@ -129,32 +129,31 @@ public class RomanIntegerTests {
         assertEquals(arabic, romanInteger.getArabic().toString());
     }
 
-    @SuppressWarnings("EqualsBetweenInconvertibleTypes")
     @Test
     public void equals_AnotherObject_ShouldReturnFalse() {
-        Integer ten = 10;
-        assertFalse(RomanInteger.TEN.equals(ten));
+        Object ten = 10;
+        assertNotEquals(RomanInteger.TEN, ten);
     }
 
     @Test
     public void equals_SameArabic_SameRoman_ShouldReturnTrue() {
         RomanInteger romanInteger = new RomanInteger("IX", 9);
         RomanInteger another = new RomanInteger("IX", 9);
-        assertTrue(romanInteger.equals(another));
+        assertEquals(romanInteger, another);
     }
 
     @Test
     public void equals_SameArabic_DiffRoman_ShouldReturnTrue() {
         RomanInteger romanInteger = new RomanInteger("IX", 9);
         RomanInteger another = new RomanInteger("VIIII", 9);
-        assertTrue(romanInteger.equals(another));
+        assertEquals(romanInteger, another);
     }
 
     @Test
     public void equals_DiffArabic_DiffRoman_ShouldReturnFalse() {
         RomanInteger romanInteger = new RomanInteger("IX", 9);
         RomanInteger another = new RomanInteger("XXX", 30);
-        assertFalse(romanInteger.equals(another));
+        assertNotEquals(romanInteger, another);
     }
 
     @Test
@@ -193,14 +192,14 @@ public class RomanIntegerTests {
 
     @Test(expected = IllegalArgumentException.class)
     public void parseStringParam_TooLowInputArabic_ShouldThrowException() {
-        Integer input = -19;
-        RomanInteger.parse(input.toString());
+        int input = -19;
+        RomanInteger.parse(Integer.toString(input));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void parseStringParam_TooHighInputArabic_ShouldThrowException() {
-        Integer input = 4263;
-        RomanInteger.parse(input.toString());
+        int input = 4263;
+        RomanInteger.parse(Integer.toString(input));
     }
 
     @Test
@@ -237,20 +236,20 @@ public class RomanIntegerTests {
 
     @Test(expected = NumberFormatException.class)
     public void parseStringIntegerTypeParam_InvalidIntegerType_ShouldThrowException() {
-        Integer input = 16;
-        RomanInteger.parse(input.toString(), IntegerType.ROMAN);
+        int input = 16;
+        RomanInteger.parse(Integer.toString(input), IntegerType.ROMAN);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void parseStringIntegerTypeParam_TooLowInputArabic_ShouldThrowException() {
-        Integer input = 0;
-        RomanInteger.parse(input.toString(), IntegerType.ARABIC);
+        int input = 0;
+        RomanInteger.parse(Integer.toString(input), IntegerType.ARABIC);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void parseStringIntegerTypeParam_TooHighInputArabic_ShouldThrowException() {
-        Integer input = 5000;
-        RomanInteger.parse(input.toString(), IntegerType.ARABIC);
+        int input = 5000;
+        RomanInteger.parse(Integer.toString(input), IntegerType.ARABIC);
     }
 
     @Test
@@ -282,20 +281,43 @@ public class RomanIntegerTests {
     }
 
     @Test
+    public void hashCode_ValueShouldNotBeDefaultAfterCall_Test1() {
+        RomanInteger romanInteger = RomanInteger.parse("17");
+        assertHashCodeNotDefault(romanInteger);
+    }
+
+    @Test
+    public void hashCode_ValueShouldNotBeDefaultAfterCall_Test2() {
+        RomanInteger romanInteger = RomanInteger.parse("19");
+        assertHashCodeNotDefault(romanInteger);
+    }
+
+    @Test
+    public void hashCode_ValueShouldNotBeDefaultAfterCall_Test3() {
+        RomanInteger romanInteger = RomanInteger.parse("31");
+        assertHashCodeNotDefault(romanInteger);
+    }
+
+    private static void assertHashCodeNotDefault(RomanInteger romanInteger) {
+        int hashCode = romanInteger.hashCode();
+        assertNotEquals(0, hashCode);
+    }
+
+    @Test
     public void add_ValidResult_ShouldReturnCorrect() {
         Integer first = 15;
         Integer second = 20;
 
         RomanInteger expected = RomanInteger.parse(Integer.toString(first + second), IntegerType.ARABIC);
-        assertEquals(expected, this.add(first, second));
+        assertEquals(expected, add(first, second));
     }
 
     @Test
     public void add_TooHighResult_ShouldReturnNull() {
-        assertNull(this.add(2020, 2000));
+        assertNull(add(2020, 2000));
     }
 
-    private RomanInteger add(Integer first, Integer second) {
+    private static RomanInteger add(Integer first, Integer second) {
         return RomanInteger.parse(first.toString(), IntegerType.ARABIC).add(RomanInteger.parse(second.toString(), IntegerType.ARABIC));
     }
 

@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class RomanParserTests {
 
-    private RomanParser romanParser;
+    private final RomanParser romanParser;
 
     public RomanParserTests() {
         this.romanParser = new RomanParser();
