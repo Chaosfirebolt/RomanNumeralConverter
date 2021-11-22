@@ -1,9 +1,21 @@
 # RomanNumeralConverter
 Library for converting roman numerals to arabic and vice versa.
 
+# Latest version
+Current latest version is 1.0.1
+<br/>
+Maven dependency
+```
+<dependency>
+    <groupId>com.github.chaosfirebolt.converter</groupId>
+    <artifactId>roman-numeral-converter</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
+
 # Usage
 Main class dealing with roman numerals is [RomanInteger](src/main/java/com/github/chaosfirebolt/converter/RomanInteger.java).
-It provides constants for basic numerals, used in roman system, public constructors, parsing methods, overrides for hashCode and equals, implementation of Comparable and simple arithmethic operations. RomanInteger objects are immutable.
+It provides constants for basic numerals, used in roman system, public constructors, parsing methods, overrides for hashCode and equals, implementation of Comparable and simple arithmetic operations. RomanInteger objects are immutable.
 
 # Examples
 Valid
