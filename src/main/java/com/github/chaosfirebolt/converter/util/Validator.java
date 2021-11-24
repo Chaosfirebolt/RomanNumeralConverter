@@ -12,11 +12,11 @@ public class Validator {
     /**
      * Minimal possible value of roman numeral.
      */
-    private static final Integer MIN = 1;
+    private static final int MIN = 1;
     /**
      * Maximum possible value of roman numeral.
      */
-    private static final Integer MAX = 3999;
+    private static final int MAX = 3999;
 
     /**
      * Verifies that provided string matches provided pattern.
@@ -40,7 +40,7 @@ public class Validator {
      * @return provided integer, if it is in valid range.
      * @throws IllegalArgumentException if provided integer is not in valid range.
      */
-    public static Integer range(Integer arabic) {
+    public static int range(int arabic) {
         if (arabic < MIN || arabic > MAX) {
             throw new IllegalArgumentException(String.format("Valid range for roman integers is from %d to %d inclusive.", MIN, MAX));
         }

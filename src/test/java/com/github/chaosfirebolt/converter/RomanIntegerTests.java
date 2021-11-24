@@ -16,7 +16,7 @@ public class RomanIntegerTests {
     @Test
     public void StringIntegerCtor_ValidInput_ShouldReturnCorrect_Test1() {
         String roman = "XL";
-        Integer arabic = 40;
+        int arabic = 40;
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
         assertEquals(roman, romanInteger.toString());
@@ -26,7 +26,7 @@ public class RomanIntegerTests {
     @Test
     public void StringIntegerCtor_ValidInput_ShouldReturnCorrect_Test2() {
         String roman = "XXXX";
-        Integer arabic = 40;
+        int arabic = 40;
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
         assertEquals(roman, romanInteger.toString());
@@ -36,7 +36,7 @@ public class RomanIntegerTests {
     @Test(expected = IllegalArgumentException.class)
     public void StringIntegerCtor_RomanAndArabicRepresentDiffValues_ShouldThrowException_Test1() {
         String roman = "XX";
-        Integer arabic = 40;
+        int arabic = 40;
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
         assertEquals(roman, romanInteger.toString());
@@ -46,7 +46,7 @@ public class RomanIntegerTests {
     @Test(expected = IllegalArgumentException.class)
     public void StringIntegerCtor_RomanAndArabicRepresentDiffValues_ShouldThrowException_Test2() {
         String roman = "XL";
-        Integer arabic = 30;
+        int arabic = 30;
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
         assertEquals(roman, romanInteger.toString());
@@ -56,7 +56,7 @@ public class RomanIntegerTests {
     @Test(expected = NumberFormatException.class)
     public void StringIntegerCtor_InvalidRoman_ShouldThrowException() {
         String roman = "h";
-        Integer arabic = 5;
+        int arabic = 5;
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
         assertEquals(roman, romanInteger.toString());
         assertEquals(arabic, romanInteger.getArabic());
@@ -65,7 +65,7 @@ public class RomanIntegerTests {
     @Test(expected = IllegalArgumentException.class)
     public void StringIntegerCtor_InvalidInteger_ShouldThrowException() {
         String roman = "MMMMM";
-        Integer arabic = 5000;
+        int arabic = 5000;
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
         assertEquals(roman, romanInteger.toString());
         assertEquals(arabic, romanInteger.getArabic());
@@ -78,7 +78,7 @@ public class RomanIntegerTests {
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
         assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic().toString());
+        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
     }
 
     @Test
@@ -88,7 +88,7 @@ public class RomanIntegerTests {
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
         assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic().toString());
+        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -98,7 +98,7 @@ public class RomanIntegerTests {
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
         assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic().toString());
+        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -108,7 +108,7 @@ public class RomanIntegerTests {
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
         assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic().toString());
+        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
     }
 
     @Test(expected = NumberFormatException.class)
@@ -117,7 +117,7 @@ public class RomanIntegerTests {
         String arabic = "5";
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
         assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic().toString());
+        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -126,7 +126,7 @@ public class RomanIntegerTests {
         String arabic = "5000";
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
         assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic().toString());
+        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
     }
 
     @Test
@@ -183,8 +183,8 @@ public class RomanIntegerTests {
 
     @Test
     public void parseStringParam_ValidInputArabic_ShouldReturnCorrect() {
-        Integer input = 19;
-        RomanInteger result = RomanInteger.parse(input.toString());
+        int input = 19;
+        RomanInteger result = RomanInteger.parse(Integer.toString(input));
         assertEquals(input, result.getArabic());
         String expectedRoman = "XIX";
         assertEquals(expectedRoman, result.toString());
@@ -209,7 +209,7 @@ public class RomanIntegerTests {
 
         String expectedRoman = input.toUpperCase();
         assertEquals(expectedRoman, result.toString());
-        Integer expectedArabic = 24;
+        int expectedArabic = 24;
         assertEquals(expectedArabic, result.getArabic());
     }
 
@@ -227,8 +227,8 @@ public class RomanIntegerTests {
 
     @Test
     public void parseStringIntegerTypeParam_ValidInput_ShouldReturnCorrect() {
-        Integer input = 16;
-        RomanInteger result = RomanInteger.parse(input.toString(), IntegerType.ARABIC);
+        int input = 16;
+        RomanInteger result = RomanInteger.parse(Integer.toString(input), IntegerType.ARABIC);
         String expectedRoman = "XVI";
         assertEquals(expectedRoman, result.toString());
         assertEquals(input, result.getArabic());
@@ -238,6 +238,13 @@ public class RomanIntegerTests {
     public void parseStringIntegerTypeParam_InvalidIntegerType_ShouldThrowException() {
         int input = 16;
         RomanInteger.parse(Integer.toString(input), IntegerType.ROMAN);
+    }
+
+
+    @Test(expected = NumberFormatException.class)
+    public void parseStringIntegerTypeParam_InvalidIntegerType_Test2_ShouldThrowException() {
+        String input = "XXX";
+        RomanInteger.parse(input, IntegerType.ARABIC);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -257,7 +264,7 @@ public class RomanIntegerTests {
         String input = "MV";
         RomanInteger result = RomanInteger.parse(input, IntegerType.ROMAN);
         assertEquals(input, result.toString());
-        Integer expectedArabic = 1005;
+        int expectedArabic = 1005;
         assertEquals(expectedArabic, result.getArabic());
     }
 

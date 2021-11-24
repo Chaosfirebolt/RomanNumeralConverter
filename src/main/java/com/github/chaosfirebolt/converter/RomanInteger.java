@@ -61,9 +61,8 @@ public class RomanInteger implements Comparable<RomanInteger> {
     private final String romanRepresentation;
     /**
      * Arabic number representing this roman numeral
-     * Null values are not permitted.
      */
-    private final Integer arabicRepresentation;
+    private final int arabicRepresentation;
     /**
      * Cache for the hash code. Defaults to 0.
      */
@@ -75,13 +74,13 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *
      * @param romanRepresentation string representing roman numeral.
      * @param arabicRepresentation integer representing arabic value for provided roman numeral.
-     * @throws NullPointerException if either argument is null.
+     * @throws NullPointerException if romanRepresentation argument is null.
      * @throws NumberFormatException if provided roman numeral does not match required format.
      * @throws IllegalArgumentException if provided arabic and roman numerals do not represent same value
      *         or arabic number is not in valid range.
      */
-    public RomanInteger(String romanRepresentation, Integer arabicRepresentation) {
-        this(validate(Objects.requireNonNull(romanRepresentation), Objects.requireNonNull(arabicRepresentation)));
+    public RomanInteger(String romanRepresentation, int arabicRepresentation) {
+        this(validate(Objects.requireNonNull(romanRepresentation), arabicRepresentation));
     }
 
     /**
@@ -103,7 +102,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
         this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation, romanInteger.hash);
     }
 
-    private RomanInteger(String romanRepresentation, Integer arabicRepresentation, int hash) {
+    private RomanInteger(String romanRepresentation, int arabicRepresentation, int hash) {
         this.romanRepresentation = romanRepresentation;
         this.arabicRepresentation = arabicRepresentation;
         this.hash = hash;
@@ -112,7 +111,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
     @Override
     public int hashCode() {
         if (this.hash == DEFAULT_HASH) {
-            this.hash = this.arabicRepresentation.hashCode();
+            this.hash = Integer.hashCode(this.arabicRepresentation);
         }
         return this.hash;
     }
@@ -133,7 +132,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
             return false;
         }
         RomanInteger other = (RomanInteger) obj;
-        return this.arabicRepresentation.equals(other.arabicRepresentation);
+        return this.arabicRepresentation == other.arabicRepresentation;
     }
 
     /**
@@ -147,7 +146,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
     }
 
     /**
-     * Compares numerically and provided {@link RomanInteger} object.
+     * Compares numerically this and provided {@link RomanInteger} objects.
      *
      * @param other another {@link RomanInteger}
      * @return {@code -1} if this {@link #arabicRepresentation} is numerically less than
@@ -157,7 +156,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      */
     @Override
     public int compareTo(RomanInteger other) {
-        return this.arabicRepresentation.compareTo(other.arabicRepresentation);
+        return Integer.compare(this.arabicRepresentation, other.arabicRepresentation);
     }
 
     /**
@@ -165,7 +164,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *
      * @return arabic number representing this RomanInteger.
      */
-    public Integer getArabic() {
+    public int getArabic() {
         return this.arabicRepresentation;
     }
 
@@ -220,7 +219,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *         this operation, or null if result is not in valid range.
      */
     public RomanInteger add(RomanInteger anotherInteger) {
-        Integer result = this.arabicRepresentation + anotherInteger.arabicRepresentation;
+        int result = this.arabicRepresentation + anotherInteger.arabicRepresentation;
         return parseResult(result);
     }
 
@@ -232,7 +231,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *         this operation, or null if result is not in valid range.
      */
     public RomanInteger subtract(RomanInteger anotherInteger) {
-        Integer result = this.arabicRepresentation - anotherInteger.arabicRepresentation;
+        int result = this.arabicRepresentation - anotherInteger.arabicRepresentation;
         return parseResult(result);
     }
 
@@ -244,7 +243,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *         this operation, or null if result is not in valid range.
      */
     public RomanInteger multiply(RomanInteger anotherInteger) {
-        Integer result = this.arabicRepresentation * anotherInteger.arabicRepresentation;
+        int result = this.arabicRepresentation * anotherInteger.arabicRepresentation;
         return parseResult(result);
     }
 
@@ -256,7 +255,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *         this operation, or null if result is not in valid range.
      */
     public RomanInteger divide(RomanInteger anotherInteger) {
-        Integer result = this.arabicRepresentation / anotherInteger.arabicRepresentation;
+        int result = this.arabicRepresentation / anotherInteger.arabicRepresentation;
         return parseResult(result);
     }
 
@@ -268,23 +267,23 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *         this operation, or null if result is not in valid range.
      */
     public RomanInteger remainder(RomanInteger anotherInteger) {
-        Integer result = this.arabicRepresentation % anotherInteger.arabicRepresentation;
+        int result = this.arabicRepresentation % anotherInteger.arabicRepresentation;
         return parseResult(result);
     }
 
-    private static RomanInteger parseResult(Integer result) {
+    private static RomanInteger parseResult(int result) {
         try {
-            DataTransferObject dto = ParserContainer.getInstance().getParser(IntegerType.ARABIC).parse(result.toString());
+            DataTransferObject dto = ParserContainer.getInstance().getParser(IntegerType.ARABIC).parse(Integer.toString(result));
             return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
         } catch (IllegalArgumentException exc) {
             return null;
         }
     }
 
-    private static RomanInteger validate(String romanRepresentation, Integer arabicRepresentation) {
+    private static RomanInteger validate(String romanRepresentation, int arabicRepresentation) {
         AbstractParser romanParser = ParserContainer.getInstance().getParser(IntegerType.ROMAN);
         DataTransferObject dto = romanParser.parse(romanRepresentation);
-        if (!dto.getArabic().equals(arabicRepresentation)) {
+        if (dto.getArabic() != arabicRepresentation) {
             throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
         }
         return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);

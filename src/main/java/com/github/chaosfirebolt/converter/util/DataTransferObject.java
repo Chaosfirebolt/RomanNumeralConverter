@@ -17,9 +17,9 @@ public class DataTransferObject {
     /**
      * Arabic representation for same number.
      */
-    private final Integer arabic;
+    private final int arabic;
 
-    public DataTransferObject(String roman, Integer arabic) {
+    public DataTransferObject(String roman, int arabic) {
         this.roman = roman;
         this.arabic = arabic;
     }
@@ -28,7 +28,7 @@ public class DataTransferObject {
         return this.roman;
     }
 
-    public Integer getArabic() {
+    public int getArabic() {
         return this.arabic;
     }
 }
