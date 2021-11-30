@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
+import com.github.chaosfirebolt.converter.constants.ArithmeticMode;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.constants.Patterns;
 import com.github.chaosfirebolt.converter.parser.ParserContainer;
@@ -23,31 +24,31 @@ public class RomanInteger implements Comparable<RomanInteger> {
     /**
      * Constant representing arabic number "1", roman numeral - "I".
      */
-    public static final RomanInteger ONE = new RomanInteger("I", 1, Integer.hashCode(1));
+    public static final RomanInteger ONE = new RomanInteger("I", 1, Integer.hashCode(1), ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "5", roman numeral - "V".
      */
-    public static final RomanInteger FIVE = new RomanInteger("V", 5, Integer.hashCode(5));
+    public static final RomanInteger FIVE = new RomanInteger("V", 5, Integer.hashCode(5), ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "10", roman numeral - "X".
      */
-    public static final RomanInteger TEN = new RomanInteger("X", 10, Integer.hashCode(10));
+    public static final RomanInteger TEN = new RomanInteger("X", 10, Integer.hashCode(10), ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "50", roman numeral - "L".
      */
-    public static final RomanInteger FIFTY = new RomanInteger("L", 50, Integer.hashCode(50));
+    public static final RomanInteger FIFTY = new RomanInteger("L", 50, Integer.hashCode(50), ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "100", roman numeral - "C".
      */
-    public static final RomanInteger HUNDRED = new RomanInteger("C", 100, Integer.hashCode(100));
+    public static final RomanInteger HUNDRED = new RomanInteger("C", 100, Integer.hashCode(100), ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "500", roman numeral - "D".
      */
-    public static final RomanInteger FIVE_HUNDRED = new RomanInteger("D", 500, Integer.hashCode(500));
+    public static final RomanInteger FIVE_HUNDRED = new RomanInteger("D", 500, Integer.hashCode(500), ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "1000", roman numeral - "M".
      */
-    public static final RomanInteger THOUSAND = new RomanInteger("M", 1000, Integer.hashCode(1000));
+    public static final RomanInteger THOUSAND = new RomanInteger("M", 1000, Integer.hashCode(1000), ArithmeticMode.LOOSE);
 
     /**
      * Default value for hash cache.
@@ -63,6 +64,10 @@ public class RomanInteger implements Comparable<RomanInteger> {
      * Arabic number representing this roman numeral
      */
     private final int arabicRepresentation;
+    /**
+     * Represents how to parse result from arithmetic operations including this roman integer
+     */
+    private final ArithmeticMode arithmeticMode;
     /**
      * Cache for the hash code. Defaults to 0.
      */
@@ -99,13 +104,14 @@ public class RomanInteger implements Comparable<RomanInteger> {
     }
 
     private RomanInteger(RomanInteger romanInteger) {
-        this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation, romanInteger.hash);
+        this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation, romanInteger.hash, romanInteger.arithmeticMode);
     }
 
-    private RomanInteger(String romanRepresentation, int arabicRepresentation, int hash) {
+    private RomanInteger(String romanRepresentation, int arabicRepresentation, int hash, ArithmeticMode arithmeticMode) {
         this.romanRepresentation = romanRepresentation;
         this.arabicRepresentation = arabicRepresentation;
         this.hash = hash;
+        this.arithmeticMode = arithmeticMode;
     }
 
     @Override
@@ -182,7 +188,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
     public static RomanInteger parse(String number) {
         IntegerType type = resolveType(Objects.requireNonNull(number));
         DataTransferObject dto =  ParserContainer.getInstance().getParser(type).parse(number);
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
     }
 
     /**
@@ -198,7 +204,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      */
     public static RomanInteger parse(String number, IntegerType integerType) {
         DataTransferObject dto = ParserContainer.getInstance().getParser(Objects.requireNonNull(integerType)).parse(Objects.requireNonNull(number));
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
     }
 
     private static IntegerType resolveType(String number) {
@@ -217,10 +223,11 @@ public class RomanInteger implements Comparable<RomanInteger> {
      * @param anotherInteger roman integer to be added to this roman integer.
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
+     * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
      */
     public RomanInteger add(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation + anotherInteger.arabicRepresentation;
-        return parseResult(result);
+        return parseResult(result, shouldParseStrict(this, anotherInteger));
     }
 
     /**
@@ -229,10 +236,11 @@ public class RomanInteger implements Comparable<RomanInteger> {
      * @param anotherInteger roman integer to be subtracted from this object.
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
+     * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
      */
     public RomanInteger subtract(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation - anotherInteger.arabicRepresentation;
-        return parseResult(result);
+        return parseResult(result, shouldParseStrict(this, anotherInteger));
     }
 
     /**
@@ -241,10 +249,11 @@ public class RomanInteger implements Comparable<RomanInteger> {
      * @param anotherInteger multiplicand
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
+     * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
      */
     public RomanInteger multiply(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation * anotherInteger.arabicRepresentation;
-        return parseResult(result);
+        return parseResult(result, shouldParseStrict(this, anotherInteger));
     }
 
     /**
@@ -253,10 +262,11 @@ public class RomanInteger implements Comparable<RomanInteger> {
      * @param anotherInteger divisor
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
+     * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
      */
     public RomanInteger divide(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation / anotherInteger.arabicRepresentation;
-        return parseResult(result);
+        return parseResult(result, shouldParseStrict(this, anotherInteger));
     }
 
     /**
@@ -265,17 +275,25 @@ public class RomanInteger implements Comparable<RomanInteger> {
      * @param anotherInteger divisor
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
+     * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
      */
     public RomanInteger remainder(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation % anotherInteger.arabicRepresentation;
-        return parseResult(result);
+        return parseResult(result, shouldParseStrict(this, anotherInteger));
     }
 
-    private static RomanInteger parseResult(int result) {
+    private static boolean shouldParseStrict(RomanInteger firstArgument, RomanInteger secondArgument) {
+        return firstArgument.arithmeticMode == ArithmeticMode.STRICT || secondArgument.arithmeticMode == ArithmeticMode.STRICT;
+    }
+
+    private static RomanInteger parseResult(int result, boolean parseStrict) {
         try {
             DataTransferObject dto = ParserContainer.getInstance().getParser(IntegerType.ARABIC).parse(Integer.toString(result));
-            return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
+            return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
         } catch (IllegalArgumentException exc) {
+            if (parseStrict) {
+                throw new ArithmeticException("Resulting roman integer out of valid range for arabic value - " + result);
+            }
             return null;
         }
     }
@@ -286,6 +304,21 @@ public class RomanInteger implements Comparable<RomanInteger> {
         if (dto.getArabic() != arabicRepresentation) {
             throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
         }
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
+    }
+
+    /**
+     * Returns roman integer, whose arithmetic mode is equal to the supplied one.
+     * If the arithmetic mode of this instance is equal to the supplied mode, then returns this instance,
+     * otherwise returns new instance, representing the same roman integer with the desired arithmetic mode.
+     *
+     * @param arithmeticMode the desired arithmetic mode
+     * @return Roman integer with arithmetic mode set to teh desired one
+     */
+    public RomanInteger setArithmeticMode(ArithmeticMode arithmeticMode) {
+        if (this.arithmeticMode == arithmeticMode) {
+            return this;
+        }
+        return new RomanInteger(this.romanRepresentation, this.arabicRepresentation, this.hash, arithmeticMode);
     }
 }
