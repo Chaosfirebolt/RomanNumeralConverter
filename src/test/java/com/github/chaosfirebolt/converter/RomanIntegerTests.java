@@ -10,9 +10,6 @@ import static org.junit.Assert.*;
  */
 public class RomanIntegerTests {
 
-    public RomanIntegerTests() {
-    }
-
     @Test
     public void StringIntegerCtor_ValidInput_ShouldReturnCorrect_Test1() {
         String roman = "XL";
@@ -308,24 +305,6 @@ public class RomanIntegerTests {
     private static void assertHashCodeNotDefault(RomanInteger romanInteger) {
         int hashCode = romanInteger.hashCode();
         assertNotEquals(0, hashCode);
-    }
-
-    @Test
-    public void add_ValidResult_ShouldReturnCorrect() {
-        Integer first = 15;
-        Integer second = 20;
-
-        RomanInteger expected = RomanInteger.parse(Integer.toString(first + second), IntegerType.ARABIC);
-        assertEquals(expected, add(first, second));
-    }
-
-    @Test
-    public void add_TooHighResult_ShouldReturnNull() {
-        assertNull(add(2020, 2000));
-    }
-
-    private static RomanInteger add(Integer first, Integer second) {
-        return RomanInteger.parse(first.toString(), IntegerType.ARABIC).add(RomanInteger.parse(second.toString(), IntegerType.ARABIC));
     }
 
     @Test
