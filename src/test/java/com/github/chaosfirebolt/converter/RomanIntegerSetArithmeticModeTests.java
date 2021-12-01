@@ -24,6 +24,7 @@ public class RomanIntegerSetArithmeticModeTests {
         assertNotSame(source, result);
         assertEquals(source.getArabic(), result.getArabic());
         assertEquals(source.toString(), result.toString());
+        assertEquals(source.hashCode(), result.hashCode());
     }
 
     @Test
@@ -40,5 +41,6 @@ public class RomanIntegerSetArithmeticModeTests {
         assertNotSame(source, result);
         assertEquals(source.getArabic(), result.getArabic());
         assertEquals(source.toString(), result.toString());
+        assertEquals(source.hashCode(), result.hashCode());
     }
 }
