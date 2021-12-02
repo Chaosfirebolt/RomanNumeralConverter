@@ -85,7 +85,7 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *         or arabic number is not in valid range.
      */
     public RomanInteger(String romanRepresentation, int arabicRepresentation) {
-        this(validate(Objects.requireNonNull(romanRepresentation), arabicRepresentation));
+        this(validate(romanRepresentation, arabicRepresentation));
     }
 
     /**
@@ -100,7 +100,16 @@ public class RomanInteger implements Comparable<RomanInteger> {
      *         or arabic number is not in valid range.
      */
     public RomanInteger(String romanRepresentation, String arabicRepresentation) {
-        this(validate(Objects.requireNonNull(romanRepresentation), Integer.parseInt(Objects.requireNonNull(arabicRepresentation))));
+        this(validate(romanRepresentation, Integer.parseInt(Objects.requireNonNull(arabicRepresentation))));
+    }
+
+    private static RomanInteger validate(String romanRepresentation, int arabicRepresentation) {
+        AbstractParser romanParser = ParserContainer.getInstance().getParser(IntegerType.ROMAN);
+        DataTransferObject dto = romanParser.parse(Objects.requireNonNull(romanRepresentation));
+        if (dto.getArabic() != arabicRepresentation) {
+            throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
+        }
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
     }
 
     private RomanInteger(RomanInteger romanInteger) {
@@ -112,6 +121,49 @@ public class RomanInteger implements Comparable<RomanInteger> {
         this.arabicRepresentation = arabicRepresentation;
         this.hash = hash;
         this.arithmeticMode = arithmeticMode;
+    }
+
+    /**
+     * Parses provided string to a RomanInteger object.
+     * Convenience method resolving by itself the integer type of provided string and which parser should be used.
+     * Throws exceptions in case of invalid input.
+     *
+     * @param number string to parse.
+     * @return {@link RomanInteger} object in case of valid input.
+     * @throws NumberFormatException if provided string does not match roman or arabic formats.
+     * @throws IllegalArgumentException if arabic representation is not in valid range.
+     * @throws NullPointerException if argument is null.
+     */
+    public static RomanInteger parse(String number) {
+        IntegerType type = resolveType(Objects.requireNonNull(number));
+        DataTransferObject dto =  ParserContainer.getInstance().getParser(type).parse(number);
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
+    }
+
+    private static IntegerType resolveType(String number) {
+        try {
+            Validator.numberFormat(number, Patterns.ARABIC_PATTERN);
+            return IntegerType.ARABIC;
+        } catch (NumberFormatException ignored) {
+        }
+        Validator.numberFormat(number.toUpperCase(), Patterns.ROMAN_PATTERN);
+        return IntegerType.ROMAN;
+    }
+
+    /**
+     * Parses provided string to a RomanInteger object using parser for provided {@link IntegerType}.
+     * Throws exceptions in case of invalid input.
+     *
+     * @param number string to parse.
+     * @param integerType integer type of provided string.
+     * @return {@link RomanInteger} object in case of valid input.
+     * @throws NumberFormatException if provided string does not match required format for specified {@link IntegerType}.
+     * @throws IllegalArgumentException if arabic representation is not in valid range.
+     * @throws NullPointerException if either argument is null.
+     */
+    public static RomanInteger parse(String number, IntegerType integerType) {
+        DataTransferObject dto = ParserContainer.getInstance().getParser(Objects.requireNonNull(integerType)).parse(Objects.requireNonNull(number));
+        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
     }
 
     @Override
@@ -172,49 +224,6 @@ public class RomanInteger implements Comparable<RomanInteger> {
      */
     public int getArabic() {
         return this.arabicRepresentation;
-    }
-
-    /**
-     * Parses provided string to a RomanInteger object.
-     * Convenience method resolving by itself the integer type of provided string and which parser should be used.
-     * Throws exceptions in case of invalid input.
-     *
-     * @param number string to parse.
-     * @return {@link RomanInteger} object in case of valid input.
-     * @throws NumberFormatException if provided string does not match roman or arabic formats.
-     * @throws IllegalArgumentException if arabic representation is not in valid range.
-     * @throws NullPointerException if argument is null.
-     */
-    public static RomanInteger parse(String number) {
-        IntegerType type = resolveType(Objects.requireNonNull(number));
-        DataTransferObject dto =  ParserContainer.getInstance().getParser(type).parse(number);
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
-    }
-
-    /**
-     * Parses provided string to a RomanInteger object using parser for provided {@link IntegerType}.
-     * Throws exceptions in case of invalid input.
-     *
-     * @param number string to parse.
-     * @param integerType integer type of provided string.
-     * @return {@link RomanInteger} object in case of valid input.
-     * @throws NumberFormatException if provided string does not match required format for specified {@link IntegerType}.
-     * @throws IllegalArgumentException if arabic representation is not in valid range.
-     * @throws NullPointerException if either argument is null.
-     */
-    public static RomanInteger parse(String number, IntegerType integerType) {
-        DataTransferObject dto = ParserContainer.getInstance().getParser(Objects.requireNonNull(integerType)).parse(Objects.requireNonNull(number));
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
-    }
-
-    private static IntegerType resolveType(String number) {
-        try {
-            Validator.numberFormat(number, Patterns.ARABIC_PATTERN);
-            return IntegerType.ARABIC;
-        } catch (NumberFormatException ignored) {
-        }
-        Validator.numberFormat(number.toUpperCase(), Patterns.ROMAN_PATTERN);
-        return IntegerType.ROMAN;
     }
 
     /**
@@ -296,15 +305,6 @@ public class RomanInteger implements Comparable<RomanInteger> {
             }
             return null;
         }
-    }
-
-    private static RomanInteger validate(String romanRepresentation, int arabicRepresentation) {
-        AbstractParser romanParser = ParserContainer.getInstance().getParser(IntegerType.ROMAN);
-        DataTransferObject dto = romanParser.parse(romanRepresentation);
-        if (dto.getArabic() != arabicRepresentation) {
-            throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
-        }
-        return new RomanInteger(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
     }
 
     /**
