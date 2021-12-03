@@ -112,6 +112,15 @@ public class RomanInteger implements Comparable<RomanInteger> {
         return dto;
     }
 
+    /**
+     * Copy constructor, initializes new {@link RomanInteger} object, representing the same roman integer, from provided {@link RomanInteger}.
+     *
+     * @param romanInteger roman integer to be copied.
+     */
+    public RomanInteger(RomanInteger romanInteger) {
+        this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation, romanInteger.hash, romanInteger.arithmeticMode);
+    }
+
     private RomanInteger(DataTransferObject dto) {
         this(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
     }

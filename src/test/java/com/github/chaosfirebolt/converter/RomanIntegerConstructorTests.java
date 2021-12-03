@@ -1,8 +1,12 @@
 package com.github.chaosfirebolt.converter;
 
+import com.github.chaosfirebolt.converter.constants.ArithmeticMode;
+import com.github.chaosfirebolt.converter.testUtil.Constants;
+import com.github.chaosfirebolt.converter.testUtil.FieldAccessor;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 /**
  * Created by ChaosFire on 12/3/2021
@@ -123,5 +127,34 @@ public class RomanIntegerConstructorTests {
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
         assertEquals(roman, romanInteger.toString());
         assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
+    }
+
+    @Test
+    public void CopyConstructor_ShouldReturnDifferentObject() {
+        RomanInteger source = RomanInteger.FIFTY;
+        RomanInteger copy = new RomanInteger(source);
+        assertNotSame(source, copy);
+    }
+
+    @Test
+    public void CopyConstructor_LooseMode_ValuesShouldBeTheSame() {
+        RomanInteger source = RomanInteger.FIFTY;
+        RomanInteger copy = new RomanInteger(source);
+        assertEqualFieldValues(source, copy);
+    }
+
+    @Test
+    public void CopyConstructor_StrictMode_ValuesShouldBeTheSame() {
+        RomanInteger source = RomanInteger.FIFTY.setArithmeticMode(ArithmeticMode.STRICT);
+        RomanInteger copy = new RomanInteger(source);
+        assertEqualFieldValues(source, copy);
+    }
+
+    private static void assertEqualFieldValues(RomanInteger source, RomanInteger copy) {
+        for (String fieldName : Constants.FIELD_NAMES) {
+            Object expected = FieldAccessor.getValue(source, fieldName);
+            Object actual = FieldAccessor.getValue(copy, fieldName);
+            assertEquals(String.format("Value for field '%s' not as expected - ", fieldName), expected, actual);
+        }
     }
 }
