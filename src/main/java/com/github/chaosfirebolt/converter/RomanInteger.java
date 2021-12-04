@@ -19,7 +19,7 @@ import java.util.Objects;
  * Comparison is done via arabic representation for this numeral(Integer).
  * RomanInteger objects are immutable.
  */
-public class RomanInteger implements Comparable<RomanInteger> {
+public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
 
     /**
      * Constant representing arabic number "1", roman numeral - "I".
@@ -329,5 +329,15 @@ public class RomanInteger implements Comparable<RomanInteger> {
             return this;
         }
         return new RomanInteger(this.romanRepresentation, this.arabicRepresentation, this.hash, arithmeticMode);
+    }
+
+    @Override
+    public RomanInteger clone() {
+        try {
+            return (RomanInteger) super.clone();
+        } catch (CloneNotSupportedException exc) {
+            //should never happen
+            return new RomanInteger(this);
+        }
     }
 }

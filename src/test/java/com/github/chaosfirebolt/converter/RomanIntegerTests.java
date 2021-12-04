@@ -1,5 +1,8 @@
 package com.github.chaosfirebolt.converter;
 
+import com.github.chaosfirebolt.converter.constants.ArithmeticMode;
+import com.github.chaosfirebolt.converter.testUtil.Constants;
+import com.github.chaosfirebolt.converter.testUtil.FieldAccessor;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -89,5 +92,34 @@ public class RomanIntegerTests {
     private static void assertHashCodeNotDefault(RomanInteger romanInteger) {
         int hashCode = romanInteger.hashCode();
         assertNotEquals(0, hashCode);
+    }
+
+    @Test
+    public void CloneConstructor_ShouldReturnDifferentObject() {
+        RomanInteger source = RomanInteger.FIFTY;
+        RomanInteger copy = source.clone();
+        assertNotSame(source, copy);
+    }
+
+    @Test
+    public void CloneConstructor_LooseMode_ValuesShouldBeTheSame() {
+        RomanInteger source = RomanInteger.FIFTY;
+        RomanInteger copy = source.clone();
+        assertEqualFieldValues(source, copy);
+    }
+
+    @Test
+    public void CloneConstructor_StrictMode_ValuesShouldBeTheSame() {
+        RomanInteger source = RomanInteger.FIFTY.setArithmeticMode(ArithmeticMode.STRICT);
+        RomanInteger copy = source.clone();
+        assertEqualFieldValues(source, copy);
+    }
+
+    private static void assertEqualFieldValues(RomanInteger source, RomanInteger copy) {
+        for (String fieldName : Constants.FIELD_NAMES) {
+            Object expected = FieldAccessor.getValue(source, fieldName);
+            Object actual = FieldAccessor.getValue(copy, fieldName);
+            assertEquals(String.format("Value for field '%s' not as expected - ", fieldName), expected, actual);
+        }
     }
 }
