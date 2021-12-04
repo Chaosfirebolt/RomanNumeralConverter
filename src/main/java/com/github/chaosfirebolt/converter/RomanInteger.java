@@ -310,7 +310,7 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
             return new RomanInteger(dto);
         } catch (IllegalArgumentException exc) {
             if (parseStrict) {
-                throw new ArithmeticException("Resulting roman integer out of valid range for arabic value - " + result);
+                throw new ArithmeticException("Resulting roman integer out of valid range for arabic value: " + result);
             }
             return null;
         }
