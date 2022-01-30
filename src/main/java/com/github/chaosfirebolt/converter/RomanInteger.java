@@ -24,36 +24,31 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
     /**
      * Constant representing arabic number "1", roman numeral - "I".
      */
-    public static final RomanInteger ONE = new RomanInteger("I", 1, Integer.hashCode(1), ArithmeticMode.LOOSE);
+    public static final RomanInteger ONE = new RomanInteger("I", 1, ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "5", roman numeral - "V".
      */
-    public static final RomanInteger FIVE = new RomanInteger("V", 5, Integer.hashCode(5), ArithmeticMode.LOOSE);
+    public static final RomanInteger FIVE = new RomanInteger("V", 5, ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "10", roman numeral - "X".
      */
-    public static final RomanInteger TEN = new RomanInteger("X", 10, Integer.hashCode(10), ArithmeticMode.LOOSE);
+    public static final RomanInteger TEN = new RomanInteger("X", 10, ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "50", roman numeral - "L".
      */
-    public static final RomanInteger FIFTY = new RomanInteger("L", 50, Integer.hashCode(50), ArithmeticMode.LOOSE);
+    public static final RomanInteger FIFTY = new RomanInteger("L", 50, ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "100", roman numeral - "C".
      */
-    public static final RomanInteger HUNDRED = new RomanInteger("C", 100, Integer.hashCode(100), ArithmeticMode.LOOSE);
+    public static final RomanInteger HUNDRED = new RomanInteger("C", 100, ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "500", roman numeral - "D".
      */
-    public static final RomanInteger FIVE_HUNDRED = new RomanInteger("D", 500, Integer.hashCode(500), ArithmeticMode.LOOSE);
+    public static final RomanInteger FIVE_HUNDRED = new RomanInteger("D", 500, ArithmeticMode.LOOSE);
     /**
      * Constant representing arabic number "1000", roman numeral - "M".
      */
-    public static final RomanInteger THOUSAND = new RomanInteger("M", 1000, Integer.hashCode(1000), ArithmeticMode.LOOSE);
-
-    /**
-     * Default value for hash cache.
-     */
-    private static final int DEFAULT_HASH = 0;
+    public static final RomanInteger THOUSAND = new RomanInteger("M", 1000, ArithmeticMode.LOOSE);
 
     /**
      * Roman numeral representation for this RomanInteger object.
@@ -68,10 +63,6 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      * Represents how to parse result from arithmetic operations including this roman integer
      */
     private final ArithmeticMode arithmeticMode;
-    /**
-     * Cache for the hash code. Defaults to 0.
-     */
-    private int hash;
 
     /**
      * Initializes new {@link RomanInteger} object with provided roman string and arabic integer.
@@ -118,17 +109,16 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      * @param romanInteger roman integer to be copied.
      */
     public RomanInteger(RomanInteger romanInteger) {
-        this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation, romanInteger.hash, romanInteger.arithmeticMode);
+        this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation, romanInteger.arithmeticMode);
     }
 
     private RomanInteger(DataTransferObject dto) {
-        this(dto.getRoman(), dto.getArabic(), DEFAULT_HASH, ArithmeticMode.LOOSE);
+        this(dto.getRoman(), dto.getArabic(), ArithmeticMode.LOOSE);
     }
 
-    private RomanInteger(String romanRepresentation, int arabicRepresentation, int hash, ArithmeticMode arithmeticMode) {
+    private RomanInteger(String romanRepresentation, int arabicRepresentation, ArithmeticMode arithmeticMode) {
         this.romanRepresentation = romanRepresentation;
         this.arabicRepresentation = arabicRepresentation;
-        this.hash = hash;
         this.arithmeticMode = arithmeticMode;
     }
 
@@ -177,10 +167,7 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
 
     @Override
     public int hashCode() {
-        if (this.hash == DEFAULT_HASH) {
-            this.hash = Integer.hashCode(this.arabicRepresentation);
-        }
-        return this.hash;
+        return Integer.hashCode(this.arabicRepresentation);
     }
 
     /**
@@ -328,7 +315,7 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
         if (this.arithmeticMode == arithmeticMode) {
             return this;
         }
-        return new RomanInteger(this.romanRepresentation, this.arabicRepresentation, this.hash, arithmeticMode);
+        return new RomanInteger(this.romanRepresentation, this.arabicRepresentation, arithmeticMode);
     }
 
     @Override

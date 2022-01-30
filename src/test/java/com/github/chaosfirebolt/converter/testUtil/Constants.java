@@ -9,5 +9,5 @@ import java.util.List;
  */
 public class Constants {
 
-    public static final List<String> FIELD_NAMES = Collections.unmodifiableList(Arrays.asList("romanRepresentation", "arabicRepresentation", "arithmeticMode", "hash"));
+    public static final List<String> FIELD_NAMES = Collections.unmodifiableList(Arrays.asList("romanRepresentation", "arabicRepresentation", "arithmeticMode"));
 }
