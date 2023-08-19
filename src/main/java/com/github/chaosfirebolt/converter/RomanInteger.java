@@ -12,7 +12,7 @@ import java.util.Objects;
 
 /**
  * Created by ChaosFire on 1.3.2018 г.
- *
+ * <br/>
  * This class represents roman numerals.
  * Provides public constructors, constants for the seven basic roman numerals,
  * static methods for parsing and methods for simple arithmetic operations.
@@ -229,7 +229,9 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
      * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
+     * @deprecated since 2.0.2
      */
+    @Deprecated
     public RomanInteger add(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation + anotherInteger.arabicRepresentation;
         return parseResult(result, shouldParseStrict(this, anotherInteger));
@@ -242,7 +244,9 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
      * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
+     * @deprecated since 2.0.2
      */
+    @Deprecated
     public RomanInteger subtract(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation - anotherInteger.arabicRepresentation;
         return parseResult(result, shouldParseStrict(this, anotherInteger));
@@ -255,7 +259,9 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
      * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
+     * @deprecated since 2.0.2
      */
+    @Deprecated
     public RomanInteger multiply(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation * anotherInteger.arabicRepresentation;
         return parseResult(result, shouldParseStrict(this, anotherInteger));
@@ -268,7 +274,9 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
      * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
+     * @deprecated since 2.0.2
      */
+    @Deprecated
     public RomanInteger divide(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation / anotherInteger.arabicRepresentation;
         return parseResult(result, shouldParseStrict(this, anotherInteger));
@@ -281,7 +289,9 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      * @return New {@link RomanInteger} object representing resulting arabic value from
      *         this operation, or null if result is not in valid range.
      * @throws ArithmeticException if result is outside permitted bounds for roman integers and either this roman integer or argument is set to STRICT {@link ArithmeticMode}
+     * @deprecated since 2.0.2
      */
+    @Deprecated
     public RomanInteger remainder(RomanInteger anotherInteger) {
         int result = this.arabicRepresentation % anotherInteger.arabicRepresentation;
         return parseResult(result, shouldParseStrict(this, anotherInteger));

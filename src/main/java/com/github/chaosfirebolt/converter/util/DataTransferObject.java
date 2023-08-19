@@ -4,8 +4,8 @@ import com.github.chaosfirebolt.converter.RomanInteger;
 
 /**
  * Created by ChaosFire on 15-Mar-18
- *
- * Dto class, holds roman and it's corresponding arabic numeral, for the
+ * <br/>
+ * Dto class, holds roman, and it's corresponding arabic numeral, for the
  * purpose of transferring parsed data to private constructors in {@link RomanInteger}.
  */
 public class DataTransferObject {

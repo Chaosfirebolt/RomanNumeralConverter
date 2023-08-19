@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Created by ChaosFire on 01-Mar-18
- *
+ * <br/>
  * Class used to parse strings in roman numeral format to dto objects.
  * @see DataTransferObject
  * @see AbstractParser
@@ -17,7 +17,6 @@ import java.util.Map;
 public class RomanParser extends AbstractParser {
 
     public RomanParser() {
-        super();
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 /**
  * Created by ChaosFire on 01-Mar-18
- *
+ * <br/>
  * Enumeration for supported integer types.
  */
 public enum IntegerType {

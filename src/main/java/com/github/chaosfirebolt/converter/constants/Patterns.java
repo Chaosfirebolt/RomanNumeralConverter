@@ -4,10 +4,14 @@ import java.util.regex.Pattern;
 
 /**
  * Created by ChaosFire on 14.3.2018 г.
- *
+ * <br/>
  * Holds possible patterns, that a string must math in order to be parsed to a roman integer.
  */
 public class Patterns {
+
+    private Patterns() {
+        //no instances allowed
+    }
 
     /**
      * Strings matching this pattern can be parsed to arabic format integers.

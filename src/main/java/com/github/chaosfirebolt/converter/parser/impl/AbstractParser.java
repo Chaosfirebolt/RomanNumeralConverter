@@ -4,7 +4,7 @@ import com.github.chaosfirebolt.converter.util.DataTransferObject;
 
 /**
  * Created by ChaosFire on 01-Mar-18
- *
+ * <br/>
  * Parsers must extend this class.
  */
 public abstract class AbstractParser {

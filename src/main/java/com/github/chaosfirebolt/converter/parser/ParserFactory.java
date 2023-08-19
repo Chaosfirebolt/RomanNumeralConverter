@@ -5,10 +5,14 @@ import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
 
 /**
  * Created by ChaosFire on 01-Mar-18
- *
+ * <br/>
  * Factory class, providing instances of {@link AbstractParser}.
  */
 public class ParserFactory {
+
+    private ParserFactory() {
+        //no instances allowed
+    }
 
     /**
      * Creates instances of {@link AbstractParser}.
