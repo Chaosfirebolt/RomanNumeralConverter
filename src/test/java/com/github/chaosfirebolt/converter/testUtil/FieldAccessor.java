@@ -2,9 +2,6 @@ package com.github.chaosfirebolt.converter.testUtil;
 
 import java.lang.reflect.Field;
 
-/**
- * Created by ChaosFire on 12/3/2021
- */
 public class FieldAccessor {
 
     public static Object getValue(Object object, String fieldName) {

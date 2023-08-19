@@ -1,8 +1,6 @@
 package com.github.chaosfirebolt.converter.constants;
 
 /**
- * Created by ChaosFire on 11/30/2021
- * <br/>
  * Mode defining behaviour when result from arithmetic operations is invalid
  * @deprecated since 2.0.2
  */

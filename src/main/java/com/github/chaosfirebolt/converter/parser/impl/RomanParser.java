@@ -8,8 +8,6 @@ import com.github.chaosfirebolt.converter.util.Validator;
 import java.util.Map;
 
 /**
- * Created by ChaosFire on 01-Mar-18
- * <br/>
  * Class used to parse strings in roman numeral format to dto objects.
  * @see DataTransferObject
  * @see AbstractParser

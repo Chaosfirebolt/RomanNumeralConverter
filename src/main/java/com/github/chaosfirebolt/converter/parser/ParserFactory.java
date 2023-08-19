@@ -6,8 +6,6 @@ import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
 import java.util.Objects;
 
 /**
- * Created by ChaosFire on 01-Mar-18
- * <br/>
  * Factory class, providing instances of {@link AbstractParser}.
  */
 public class ParserFactory {

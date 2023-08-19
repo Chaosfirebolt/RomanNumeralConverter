@@ -5,9 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by ChaosFire on 11/30/2021
- */
 public class RomanIntegerSetArithmeticModeTests {
 
     @Test

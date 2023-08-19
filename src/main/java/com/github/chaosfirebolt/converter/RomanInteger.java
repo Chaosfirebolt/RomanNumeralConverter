@@ -11,8 +11,6 @@ import com.github.chaosfirebolt.converter.util.Validator;
 import java.util.Objects;
 
 /**
- * Created by ChaosFire on 1.3.2018 г.
- * <br/>
  * This class represents roman numerals.
  * Provides public constructors, constants for the seven basic roman numerals,
  * static methods for parsing and methods for simple arithmetic operations.

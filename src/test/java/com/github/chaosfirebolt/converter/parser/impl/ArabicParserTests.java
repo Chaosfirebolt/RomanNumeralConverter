@@ -5,9 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by ChaosFire on 14.3.2018 г.
- */
 public class ArabicParserTests {
 
     private final ArabicParser arabicParser;

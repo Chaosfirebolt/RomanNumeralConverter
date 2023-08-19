@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.NavigableMap;
 
 /**
- * Created by ChaosFire on 01-Mar-18
- * <br/>
  * Class used to parse strings in arabic numeral format to dto objects.
  * @see DataTransferObject
  * @see AbstractParser

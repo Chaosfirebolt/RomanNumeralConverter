@@ -8,9 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
-/**
- * Created by ChaosFire on 12/3/2021
- */
 public class RomanIntegerConstructorTests {
 
     @Test

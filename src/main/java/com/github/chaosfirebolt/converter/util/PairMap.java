@@ -5,8 +5,6 @@ import com.github.chaosfirebolt.converter.RomanInteger;
 import java.util.*;
 
 /**
- * Created by ChaosFire on 01-Mar-18
- * <br/>
  * Singleton holding mappings from arabic to roman, and roman to arabic basic numerals.
  */
 public final class PairMap {

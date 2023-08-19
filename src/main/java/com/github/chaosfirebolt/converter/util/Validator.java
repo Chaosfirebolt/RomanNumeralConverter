@@ -3,8 +3,6 @@ package com.github.chaosfirebolt.converter.util;
 import java.util.regex.Pattern;
 
 /**
- * Created by ChaosFire on 01-Mar-18
- * <br/>
  * Utility class for validation purposes.
  */
 public class Validator {

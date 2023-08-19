@@ -14,9 +14,6 @@ import java.util.stream.Stream;
 import static org.junit.Assert.*;
 import static org.junit.Assume.assumeTrue;
 
-/**
- * Created by Boyan Georgiev on 19-Aug-23
- */
 @RunWith(Parameterized.class)
 public class ParserContainerTests {
 

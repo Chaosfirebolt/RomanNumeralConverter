@@ -5,9 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by ChaosFire on 12/1/2021
- */
 public class RomanIntegerParseTests {
 
     @Test

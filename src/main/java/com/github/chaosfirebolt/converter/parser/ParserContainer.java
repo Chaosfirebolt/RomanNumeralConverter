@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ChaosFire on 14.3.2018 г.
- * <br/>
  * Singleton class, holding necessary implementations of {@link AbstractParser}
  * @see AbstractParser
  */
