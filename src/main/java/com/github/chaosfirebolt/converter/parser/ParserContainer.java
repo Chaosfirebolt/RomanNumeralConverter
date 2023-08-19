@@ -42,11 +42,6 @@ public class ParserContainer {
      * @return implementation of {@link AbstractParser}, corresponding to provided {@link IntegerType}
      */
     public AbstractParser getParser(IntegerType type) {
-        AbstractParser parser = this.parserMap.get(type);
-        if (parser == null) {
-            parser = ParserFactory.createParser(type);
-            this.parserMap.put(type, parser);
-        }
-        return parser;
+        return this.parserMap.computeIfAbsent(type, ParserFactory::createParser);
     }
 }
