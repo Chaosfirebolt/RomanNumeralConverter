@@ -8,6 +8,7 @@ import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
 import com.github.chaosfirebolt.converter.util.DataTransferObject;
 import com.github.chaosfirebolt.converter.util.Validator;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -18,6 +19,8 @@ import java.util.Objects;
  * RomanInteger objects are immutable.
  */
 public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
+
+    public static final Comparator<RomanInteger> NATURAL_ORDER_COMPARATOR = Comparator.comparingInt(RomanInteger::getArabic);
 
     /**
      * Constant representing arabic number "1", roman numeral - "I".
@@ -211,7 +214,7 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      */
     @Override
     public int compareTo(RomanInteger other) {
-        return Integer.compare(this.arabicRepresentation, other.arabicRepresentation);
+        return NATURAL_ORDER_COMPARATOR.compare(this, other);
     }
 
     /**

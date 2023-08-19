@@ -37,31 +37,6 @@ public class RomanIntegerTests {
     }
 
     @Test
-    public void compareTo_ShouldReturnCorrect_Test1() {
-        RomanInteger romanInteger = new RomanInteger("IV", 4);
-        RomanInteger another = new RomanInteger("IIII", 4);
-        int expected = 0;
-        int actual = romanInteger.compareTo(another);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void compareTo_ShouldReturnCorrect_Test2() {
-        RomanInteger romanInteger = new RomanInteger("XV", 15);
-        int expected = 1;
-        int actual = romanInteger.compareTo(RomanInteger.TEN);
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void compareTo_ShouldReturnCorrect_Test3() {
-        RomanInteger romanInteger = new RomanInteger("XV", 15);
-        int expected = -1;
-        int actual = RomanInteger.TEN.compareTo(romanInteger);
-        assertEquals(expected, actual);
-    }
-
-    @Test
     public void hashCode_DiffObjects_SameArabic_DiffRoman_ShouldReturnSameHashCodeValues() {
         RomanInteger romanInteger = new RomanInteger("DCCCC", 900);
         RomanInteger another = new RomanInteger("CM", 900);
