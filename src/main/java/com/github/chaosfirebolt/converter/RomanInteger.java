@@ -180,7 +180,10 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof RomanInteger)) {
+        if (this == obj) {
+            return true;
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
         RomanInteger other = (RomanInteger) obj;
