@@ -1,9 +1,10 @@
 package com.github.chaosfirebolt.converter.parser.impl;
 
 import com.github.chaosfirebolt.converter.util.DataTransferObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RomanParserTests {
 
@@ -202,39 +203,41 @@ public class RomanParserTests {
         assertEquals(expected, result.getArabic());
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void invalidInput_ShouldThrowException_Test1() {
-        String input = "M M";
-        this.romanParser.parse(input);
+        assertNumberFormatExceptionOnInvalidInput("M M");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void invalidInput_ShouldThrowException_Test2() {
-        String input = "MmMM";
-        this.romanParser.parse(input);
+        assertExceptionOnInvalidInput(IllegalArgumentException.class, "MmMM");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void invalidInput_ShouldThrowException_Test3() {
-        String input = "MmMDD";
-        this.romanParser.parse(input);
+        assertExceptionOnInvalidInput(IllegalArgumentException.class, "MmMDD");
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void invalidInput_ShouldThrowException_Test4() {
-        String input = "D5";
-        this.romanParser.parse(input);
+        assertNumberFormatExceptionOnInvalidInput("D5");
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void invalidInput_ShouldThrowException_Test5() {
-        String input = "";
-        this.romanParser.parse(input);
+        assertNumberFormatExceptionOnInvalidInput("");
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void invalidInput_ShouldThrowException_Test6() {
-        String input = "W";
-        this.romanParser.parse(input);
+        assertNumberFormatExceptionOnInvalidInput("W");
+    }
+
+    private void assertExceptionOnInvalidInput(Class<? extends Exception> expectedException, String input) {
+        assertThrows(expectedException, () -> this.romanParser.parse(input), () -> expectedException.getSimpleName() + " should have been thrown for input - " + input);
+    }
+
+    private void assertNumberFormatExceptionOnInvalidInput(String input) {
+        assertExceptionOnInvalidInput(NumberFormatException.class, input);
     }
 }

@@ -1,31 +1,36 @@
 package com.github.chaosfirebolt.converter.util;
 
 import com.github.chaosfirebolt.converter.constants.Patterns;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.regex.Pattern;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ValidatorTests {
 
     @Test
     public void range_ValidRange_ShouldReturnValidatedValue() {
-        Integer arabic = 5;
+        int arabic = 5;
 
         Integer expected = 5;
         Integer actual = Validator.range(arabic);
-        assertEquals(expected, actual);
+        assertEquals(expected, actual, "Returned value not as expected");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void range_InvalidRangeValueTooLow_ShouldThrowException() {
-        Integer arabic = 0;
-        Validator.range(arabic);
+        assertIllegalArgumentExceptionThrownOnInvalidValue(0);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    private static void assertIllegalArgumentExceptionThrownOnInvalidValue(int arabicValue) {
+        assertThrows(IllegalArgumentException.class, () -> Validator.range(arabicValue), () -> "Expected IllegalArgumentException was not thrown for input - " + arabicValue);
+    }
+
+    @Test
     public void range_InvalidRangeValueTooHigh_ShouldThrowException() {
-        Integer arabic = 4000;
-        Validator.range(arabic);
+        assertIllegalArgumentExceptionThrownOnInvalidValue(4000);
     }
 
     @Test
@@ -52,28 +57,28 @@ public class ValidatorTests {
         assertEquals(representation, actual);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidRomanFormat_ShouldThrowException_Test1() {
-        String representation = "MCDL XVI";
-        Validator.numberFormat(representation, Patterns.ROMAN_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("MCDL XVI", Patterns.ROMAN_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    private static void assertNumberFormatExceptionThrownOnInvalidValue(String input, Pattern pattern) {
+        assertThrows(NumberFormatException.class, () -> Validator.numberFormat(input, pattern), () -> "Expected NumberFormatException was not thrown for input - " + input);
+    }
+
+    @Test
     public void numberFormat_InvalidRomanFormat_ShouldThrowException_Test2() {
-        String representation = "MCDLPXVI";
-        Validator.numberFormat(representation, Patterns.ROMAN_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("MCDLPXVI", Patterns.ROMAN_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidRomanFormat_ShouldThrowException_Test3() {
-        String representation = "MC9I";
-        Validator.numberFormat(representation, Patterns.ROMAN_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("MC9I", Patterns.ROMAN_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidRomanFormat_ShouldThrowException_Test4() {
-        String representation = "";
-        Validator.numberFormat(representation, Patterns.ROMAN_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("", Patterns.ROMAN_PATTERN);
     }
 
     @Test
@@ -84,45 +89,38 @@ public class ValidatorTests {
         assertEquals(representation, actual);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test1() {
-        String representation = "x";
-        Validator.numberFormat(representation, Patterns.ARABIC_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("x", Patterns.ARABIC_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test2() {
-        String representation = "";
-        Validator.numberFormat(representation, Patterns.ARABIC_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("", Patterns.ARABIC_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test3() {
-        String representation = "25.0";
-        Validator.numberFormat(representation, Patterns.ARABIC_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("25.0", Patterns.ARABIC_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test4() {
-        String representation = "ML";
-        Validator.numberFormat(representation, Patterns.ARABIC_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("ML", Patterns.ARABIC_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test5() {
-        String representation = "6,4";
-        Validator.numberFormat(representation, Patterns.ARABIC_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("6,4", Patterns.ARABIC_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test6() {
-        String representation = "41l";
-        Validator.numberFormat(representation, Patterns.ARABIC_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("41l", Patterns.ARABIC_PATTERN);
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test7() {
-        String representation = "4 8";
-        Validator.numberFormat(representation, Patterns.ARABIC_PATTERN);
+        assertNumberFormatExceptionThrownOnInvalidValue("4 8", Patterns.ARABIC_PATTERN);
     }
 }

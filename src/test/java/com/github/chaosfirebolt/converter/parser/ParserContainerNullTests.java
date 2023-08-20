@@ -1,16 +1,16 @@
 package com.github.chaosfirebolt.converter.parser;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ParserContainerNullTests {
 
     @Test
     public void getParserWithNull_ShouldThrowNpeWithMessage() {
-        NullPointerException npe = assertThrows("Should have thrown NPE", NullPointerException.class, () -> ParserContainer.getInstance().getParser(null));
+        NullPointerException npe = assertThrows(NullPointerException.class, () -> ParserContainer.getInstance().getParser(null), "Should have thrown NPE");
         String message = npe.getMessage();
-        assertTrue("Error message should have existed", message != null && !message.isEmpty());
+        assertTrue(message != null && !message.isEmpty(), "Error message should have existed");
     }
 }

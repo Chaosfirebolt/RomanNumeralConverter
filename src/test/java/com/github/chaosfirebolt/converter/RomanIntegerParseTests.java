@@ -1,9 +1,10 @@
 package com.github.chaosfirebolt.converter;
 
 import com.github.chaosfirebolt.converter.constants.IntegerType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RomanIntegerParseTests {
 
@@ -11,21 +12,25 @@ public class RomanIntegerParseTests {
     public void parseStringParam_ValidInputArabic_ShouldReturnCorrect() {
         int input = 19;
         RomanInteger result = RomanInteger.parse(Integer.toString(input));
-        assertEquals(input, result.getArabic());
+        assertEquals(input, result.getArabic(), "Arabic representation not as expected");
         String expectedRoman = "XIX";
-        assertEquals(expectedRoman, result.toString());
+        assertEquals(expectedRoman, result.toString(), "Roman representation not as expected");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void parseStringParam_TooLowInputArabic_ShouldThrowException() {
-        int input = -19;
-        RomanInteger.parse(Integer.toString(input));
+        assertExceptionThrown(IllegalArgumentException.class, () -> RomanInteger.parse("-19"));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    private static void assertExceptionThrown(Class<? extends Exception> expectedException, Executable executable) {
+        Exception exception = assertThrows(expectedException, executable, () -> String.format("%s was expected, but was not thrown", expectedException.getSimpleName()));
+        String message = exception.getMessage();
+        assertTrue(message != null && !message.isEmpty(), "Expected message missing");
+    }
+
+    @Test
     public void parseStringParam_TooHighInputArabic_ShouldThrowException() {
-        int input = 4263;
-        RomanInteger.parse(Integer.toString(input));
+        assertExceptionThrown(IllegalArgumentException.class, () -> RomanInteger.parse("4263"));
     }
 
     @Test
@@ -39,16 +44,14 @@ public class RomanIntegerParseTests {
         assertEquals(expectedArabic, result.getArabic());
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void parseStringParam_InvalidRomanInput_ShouldReturnCorrect_Test1() {
-        String input = "X IV";
-        RomanInteger.parse(input);
+        assertExceptionThrown(NumberFormatException.class, () -> RomanInteger.parse("X IV"));
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void parseStringParam_InvalidRomanInput_ShouldReturnCorrect_Test2() {
-        String input = "Vh";
-        RomanInteger.parse(input);
+        assertExceptionThrown(NumberFormatException.class, () -> RomanInteger.parse("Vh"));
     }
 
     @Test
@@ -60,29 +63,25 @@ public class RomanIntegerParseTests {
         assertEquals(input, result.getArabic());
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void parseStringIntegerTypeParam_InvalidIntegerType_ShouldThrowException() {
-        int input = 16;
-        RomanInteger.parse(Integer.toString(input), IntegerType.ROMAN);
+        assertExceptionThrown(NumberFormatException.class, () -> RomanInteger.parse("16", IntegerType.ROMAN));
     }
 
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void parseStringIntegerTypeParam_InvalidIntegerType_Test2_ShouldThrowException() {
-        String input = "XXX";
-        RomanInteger.parse(input, IntegerType.ARABIC);
+        assertExceptionThrown(NumberFormatException.class, () -> RomanInteger.parse("XXX", IntegerType.ARABIC));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void parseStringIntegerTypeParam_TooLowInputArabic_ShouldThrowException() {
-        int input = 0;
-        RomanInteger.parse(Integer.toString(input), IntegerType.ARABIC);
+        assertExceptionThrown(IllegalArgumentException.class, () -> RomanInteger.parse("0", IntegerType.ARABIC));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void parseStringIntegerTypeParam_TooHighInputArabic_ShouldThrowException() {
-        int input = 5000;
-        RomanInteger.parse(Integer.toString(input), IntegerType.ARABIC);
+        assertExceptionThrown(IllegalArgumentException.class, () -> RomanInteger.parse("5000", IntegerType.ARABIC));
     }
 
     @Test
@@ -94,15 +93,13 @@ public class RomanIntegerParseTests {
         assertEquals(expectedArabic, result.getArabic());
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void parseStringIntegerTypeParam_InvalidInputRoman_ShouldThrowException() {
-        String input = "MV0";
-        RomanInteger.parse(input, IntegerType.ROMAN);
+        assertExceptionThrown(NumberFormatException.class, () -> RomanInteger.parse("MV0", IntegerType.ROMAN));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void parseStringIntegerTypeParam_TooHighInputRoman_ShouldThrowException() {
-        String input = "MMMDDD";
-        RomanInteger.parse(input, IntegerType.ROMAN);
+        assertExceptionThrown(IllegalArgumentException.class, () -> RomanInteger.parse("MMMDDD", IntegerType.ROMAN));
     }
 }

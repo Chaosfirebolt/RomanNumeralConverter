@@ -3,10 +3,10 @@ package com.github.chaosfirebolt.converter;
 import com.github.chaosfirebolt.converter.constants.ArithmeticMode;
 import com.github.chaosfirebolt.converter.testUtil.Constants;
 import com.github.chaosfirebolt.converter.testUtil.FieldAccessor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RomanIntegerConstructorTests {
 
@@ -16,8 +16,8 @@ public class RomanIntegerConstructorTests {
         int arabic = 40;
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic());
+        assertEquals(roman, romanInteger.toString(), "Roman representation not as expected");
+        assertEquals(arabic, romanInteger.getArabic(), "arabic representation not as expected");
     }
 
     @Test
@@ -26,46 +26,42 @@ public class RomanIntegerConstructorTests {
         int arabic = 40;
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
 
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic());
+        assertEquals(roman, romanInteger.toString(), "Roman representation not as expected");
+        assertEquals(arabic, romanInteger.getArabic(), "Arabic representation not as expected");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void StringIntegerCtor_RomanAndArabicRepresentDiffValues_ShouldThrowException_Test1() {
         String roman = "XX";
         int arabic = 40;
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic());
+        assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    private static void assertExceptionThrown(Class<? extends Exception> expectedException, Executable executable) {
+        Exception exception = assertThrows(expectedException, executable, () -> String.format("%s expected, but was not thrown", expectedException.getSimpleName()));
+        String message = exception.getMessage();
+        assertTrue(message != null && !message.isEmpty());
+    }
+
+    @Test
     public void StringIntegerCtor_RomanAndArabicRepresentDiffValues_ShouldThrowException_Test2() {
         String roman = "XL";
         int arabic = 30;
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic());
+        assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void StringIntegerCtor_InvalidRoman_ShouldThrowException() {
         String roman = "h";
         int arabic = 5;
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic());
+        assertExceptionThrown(NumberFormatException.class, () -> new RomanInteger(roman, arabic));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void StringIntegerCtor_InvalidInteger_ShouldThrowException() {
         String roman = "MMMMM";
         int arabic = 5000;
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, romanInteger.getArabic());
+        assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
     }
 
     @Test
@@ -88,42 +84,32 @@ public class RomanIntegerConstructorTests {
         assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void StringStringCtor_RomanAndArabicRepresentDiffValues_ShouldThrowException_Test1() {
         String roman = "XX";
         String arabic = "40";
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
+        assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void StringStringCtor_RomanAndArabicRepresentDiffValues_ShouldThrowException_Test2() {
         String roman = "XL";
         String arabic = "30";
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
+        assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void StringStringCtor_InvalidRoman_ShouldThrowException() {
         String roman = "h";
         String arabic = "5";
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
+        assertExceptionThrown(NumberFormatException.class, () -> new RomanInteger(roman, arabic));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void StringStringCtor_InvalidInteger_ShouldThrowException() {
         String roman = "MMMMM";
         String arabic = "5000";
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-        assertEquals(roman, romanInteger.toString());
-        assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
+        assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
     }
 
     @Test
@@ -151,7 +137,7 @@ public class RomanIntegerConstructorTests {
         for (String fieldName : Constants.FIELD_NAMES) {
             Object expected = FieldAccessor.getValue(source, fieldName);
             Object actual = FieldAccessor.getValue(copy, fieldName);
-            assertEquals(String.format("Value for field '%s' not as expected - ", fieldName), expected, actual);
+            assertEquals(expected, actual, () -> String.format("Value for field '%s' not as expected - ", fieldName));
         }
     }
 }

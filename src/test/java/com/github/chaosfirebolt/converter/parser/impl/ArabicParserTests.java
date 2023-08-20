@@ -1,9 +1,10 @@
 package com.github.chaosfirebolt.converter.parser.impl;
 
 import com.github.chaosfirebolt.converter.util.DataTransferObject;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class ArabicParserTests {
 
@@ -94,33 +95,36 @@ public class ArabicParserTests {
         assertEquals(expected, result.getRoman());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void invalidInput_intValueTooLow_ShouldThrowException() {
-        String input = "-1";
-        this.arabicParser.parse(input);
+        assertNumberFormatExceptionOnInvalidInput("-1");
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void invalidInput_intValueTooHigh_ShouldThrowException() {
-        String input = "4125";
-        this.arabicParser.parse(input);
+        assertExceptionThrownOnInvalidInput(IllegalArgumentException.class, "4125");
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void invalidInput_WrongNumberFormat_ShouldThrowException_Test1() {
-        String input = "MX";
-        this.arabicParser.parse(input);
+        assertNumberFormatExceptionOnInvalidInput("MX");
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void invalidInput_WrongNumberFormat_ShouldThrowException_Test2() {
-        String input = "f";
-        this.arabicParser.parse(input);
+        assertNumberFormatExceptionOnInvalidInput("f");
     }
 
-    @Test(expected = NumberFormatException.class)
+    @Test
     public void invalidInput_WrongNumberFormat_ShouldThrowException_Test3() {
-        String input = "";
-        this.arabicParser.parse(input);
+        assertNumberFormatExceptionOnInvalidInput("");
+    }
+
+    private void assertNumberFormatExceptionOnInvalidInput(String input) {
+        assertExceptionThrownOnInvalidInput(NumberFormatException.class, input);
+    }
+
+    private void assertExceptionThrownOnInvalidInput(Class<? extends Exception> expectedException, String input) {
+        assertThrows(expectedException, () -> this.arabicParser.parse(input), () -> expectedException.getSimpleName() + " should have been thrown for input - " + input);
     }
 }
