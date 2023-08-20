@@ -8,6 +8,7 @@ import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
 import com.github.chaosfirebolt.converter.util.DataTransferObject;
 import com.github.chaosfirebolt.converter.util.Validator;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -18,7 +19,9 @@ import java.util.Objects;
  * Comparison is done via arabic representation for this numeral(Integer).
  * RomanInteger objects are immutable.
  */
-public class RomanInteger implements Comparable<RomanInteger>, Cloneable {
+public class RomanInteger implements Comparable<RomanInteger>, Cloneable, Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     public static final Comparator<RomanInteger> NATURAL_ORDER_COMPARATOR = Comparator.comparingInt(RomanInteger::getArabic);
 
