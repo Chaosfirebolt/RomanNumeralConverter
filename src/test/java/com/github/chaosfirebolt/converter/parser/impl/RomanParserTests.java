@@ -1,10 +1,14 @@
 package com.github.chaosfirebolt.converter.parser.impl;
 
 import com.github.chaosfirebolt.converter.util.DataTransferObject;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Locale;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RomanParserTests {
 
@@ -14,230 +18,36 @@ public class RomanParserTests {
         this.romanParser = new RomanParser();
     }
 
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test1() {
-        String input = "MDCCLXxVI";
-
-        int expected = 1776;
+    @ParameterizedTest
+    @MethodSource
+    public void validInputShouldReturnCorrectValue(String input, int expected) {
         DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
+        assertEquals(expected, result.getArabic(), "Arabic representation not as expected");
+        assertEquals(input.toUpperCase(Locale.ENGLISH).trim(), result.getRoman(), "Roman representation not as expected");
     }
 
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test2() {
-        String input = "McMLIV";
-
-        int expected = 1954;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
+    private static Stream<Arguments> validInputShouldReturnCorrectValue() {
+        return Stream.of(Arguments.of("MDCCLXxVI", 1776), Arguments.of("McMLIV", 1954), Arguments.of("MCMXC", 1990),
+                        Arguments.of("MMXIV", 2014), Arguments.of("XXXIX", 39), Arguments.of("CCXLVI", 246),
+                        Arguments.of("CCvII", 207), Arguments.of("MLXVI", 1066), Arguments.of("IIII", 4),
+                        Arguments.of("VIIiI", 9), Arguments.of("XCIX", 99), Arguments.of("IC", 99),
+                        Arguments.of(" XIIX", 18), Arguments.of("IIXX ", 18), Arguments.of("IIIIII ", 6),
+                        Arguments.of("XXXXXX ", 60), Arguments.of("CM ", 900), Arguments.of("MDCCCCX ", 1910),
+                        Arguments.of("MCMX ", 1910), Arguments.of("MDCDIII", 1903), Arguments.of("MCMIII", 1903));
     }
 
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test3() {
-        String input = "MCMXC";
-
-        int expected = 1990;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
+    @ParameterizedTest
+    @MethodSource
+    public void invalidInputShouldThrowException(Class<? extends Exception> expectedException, String input) {
+        Exception exc = assertThrows(expectedException, () -> this.romanParser.parse(input), () -> expectedException.getSimpleName() + " should have been thrown for input - " + input);
+        String message = exc.getMessage();
+        assertTrue(message != null && !message.isEmpty(), "Error message expected, but not found");
     }
 
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test4() {
-        String input = "MMXIV";
-
-        int expected = 2014;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test5() {
-        String input = "XXXIX";
-
-        int expected = 39;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test6() {
-        String input = "CCXLVI";
-
-        int expected = 246;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test7() {
-        String input = "CCvII";
-
-        int expected = 207;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test8() {
-        String input = "MLXVI";
-
-        int expected = 1066;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test9() {
-        String input = "IIII";
-
-        int expected = 4;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test10() {
-        String input = "VIIiI";
-
-        int expected = 9;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test11() {
-        String input = "XCIX";
-
-        int expected = 99;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test12() {
-        String input = "IC";
-
-        int expected = 99;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test13() {
-        String input = " XIIX";
-
-        int expected = 18;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test14() {
-        String input = "IIXX ";
-
-        int expected = 18;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test15() {
-        String input = "IIIIII ";
-
-        int expected = 6;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test16() {
-        String input = "XXXXXX ";
-
-        int expected = 60;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test17() {
-        String input = "CM ";
-
-        int expected = 900;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test18() {
-        String input = "MDCCCCX ";
-
-        int expected = 1910;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test19() {
-        String input = "MCMX ";
-
-        int expected = 1910;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test20() {
-        String input = "MDCDIII";
-
-        int expected = 1903;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void validInput_ShouldReturnCorrectValue_Test21() {
-        String input = "MCMIII";
-
-        int expected = 1903;
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic());
-    }
-
-    @Test
-    public void invalidInput_ShouldThrowException_Test1() {
-        assertNumberFormatExceptionOnInvalidInput("M M");
-    }
-
-    @Test
-    public void invalidInput_ShouldThrowException_Test2() {
-        assertExceptionOnInvalidInput(IllegalArgumentException.class, "MmMM");
-    }
-
-    @Test
-    public void invalidInput_ShouldThrowException_Test3() {
-        assertExceptionOnInvalidInput(IllegalArgumentException.class, "MmMDD");
-    }
-
-    @Test
-    public void invalidInput_ShouldThrowException_Test4() {
-        assertNumberFormatExceptionOnInvalidInput("D5");
-    }
-
-    @Test
-    public void invalidInput_ShouldThrowException_Test5() {
-        assertNumberFormatExceptionOnInvalidInput("");
-    }
-
-    @Test
-    public void invalidInput_ShouldThrowException_Test6() {
-        assertNumberFormatExceptionOnInvalidInput("W");
-    }
-
-    private void assertExceptionOnInvalidInput(Class<? extends Exception> expectedException, String input) {
-        assertThrows(expectedException, () -> this.romanParser.parse(input), () -> expectedException.getSimpleName() + " should have been thrown for input - " + input);
-    }
-
-    private void assertNumberFormatExceptionOnInvalidInput(String input) {
-        assertExceptionOnInvalidInput(NumberFormatException.class, input);
+    private static Stream<Arguments> invalidInputShouldThrowException() {
+        return Stream.of(Arguments.of(NumberFormatException.class, "M M"), Arguments.of(IllegalArgumentException.class, "MmMM"),
+                        Arguments.of(IllegalArgumentException.class, "MmMDD"), Arguments.of(NumberFormatException.class, "D5"),
+                        Arguments.of(NumberFormatException.class, ""), Arguments.of(NumberFormatException.class, "W"),
+                        Arguments.of(NumberFormatException.class, "1"));
     }
 }
