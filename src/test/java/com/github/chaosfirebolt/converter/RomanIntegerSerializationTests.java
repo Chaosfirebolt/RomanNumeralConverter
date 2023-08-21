@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 public class RomanIntegerSerializationTests {
 
     private static Stream<Arguments> data() {
-        return Stream.of(Arguments.of(RomanInteger.ONE), Arguments.of(RomanInteger.THOUSAND), Arguments.of(RomanInteger.parse("111"),
-                        Arguments.of(RomanInteger.parse("1111"), Arguments.of(RomanInteger.parse("3691")), Arguments.of("2759"),
-                        Arguments.of(RomanInteger.parse("917")))));
+        return Stream.of(Arguments.of(RomanInteger.ONE), Arguments.of(RomanInteger.THOUSAND), Arguments.of(RomanInteger.parse("111")),
+                        Arguments.of(RomanInteger.parse("1111")), Arguments.of(RomanInteger.parse("3691")), Arguments.of(RomanInteger.parse("2759")),
+                        Arguments.of(RomanInteger.parse("917")));
     }
 
     @ParameterizedTest
