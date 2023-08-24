@@ -1,126 +1,63 @@
 package com.github.chaosfirebolt.converter.util;
 
 import com.github.chaosfirebolt.converter.constants.Patterns;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidatorTests {
 
-    @Test
-    public void range_ValidRange_ShouldReturnValidatedValue() {
-        int arabic = 5;
-
-        Integer expected = 5;
-        Integer actual = Validator.range(arabic);
-        assertEquals(expected, actual, "Returned value not as expected");
+    @ParameterizedTest
+    @ValueSource(ints = { 5, 111, 3961, 857, 1737 })
+    public void range_ValidRange_ShouldReturnValidatedValue(int value) {
+        int actual = Validator.range(value);
+        assertEquals(value, actual, "Returned value not as expected");
     }
 
-    @Test
-    public void range_InvalidRangeValueTooLow_ShouldThrowException() {
-        assertIllegalArgumentExceptionThrownOnInvalidValue(0);
+    @ParameterizedTest
+    @ValueSource(ints = { -3, 0, 4000 })
+    public void valueNotInRange_ShouldThrowException(int arabicValue) {
+        Exception exc = assertThrows(IllegalArgumentException.class, () -> Validator.range(arabicValue), () -> "Expected IllegalArgumentException was not thrown for input - " + arabicValue);
+        assertExceptionMessage(exc.getMessage());
     }
 
-    private static void assertIllegalArgumentExceptionThrownOnInvalidValue(int arabicValue) {
-        assertThrows(IllegalArgumentException.class, () -> Validator.range(arabicValue), () -> "Expected IllegalArgumentException was not thrown for input - " + arabicValue);
+    private static void assertExceptionMessage(String message) {
+        assertTrue(message != null && !message.isEmpty(), "Error message expected, but not found");
     }
 
-    @Test
-    public void range_InvalidRangeValueTooHigh_ShouldThrowException() {
-        assertIllegalArgumentExceptionThrownOnInvalidValue(4000);
+    @ParameterizedTest
+    @ValueSource(strings = { "MCDLXVI", "MLXVI", "MCDLI" })
+    public void validRomanFormat_ShouldReturnValidatedValue(String value) {
+        String actual = Validator.numberFormat(value, Patterns.ROMAN_PATTERN);
+        assertEquals(value, actual, "Returned value not as expected");
     }
 
-    @Test
-    public void numberFormat_ValidRomanFormat_ShouldReturnValidatedValue_Test1() {
-        String representation = "MCDLXVI";
-
-        String actual = Validator.numberFormat(representation, Patterns.ROMAN_PATTERN);
-        assertEquals(representation, actual);
+    @ParameterizedTest
+    @ValueSource(strings = { "25", "437", "2761" })
+    public void numberFormat_ValidArabicFormat_ShouldReturnValidatedValue(String value) {
+        String actual = Validator.numberFormat(value, Patterns.ARABIC_PATTERN);
+        assertEquals(value, actual, "Returned value not as expected");
     }
 
-    @Test
-    public void numberFormat_ValidRomanFormat_ShouldReturnValidatedValue_Test2() {
-        String representation = "MLXVI";
-
-        String actual = Validator.numberFormat(representation, Patterns.ROMAN_PATTERN);
-        assertEquals(representation, actual);
+    @ParameterizedTest
+    @MethodSource("invalidFormatData")
+    public void invalidNumberFormat_ShouldThrowException(String input, Pattern pattern) {
+        Exception exc = assertThrows(NumberFormatException.class, () -> Validator.numberFormat(input, pattern), () -> "Expected NumberFormatException was not thrown for input - " + input);
+        assertExceptionMessage(exc.getMessage());
     }
 
-    @Test
-    public void numberFormat_ValidRomanFormat_ShouldReturnValidatedValue_Test3() {
-        String representation = "MCDLI";
-
-        String actual = Validator.numberFormat(representation, Patterns.ROMAN_PATTERN);
-        assertEquals(representation, actual);
-    }
-
-    @Test
-    public void numberFormat_InvalidRomanFormat_ShouldThrowException_Test1() {
-        assertNumberFormatExceptionThrownOnInvalidValue("MCDL XVI", Patterns.ROMAN_PATTERN);
-    }
-
-    private static void assertNumberFormatExceptionThrownOnInvalidValue(String input, Pattern pattern) {
-        assertThrows(NumberFormatException.class, () -> Validator.numberFormat(input, pattern), () -> "Expected NumberFormatException was not thrown for input - " + input);
-    }
-
-    @Test
-    public void numberFormat_InvalidRomanFormat_ShouldThrowException_Test2() {
-        assertNumberFormatExceptionThrownOnInvalidValue("MCDLPXVI", Patterns.ROMAN_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_InvalidRomanFormat_ShouldThrowException_Test3() {
-        assertNumberFormatExceptionThrownOnInvalidValue("MC9I", Patterns.ROMAN_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_InvalidRomanFormat_ShouldThrowException_Test4() {
-        assertNumberFormatExceptionThrownOnInvalidValue("", Patterns.ROMAN_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_ValidArabicFormat_ShouldReturnValidatedValue() {
-        String representation = "25";
-
-        String actual = Validator.numberFormat(representation, Patterns.ARABIC_PATTERN);
-        assertEquals(representation, actual);
-    }
-
-    @Test
-    public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test1() {
-        assertNumberFormatExceptionThrownOnInvalidValue("x", Patterns.ARABIC_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test2() {
-        assertNumberFormatExceptionThrownOnInvalidValue("", Patterns.ARABIC_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test3() {
-        assertNumberFormatExceptionThrownOnInvalidValue("25.0", Patterns.ARABIC_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test4() {
-        assertNumberFormatExceptionThrownOnInvalidValue("ML", Patterns.ARABIC_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test5() {
-        assertNumberFormatExceptionThrownOnInvalidValue("6,4", Patterns.ARABIC_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test6() {
-        assertNumberFormatExceptionThrownOnInvalidValue("41l", Patterns.ARABIC_PATTERN);
-    }
-
-    @Test
-    public void numberFormat_InvalidArabicFormat_ShouldThrowException_Test7() {
-        assertNumberFormatExceptionThrownOnInvalidValue("4 8", Patterns.ARABIC_PATTERN);
+    private static Stream<Arguments> invalidFormatData() {
+        return Stream.of(Arguments.of("MCDL XVI", Patterns.ROMAN_PATTERN), Arguments.of("MCDLPXVI", Patterns.ROMAN_PATTERN),
+                        Arguments.of("MC9I", Patterns.ROMAN_PATTERN), Arguments.of("", Patterns.ROMAN_PATTERN),
+                        Arguments.of("x", Patterns.ARABIC_PATTERN), Arguments.of("", Patterns.ARABIC_PATTERN),
+                        Arguments.of("25.0", Patterns.ARABIC_PATTERN), Arguments.of("ML", Patterns.ARABIC_PATTERN),
+                        Arguments.of("6,4", Patterns.ARABIC_PATTERN), Arguments.of("41l", Patterns.ARABIC_PATTERN),
+                        Arguments.of("4 8", Patterns.ARABIC_PATTERN));
     }
 }
