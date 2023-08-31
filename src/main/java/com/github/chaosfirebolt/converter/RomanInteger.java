@@ -19,7 +19,7 @@ import java.util.Objects;
  * Comparison is done via arabic representation for this numeral(int).
  * RomanInteger objects are immutable.
  */
-public class RomanInteger implements Comparable<RomanInteger>, Cloneable, Serializable {
+public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, Serializable {
 
     @Serial
     private static final long serialVersionUID = 2L;
