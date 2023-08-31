@@ -157,6 +157,24 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable, Serial
         return new RomanInteger(dto);
     }
 
+    /**
+     * Getter for arabic representation.
+     *
+     * @return arabic number representing this RomanInteger.
+     */
+    public int getArabic() {
+        return this.arabicRepresentation;
+    }
+
+    /**
+     * Getter for roman representation.
+     *
+     * @return roman number representing this RomanInteger.
+     */
+    public String getRoman() {
+        return this.romanRepresentation;
+    }
+
     @Override
     public int hashCode() {
         return Integer.hashCode(this.arabicRepresentation);
@@ -184,14 +202,9 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable, Serial
         return this.arabicRepresentation == other.arabicRepresentation;
     }
 
-    /**
-     * String representation of this object.
-     *
-     * @return roman numeral.
-     */
     @Override
     public String toString() {
-        return this.romanRepresentation;
+        return this.arabicRepresentation + " - " + this.romanRepresentation;
     }
 
     /**
@@ -206,15 +219,6 @@ public class RomanInteger implements Comparable<RomanInteger>, Cloneable, Serial
     @Override
     public int compareTo(RomanInteger other) {
         return NATURAL_ORDER_COMPARATOR.compare(this, other);
-    }
-
-    /**
-     * Getter for arabic representation.
-     *
-     * @return arabic number representing this RomanInteger.
-     */
-    public int getArabic() {
-        return this.arabicRepresentation;
     }
 
     @Override

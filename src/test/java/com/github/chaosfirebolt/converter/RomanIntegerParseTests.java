@@ -20,7 +20,7 @@ public class RomanIntegerParseTests {
         RomanInteger result = RomanInteger.parse(Integer.toString(input));
         assertEquals(input, result.getArabic(), "Arabic representation not as expected");
         String expectedRoman = "XIX";
-        assertEquals(expectedRoman, result.toString(), "Roman representation not as expected");
+        assertEquals(expectedRoman, result.getRoman(), "Roman representation not as expected");
     }
 
     @Test
@@ -29,7 +29,7 @@ public class RomanIntegerParseTests {
         RomanInteger result = RomanInteger.parse(input);
 
         String expectedRoman = input.toUpperCase();
-        assertEquals(expectedRoman, result.toString());
+        assertEquals(expectedRoman, result.getRoman());
         int expectedArabic = 24;
         assertEquals(expectedArabic, result.getArabic());
     }
@@ -39,7 +39,7 @@ public class RomanIntegerParseTests {
         int input = 16;
         RomanInteger result = RomanInteger.parse(Integer.toString(input), IntegerType.ARABIC);
         String expectedRoman = "XVI";
-        assertEquals(expectedRoman, result.toString());
+        assertEquals(expectedRoman, result.getRoman());
         assertEquals(input, result.getArabic());
     }
 
@@ -47,7 +47,7 @@ public class RomanIntegerParseTests {
     public void parseStringIntegerTypeParam_ValidInputRoman_ShouldReturnCorrect() {
         String input = "MV";
         RomanInteger result = RomanInteger.parse(input, IntegerType.ROMAN);
-        assertEquals(input, result.toString());
+        assertEquals(input, result.getRoman());
         int expectedArabic = 1005;
         assertEquals(expectedArabic, result.getArabic());
     }

@@ -19,7 +19,7 @@ public class RomanIntegerConstructorTests {
     @CsvSource({ "XL,40", "XXXX,40", "CD,400" })
     public void stringStringCtor_ValidInput_ShouldReturnCorrect(String roman, String arabic) {
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
-        assertEquals(roman, romanInteger.toString());
+        assertEquals(roman, romanInteger.getRoman());
         assertEquals(arabic, Integer.toString(romanInteger.getArabic()));
     }
 

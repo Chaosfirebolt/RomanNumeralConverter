@@ -15,7 +15,7 @@ public class RomanIntegerParseAllValuesTests {
     public void arabicToRoman(String arabic, String roman) {
         RomanInteger result = RomanInteger.parse(arabic);
         assertEquals(Integer.parseInt(arabic), result.getArabic(), ARABIC_ERROR_MESSAGE);
-        assertEquals(roman, result.toString(), ROMAN_ERROR_MESSAGE);
+        assertEquals(roman, result.getRoman(), ROMAN_ERROR_MESSAGE);
     }
 
     @ParameterizedTest
@@ -23,6 +23,6 @@ public class RomanIntegerParseAllValuesTests {
     public void romanToArabic(int arabic, String roman) {
         RomanInteger result = RomanInteger.parse(roman);
         assertEquals(arabic, result.getArabic(), ARABIC_ERROR_MESSAGE);
-        assertEquals(roman, result.toString(), ROMAN_ERROR_MESSAGE);
+        assertEquals(roman, result.getRoman(), ROMAN_ERROR_MESSAGE);
     }
 }

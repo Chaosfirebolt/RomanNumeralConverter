@@ -51,8 +51,8 @@ public final class PairMap {
     }
 
     private static void add(Map<String, Integer> toArab, NavigableMap<Integer, String> toRoman, RomanInteger romanInteger) {
-        toArab.put(romanInteger.toString(), romanInteger.getArabic());
-        toRoman.put(romanInteger.getArabic(), romanInteger.toString());
+        toArab.put(romanInteger.getRoman(), romanInteger.getArabic());
+        toRoman.put(romanInteger.getArabic(), romanInteger.getRoman());
     }
 
     /**

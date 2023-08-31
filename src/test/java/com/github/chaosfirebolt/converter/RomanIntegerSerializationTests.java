@@ -35,6 +35,6 @@ public class RomanIntegerSerializationTests {
 
         assertNotSame(romanInteger, deserialized, "Expected different instances, but was same");
         assertEquals(romanInteger.getArabic(), deserialized.getArabic(), "Arabic representation not as expected");
-        assertEquals(romanInteger.toString(), deserialized.toString(), "Roman representation not as expected");
+        assertEquals(romanInteger.getRoman(), deserialized.getRoman(), "Roman representation not as expected");
     }
 }
