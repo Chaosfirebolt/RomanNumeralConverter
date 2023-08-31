@@ -1,7 +1,5 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.testUtil.Constants;
-import com.github.chaosfirebolt.converter.testUtil.FieldAccessor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -53,14 +51,7 @@ public class RomanIntegerTests {
     public void CloneConstructor_LooseMode_ValuesShouldBeTheSame() {
         RomanInteger source = RomanInteger.FIFTY;
         RomanInteger copy = source.clone();
-        assertEqualFieldValues(source, copy);
-    }
-
-    private static void assertEqualFieldValues(RomanInteger source, RomanInteger copy) {
-        for (String fieldName : Constants.FIELD_NAMES) {
-            Object expected = FieldAccessor.getValue(source, fieldName);
-            Object actual = FieldAccessor.getValue(copy, fieldName);
-            assertEquals(expected, actual, () -> String.format("Value for field '%s' not as expected - ", fieldName));
-        }
+        assertEquals(source.getArabic(), copy.getArabic(), "Arabic value not as expected");
+        assertEquals(source.getRoman(), copy.getRoman(), "Roman value not as expected");
     }
 }

@@ -1,6 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.testUtil.RomanIntegerConverter;
+import com.github.chaosfirebolt.converter.junit.RomanIntegerConverter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;

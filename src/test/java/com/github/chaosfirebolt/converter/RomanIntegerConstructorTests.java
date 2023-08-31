@@ -1,7 +1,5 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.testUtil.Constants;
-import com.github.chaosfirebolt.converter.testUtil.FieldAccessor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -54,18 +52,11 @@ public class RomanIntegerConstructorTests {
     public void copyConstructorTests(RomanInteger source) {
         RomanInteger copy = new RomanInteger(source);
         assertNotSame(source, copy, "Expected different object, but was same");
-        assertEqualFieldValues(source, copy);
+        assertEquals(source.getArabic(), copy.getArabic(), "Arabic value not as expected");
+        assertEquals(source.getRoman(), copy.getRoman(), "Roman value not as expected");
     }
 
     private static Stream<Arguments> copyConstructorTestsData() {
         return Stream.of(Arguments.of(RomanInteger.FIFTY), Arguments.of(RomanInteger.HUNDRED), Arguments.of(RomanInteger.THOUSAND));
-    }
-
-    private static void assertEqualFieldValues(RomanInteger source, RomanInteger copy) {
-        for (String fieldName : Constants.FIELD_NAMES) {
-            Object expected = FieldAccessor.getValue(source, fieldName);
-            Object actual = FieldAccessor.getValue(copy, fieldName);
-            assertEquals(expected, actual, () -> String.format("Value for field '%s' not as expected - ", fieldName));
-        }
     }
 }

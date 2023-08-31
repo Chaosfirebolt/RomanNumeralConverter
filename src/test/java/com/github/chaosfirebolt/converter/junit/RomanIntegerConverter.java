@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.testUtil;
+package com.github.chaosfirebolt.converter.junit;
 
 import com.github.chaosfirebolt.converter.RomanInteger;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -10,7 +10,7 @@ public class RomanIntegerConverter implements ArgumentConverter {
     @Override
     public Object convert(Object o, ParameterContext parameterContext) throws ArgumentConversionException {
         if (!(o instanceof String)) {
-            throw new ArgumentConversionException("Argument should be string");
+            throw new ArgumentConversionException("Argument should be a string");
         }
         return RomanInteger.parse(o.toString());
     }
