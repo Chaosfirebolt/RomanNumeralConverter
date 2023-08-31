@@ -1,6 +1,5 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.constants.ArithmeticMode;
 import com.github.chaosfirebolt.converter.testUtil.Constants;
 import com.github.chaosfirebolt.converter.testUtil.FieldAccessor;
 import org.junit.jupiter.api.Test;
@@ -17,29 +16,29 @@ public class RomanIntegerTests {
 
     @Test
     public void equals_SameArabic_SameRoman_ShouldReturnTrue() {
-        RomanInteger romanInteger = new RomanInteger("IX", 9);
-        RomanInteger another = new RomanInteger("IX", 9);
+        RomanInteger romanInteger = new RomanInteger("IX", "9");
+        RomanInteger another = new RomanInteger("IX", "9");
         assertEquals(romanInteger, another, "Roman integers were not equal");
     }
 
     @Test
     public void equals_SameArabic_DiffRoman_ShouldReturnTrue() {
-        RomanInteger romanInteger = new RomanInteger("IX", 9);
-        RomanInteger another = new RomanInteger("VIIII", 9);
+        RomanInteger romanInteger = new RomanInteger("IX", "9");
+        RomanInteger another = new RomanInteger("VIIII", "9");
         assertEquals(romanInteger, another, "Roman integers were not equal");
     }
 
     @Test
     public void equals_DiffArabic_DiffRoman_ShouldReturnFalse() {
-        RomanInteger romanInteger = new RomanInteger("IX", 9);
-        RomanInteger another = new RomanInteger("XXX", 30);
+        RomanInteger romanInteger = new RomanInteger("IX", "9");
+        RomanInteger another = new RomanInteger("XXX", "30");
         assertNotEquals(romanInteger, another, "Roman integers were equals, despite representing different values");
     }
 
     @Test
     public void hashCode_DiffObjects_SameArabic_DiffRoman_ShouldReturnSameHashCodeValues() {
-        RomanInteger romanInteger = new RomanInteger("DCCCC", 900);
-        RomanInteger another = new RomanInteger("CM", 900);
+        RomanInteger romanInteger = new RomanInteger("DCCCC", "900");
+        RomanInteger another = new RomanInteger("CM", "900");
         assertEquals(romanInteger.hashCode(), another.hashCode(), "Romain integers representing same value returned different hash code");
     }
 
@@ -53,13 +52,6 @@ public class RomanIntegerTests {
     @Test
     public void CloneConstructor_LooseMode_ValuesShouldBeTheSame() {
         RomanInteger source = RomanInteger.FIFTY;
-        RomanInteger copy = source.clone();
-        assertEqualFieldValues(source, copy);
-    }
-
-    @Test
-    public void CloneConstructor_StrictMode_ValuesShouldBeTheSame() {
-        RomanInteger source = RomanInteger.FIFTY.setArithmeticMode(ArithmeticMode.STRICT);
         RomanInteger copy = source.clone();
         assertEqualFieldValues(source, copy);
     }

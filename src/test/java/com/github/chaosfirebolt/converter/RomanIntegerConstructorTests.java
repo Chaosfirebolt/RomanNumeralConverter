@@ -1,6 +1,5 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.constants.ArithmeticMode;
 import com.github.chaosfirebolt.converter.testUtil.Constants;
 import com.github.chaosfirebolt.converter.testUtil.FieldAccessor;
 import org.junit.jupiter.api.Test;
@@ -17,40 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RomanIntegerConstructorTests {
 
     @ParameterizedTest
-    @CsvSource({ "XL,40", "XXXX,40", "XC,90"})
-    public void stringIntegerCtor_ValidInput_ShouldReturnCorrect(String roman, int arabic) {
-        RomanInteger romanInteger = new RomanInteger(roman, arabic);
-        assertEquals(roman, romanInteger.toString(), "Roman representation not as expected");
-        assertEquals(arabic, romanInteger.getArabic(), "Arabic representation not as expected");
-    }
-
-    @ParameterizedTest
-    @CsvSource({ "XX,40", "XL,30", "MD,900" })
-    public void StringIntegerCtor_RomanAndArabicRepresentDiffValues_ShouldThrowException(String roman, int arabic) {
-        assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
-    }
-
-    private static void assertExceptionThrown(Class<? extends Exception> expectedException, Executable executable) {
-        Exception exception = assertThrows(expectedException, executable, () -> String.format("%s expected, but was not thrown", expectedException.getSimpleName()));
-        String message = exception.getMessage();
-        assertTrue(message != null && !message.isEmpty(), "Exception message expected, but not found");
-    }
-
-    @Test
-    public void stringIntegerCtor_InvalidRoman_ShouldThrowException() {
-        String roman = "h";
-        int arabic = 5;
-        assertExceptionThrown(NumberFormatException.class, () -> new RomanInteger(roman, arabic));
-    }
-
-    @Test
-    public void stringIntegerCtor_InvalidInteger_ShouldThrowException() {
-        String roman = "MMMMM";
-        int arabic = 5000;
-        assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
-    }
-
-    @ParameterizedTest
     @CsvSource({ "XL,40", "XXXX,40", "CD,400" })
     public void stringStringCtor_ValidInput_ShouldReturnCorrect(String roman, String arabic) {
         RomanInteger romanInteger = new RomanInteger(roman, arabic);
@@ -62,6 +27,12 @@ public class RomanIntegerConstructorTests {
     @CsvSource({ "XX,40", "XL,30", "XV,11" })
     public void stringStringCtor_RomanAndArabicRepresentDiffValues_ShouldThrowException(String roman, String arabic) {
         assertExceptionThrown(IllegalArgumentException.class, () -> new RomanInteger(roman, arabic));
+    }
+
+    private static void assertExceptionThrown(Class<? extends Exception> expectedException, Executable executable) {
+        Exception exception = assertThrows(expectedException, executable, () -> String.format("%s expected, but was not thrown", expectedException.getSimpleName()));
+        String message = exception.getMessage();
+        assertTrue(message != null && !message.isEmpty(), "Exception message expected, but not found");
     }
 
     @Test
@@ -87,7 +58,7 @@ public class RomanIntegerConstructorTests {
     }
 
     private static Stream<Arguments> copyConstructorTestsData() {
-        return Stream.of(Arguments.of(RomanInteger.FIFTY), Arguments.of(RomanInteger.HUNDRED), Arguments.of(RomanInteger.THOUSAND.setArithmeticMode(ArithmeticMode.STRICT)));
+        return Stream.of(Arguments.of(RomanInteger.FIFTY), Arguments.of(RomanInteger.HUNDRED), Arguments.of(RomanInteger.THOUSAND));
     }
 
     private static void assertEqualFieldValues(RomanInteger source, RomanInteger copy) {
