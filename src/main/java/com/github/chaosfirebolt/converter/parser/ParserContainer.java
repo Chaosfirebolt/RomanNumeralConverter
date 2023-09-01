@@ -1,14 +1,14 @@
 package com.github.chaosfirebolt.converter.parser;
 
 import com.github.chaosfirebolt.converter.constants.IntegerType;
-import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
+import com.github.chaosfirebolt.converter.parser.impl.Parser;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Singleton class, holding necessary implementations of {@link AbstractParser}
- * @see AbstractParser
+ * Singleton class, holding necessary implementations of {@link Parser}
+ * @see Parser
  */
 public class ParserContainer {
 
@@ -20,7 +20,7 @@ public class ParserContainer {
     /**
      * Holds integer types and their corresponding parser implementations.
      */
-    private final Map<IntegerType, AbstractParser> parserMap;
+    private final Map<IntegerType, Parser> parserMap;
 
     private ParserContainer() {
         this.parserMap = new HashMap<>();
@@ -37,9 +37,9 @@ public class ParserContainer {
      * Getter method for parsers. Instances of parsers are not created, unless asked for by this method.
      *
      * @param type Integer type, whose corresponding parser is needed.
-     * @return implementation of {@link AbstractParser}, corresponding to provided {@link IntegerType}
+     * @return implementation of {@link Parser}, corresponding to provided {@link IntegerType}
      */
-    public AbstractParser getParser(IntegerType type) {
+    public Parser getParser(IntegerType type) {
         return this.parserMap.computeIfAbsent(type, ParserFactory::createParser);
     }
 }

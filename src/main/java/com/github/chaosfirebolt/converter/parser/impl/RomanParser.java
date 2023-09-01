@@ -1,7 +1,7 @@
 package com.github.chaosfirebolt.converter.parser.impl;
 
 import com.github.chaosfirebolt.converter.constants.Patterns;
-import com.github.chaosfirebolt.converter.util.DataTransferObject;
+import com.github.chaosfirebolt.converter.util.ParsedData;
 import com.github.chaosfirebolt.converter.util.PairMap;
 import com.github.chaosfirebolt.converter.util.Validator;
 
@@ -9,16 +9,13 @@ import java.util.Map;
 
 /**
  * Class used to parse strings in roman numeral format to dto objects.
- * @see DataTransferObject
- * @see AbstractParser
+ * @see ParsedData
+ * @see Parser
  */
-public class RomanParser extends AbstractParser {
-
-    public RomanParser() {
-    }
+public final class RomanParser implements Parser {
 
     @Override
-    public DataTransferObject parse(String number) {
+    public ParsedData parse(String number) {
         number = Validator.numberFormat(number.trim().toUpperCase(), Patterns.ROMAN_PATTERN);
         Map<String, Integer> romanToArab = PairMap.getInstance().getRomanToArabic();
         int arabic = 0;
@@ -35,6 +32,6 @@ public class RomanParser extends AbstractParser {
             }
             arabic = add ? Validator.range(arabic + current) : Validator.range(arabic - current);
         }
-        return new DataTransferObject(number, Validator.range(arabic));
+        return new ParsedData(number, Validator.range(arabic));
     }
 }

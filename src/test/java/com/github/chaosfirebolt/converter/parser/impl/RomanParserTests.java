@@ -1,6 +1,6 @@
 package com.github.chaosfirebolt.converter.parser.impl;
 
-import com.github.chaosfirebolt.converter.util.DataTransferObject;
+import com.github.chaosfirebolt.converter.util.ParsedData;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,9 +21,9 @@ public class RomanParserTests {
     @ParameterizedTest
     @MethodSource
     public void validInputShouldReturnCorrectValue(String input, int expected) {
-        DataTransferObject result = this.romanParser.parse(input);
-        assertEquals(expected, result.getArabic(), "Arabic representation not as expected");
-        assertEquals(input.toUpperCase(Locale.ENGLISH).trim(), result.getRoman(), "Roman representation not as expected");
+        ParsedData result = this.romanParser.parse(input);
+        assertEquals(expected, result.arabic(), "Arabic representation not as expected");
+        assertEquals(input.toUpperCase(Locale.ENGLISH).trim(), result.roman(), "Roman representation not as expected");
     }
 
     private static Stream<Arguments> validInputShouldReturnCorrectValue() {

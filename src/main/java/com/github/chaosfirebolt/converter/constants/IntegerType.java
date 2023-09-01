@@ -1,10 +1,11 @@
 package com.github.chaosfirebolt.converter.constants;
 
-import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
+import com.github.chaosfirebolt.converter.parser.impl.Parser;
 import com.github.chaosfirebolt.converter.parser.impl.ArabicParser;
 import com.github.chaosfirebolt.converter.parser.impl.RomanParser;
 
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 /**
  * Enumeration for supported integer types.
@@ -14,22 +15,48 @@ public enum IntegerType {
     /**
      * Representation for arabic format integers.
      */
-    ARABIC(ArabicParser::new),
+    ARABIC(ArabicParser::new, Pattern.compile("^\\d+$")),
     /**
      * Representation for roman format integers.
      */
-    ROMAN(RomanParser::new);
+    ROMAN(RomanParser::new, Pattern.compile("^[IVXLCDM]+$"));
+
+    private static final IntegerType[] VALUES = IntegerType.values();
 
     /**
      * Supplier for instances of parsers.
      */
-    private final Supplier<AbstractParser> supplier;
+    private final Supplier<Parser> supplier;
+    /**
+     * The pattern that matches this integer type
+     */
+    private final Pattern typePattern;
 
-    IntegerType(Supplier<AbstractParser> supplier) {
+    IntegerType(Supplier<Parser> supplier, Pattern typePattern) {
         this.supplier = supplier;
+        this.typePattern = typePattern;
     }
 
-    public AbstractParser getParser() {
+    /**
+     * Gets the corresponding parser for this integer type
+     * @return the parser
+     */
+    public Parser getParser() {
         return this.supplier.get();
+    }
+
+    /**
+     * Parses integer type from provided numeral
+     * @param numeral the numeral to match against
+     * @return the type
+     * @throws NumberFormatException if provided numeral does not match any format
+     */
+    public static IntegerType fromNumeral(String numeral) {
+        for (IntegerType integerType : VALUES) {
+            if (integerType.typePattern.matcher(numeral).find()) {
+                return integerType;
+            }
+        }
+        throw new NumberFormatException("Numeral does not match any required format: " + numeral);
     }
 }

@@ -3,8 +3,8 @@ package com.github.chaosfirebolt.converter;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.constants.Patterns;
 import com.github.chaosfirebolt.converter.parser.ParserContainer;
-import com.github.chaosfirebolt.converter.parser.impl.AbstractParser;
-import com.github.chaosfirebolt.converter.util.DataTransferObject;
+import com.github.chaosfirebolt.converter.parser.impl.Parser;
+import com.github.chaosfirebolt.converter.util.ParsedData;
 import com.github.chaosfirebolt.converter.util.Validator;
 
 import java.io.Serial;
@@ -92,10 +92,10 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
         this(validate(romanRepresentation, Integer.parseInt(Objects.requireNonNull(arabicRepresentation))));
     }
 
-    private static DataTransferObject validate(String romanRepresentation, int arabicRepresentation) {
-        AbstractParser romanParser = ParserContainer.getInstance().getParser(IntegerType.ROMAN);
-        DataTransferObject dto = romanParser.parse(Objects.requireNonNull(romanRepresentation));
-        if (dto.getArabic() != arabicRepresentation) {
+    private static ParsedData validate(String romanRepresentation, int arabicRepresentation) {
+        Parser romanParser = ParserContainer.getInstance().getParser(IntegerType.ROMAN);
+        ParsedData dto = romanParser.parse(Objects.requireNonNull(romanRepresentation));
+        if (dto.arabic() != arabicRepresentation) {
             throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
         }
         return dto;
@@ -110,8 +110,8 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
         this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation);
     }
 
-    private RomanInteger(DataTransferObject dto) {
-        this(dto.getRoman(), dto.getArabic());
+    private RomanInteger(ParsedData dto) {
+        this(dto.roman(), dto.arabic());
     }
 
     /**
@@ -127,7 +127,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
      */
     public static RomanInteger parse(String number) {
         IntegerType type = resolveType(Objects.requireNonNull(number));
-        DataTransferObject dto =  ParserContainer.getInstance().getParser(type).parse(number);
+        ParsedData dto =  ParserContainer.getInstance().getParser(type).parse(number);
         return new RomanInteger(dto);
     }
 
@@ -153,7 +153,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
      * @throws NullPointerException if either argument is null.
      */
     public static RomanInteger parse(String number, IntegerType integerType) {
-        DataTransferObject dto = ParserContainer.getInstance().getParser(Objects.requireNonNull(integerType)).parse(Objects.requireNonNull(number));
+        ParsedData dto = ParserContainer.getInstance().getParser(Objects.requireNonNull(integerType)).parse(Objects.requireNonNull(number));
         return new RomanInteger(dto);
     }
 
