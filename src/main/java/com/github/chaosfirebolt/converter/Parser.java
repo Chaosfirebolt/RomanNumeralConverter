@@ -3,7 +3,7 @@ package com.github.chaosfirebolt.converter;
 /**
  * Represents a parser.
  */
-public sealed interface Parser permits ArabicParser, RomanParser {
+public sealed interface Parser permits BaseParser {
 
     /**
      * Parses provided string to a {@link RomanInteger}.

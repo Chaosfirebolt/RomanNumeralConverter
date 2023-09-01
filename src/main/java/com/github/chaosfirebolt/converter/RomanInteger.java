@@ -132,7 +132,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
     }
 
     /**
-     * Sets the cache custom cache implementation.
+     * Sets the cache with custom implementation.
      * It is recommended, but not required, that the factory uses provided parser cache.
      * @param cacheFactory factory responsible for creating the cache
      */

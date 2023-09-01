@@ -17,21 +17,6 @@ public class Validator {
     private static final int MAX = 3999;
 
     /**
-     * Verifies that provided string matches provided pattern.
-     *
-     * @param representation string to verify.
-     * @param pattern pattern that provided string must match.
-     * @return provided string if it matches provided pattern.
-     * @throws NumberFormatException if provided string does not match provided format.
-     */
-    public static String numberFormat(String representation, Pattern pattern) {
-        if (!pattern.matcher(representation).find()) {
-            throw new NumberFormatException("Number does not match required format for string: " + representation);
-        }
-        return representation;
-    }
-
-    /**
      * Verifies that provided integer is in valid range for roman numerals.
      *
      * @param arabic integer to check.

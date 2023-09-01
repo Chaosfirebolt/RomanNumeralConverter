@@ -1,20 +1,25 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.constants.Patterns;
+import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.util.PairMap;
 import com.github.chaosfirebolt.converter.util.Validator;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
  * Class used to parse strings in roman numeral format to {@link RomanInteger}.
  * @see Parser
  */
-public final class RomanParser implements Parser {
+public final class RomanParser extends BaseParser {
+
+    public RomanParser() {
+        super(IntegerType.ROMAN);
+    }
 
     @Override
     public RomanInteger parse(String number) {
-        number = Validator.numberFormat(number.trim().toUpperCase(), Patterns.ROMAN_PATTERN);
+        number = integerType.validateFormat(number.trim().toUpperCase(Locale.ENGLISH));
         Map<String, Integer> romanToArab = PairMap.getInstance().getRomanToArabic();
         int arabic = 0;
         boolean add = true;

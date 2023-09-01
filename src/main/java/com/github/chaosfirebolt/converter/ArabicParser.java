@@ -1,6 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.constants.Patterns;
+import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.util.PairMap;
 import com.github.chaosfirebolt.converter.util.Validator;
 
@@ -11,12 +11,16 @@ import java.util.NavigableMap;
  * Class used to parse strings in arabic numeral format to {@link RomanInteger}.
  * @see Parser
  */
-public final class ArabicParser implements Parser {
+public final class ArabicParser extends BaseParser {
+
+    public ArabicParser() {
+        super(IntegerType.ARABIC);
+    }
 
     @Override
     public RomanInteger parse(String number) {
-        number = number.trim();
-        int arabicValue = Validator.range(Integer.parseInt(Validator.numberFormat(number, Patterns.ARABIC_PATTERN)));
+        number = integerType.validateFormat(number.trim());
+        int arabicValue = Validator.range(Integer.parseInt(number));
         StringBuilder roman = new StringBuilder();
         NavigableMap<Integer, String> arabToRoman = PairMap.getInstance().getArabicToRoman();
         for (int i = 0; i < number.length(); i++) {

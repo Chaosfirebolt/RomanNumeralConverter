@@ -38,14 +38,6 @@ public enum IntegerType {
     }
 
     /**
-     * Gets the corresponding parser for this integer type
-     * @return the parser
-     */
-    public Parser getParser() {
-        return this.supplier.get();
-    }
-
-    /**
      * Parses integer type from provided numeral
      * @param numeral the numeral to match against
      * @return the type
@@ -58,5 +50,26 @@ public enum IntegerType {
             }
         }
         throw new NumberFormatException("Numeral does not match any required format: " + numeral);
+    }
+
+    /**
+     * Gets the corresponding parser for this integer type
+     * @return the parser
+     */
+    public Parser getParser() {
+        return this.supplier.get();
+    }
+
+    /**
+     * Verifies that provided string the pattern for this type.
+     * @param representation string to verify.
+     * @return provided string if it matches pattern.
+     * @throws NumberFormatException if provided string does not match pattern.
+     */
+    public String validateFormat(String representation) {
+        if (!typePattern.matcher(representation).find()) {
+            throw new NumberFormatException("Numeral does not match required format for string: " + representation);
+        }
+        return representation;
     }
 }
