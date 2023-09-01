@@ -6,6 +6,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,17 +16,37 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ValidationTests {
 
     @ParameterizedTest
-    @ValueSource(ints = { 5, 111, 3961, 857, 1737 })
-    public void range_ValidRange_ShouldReturnValidatedValue(int value) {
-        int actual = Validator.range(value);
-        assertEquals(value, actual, "Returned value not as expected");
+    @MethodSource("valuesInRange")
+    public void range_ValidRange_ShouldReturnValidatedValue(IntegerType integerType, int value) {
+        int actual = integerType.validateRange(value);
+        assertEquals(value, actual, () -> "Returned value not as expected for integer type - " + integerType);
+    }
+
+    private static List<Arguments> buildRangeArguments(int... valuesToTest) {
+        IntegerType[] types = IntegerType.values();
+        List<Arguments> argumentsList = new ArrayList<>(types.length * valuesToTest.length);
+        for (IntegerType integerType : types) {
+            for (int value : valuesToTest) {
+                argumentsList.add(Arguments.of(integerType, value));
+            }
+        }
+        return argumentsList;
+    }
+
+    private static List<Arguments> valuesInRange() {
+        return buildRangeArguments(5, 111, 3961, 857, 1737);
     }
 
     @ParameterizedTest
-    @ValueSource(ints = { -3, 0, 4000 })
-    public void valueNotInRange_ShouldThrowException(int arabicValue) {
-        Exception exc = assertThrows(IllegalArgumentException.class, () -> Validator.range(arabicValue), () -> "Expected IllegalArgumentException was not thrown for input - " + arabicValue);
+    @MethodSource("valuesOutsideOfRange")
+    public void valueNotInRange_ShouldThrowException(IntegerType integerType, int arabicValue) {
+        Supplier<String> errorMessageSupplier = () -> String.format("Expected IllegalArgumentException was not thrown by integer type %s for input - %d", integerType, arabicValue);
+        Exception exc = assertThrows(IllegalArgumentException.class, () -> integerType.validateRange(arabicValue), errorMessageSupplier);
         assertExceptionMessage(exc.getMessage());
+    }
+
+    private static List<Arguments> valuesOutsideOfRange() {
+        return buildRangeArguments(-3, 0, 4000);
     }
 
     private static void assertExceptionMessage(String message) {

@@ -2,7 +2,6 @@ package com.github.chaosfirebolt.converter;
 
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.util.PairMap;
-import com.github.chaosfirebolt.converter.util.Validator;
 
 import java.util.Locale;
 import java.util.Map;
@@ -33,8 +32,8 @@ public final class RomanParser extends BaseParser {
                     add = false;
                 }
             }
-            arabic = add ? Validator.range(arabic + current) : Validator.range(arabic - current);
+            arabic = add ? integerType.validateRange(arabic + current) : integerType.validateRange(arabic - current);
         }
-        return new RomanInteger(number, Validator.range(arabic));
+        return new RomanInteger(number, integerType.validateRange(arabic));
     }
 }

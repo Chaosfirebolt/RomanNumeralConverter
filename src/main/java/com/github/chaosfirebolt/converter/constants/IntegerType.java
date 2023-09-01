@@ -22,6 +22,14 @@ public enum IntegerType {
     ROMAN(RomanParser::new, Pattern.compile("^[IVXLCDM]+$"));
 
     private static final IntegerType[] VALUES = IntegerType.values();
+    /**
+     * Minimal possible value of roman numeral.
+     */
+    private static final int MIN = 1;
+    /**
+     * Maximum possible value of roman numeral.
+     */
+    private static final int MAX = 3999;
 
     /**
      * Supplier for instances of parsers.
@@ -71,5 +79,19 @@ public enum IntegerType {
             throw new NumberFormatException("Numeral does not match required format for string: " + representation);
         }
         return representation;
+    }
+
+    /**
+     * Verifies that provided integer is in valid range for roman numerals.
+     *
+     * @param arabic integer to check.
+     * @return provided integer, if it is in valid range.
+     * @throws IllegalArgumentException if provided integer is not in valid range.
+     */
+    public int validateRange(int arabic) {
+        if (arabic < MIN || arabic > MAX) {
+            throw new IllegalArgumentException(String.format("Valid range for roman integers is from %d to %d inclusive.", MIN, MAX));
+        }
+        return arabic;
     }
 }

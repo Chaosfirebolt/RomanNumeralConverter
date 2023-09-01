@@ -2,7 +2,6 @@ package com.github.chaosfirebolt.converter;
 
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.util.PairMap;
-import com.github.chaosfirebolt.converter.util.Validator;
 
 import java.util.Map;
 import java.util.NavigableMap;
@@ -20,7 +19,7 @@ public final class ArabicParser extends BaseParser {
     @Override
     public RomanInteger parse(String number) {
         number = integerType.validateFormat(number.trim());
-        int arabicValue = Validator.range(Integer.parseInt(number));
+        int arabicValue = integerType.validateRange(Integer.parseInt(number));
         StringBuilder roman = new StringBuilder();
         NavigableMap<Integer, String> arabToRoman = PairMap.getInstance().getArabicToRoman();
         for (int i = 0; i < number.length(); i++) {
