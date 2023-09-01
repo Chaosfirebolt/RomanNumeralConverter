@@ -1,7 +1,6 @@
-package com.github.chaosfirebolt.converter.parser.impl;
+package com.github.chaosfirebolt.converter;
 
 import com.github.chaosfirebolt.converter.constants.Patterns;
-import com.github.chaosfirebolt.converter.util.ParsedData;
 import com.github.chaosfirebolt.converter.util.PairMap;
 import com.github.chaosfirebolt.converter.util.Validator;
 
@@ -9,14 +8,13 @@ import java.util.Map;
 import java.util.NavigableMap;
 
 /**
- * Class used to parse strings in arabic numeral format to dto objects.
- * @see ParsedData
+ * Class used to parse strings in arabic numeral format to {@link RomanInteger}.
  * @see Parser
  */
 public final class ArabicParser implements Parser {
 
     @Override
-    public ParsedData parse(String number) {
+    public RomanInteger parse(String number) {
         number = number.trim();
         int arabicValue = Validator.range(Integer.parseInt(Validator.numberFormat(number, Patterns.ARABIC_PATTERN)));
         StringBuilder roman = new StringBuilder();
@@ -40,6 +38,6 @@ public final class ArabicParser implements Parser {
                 }
             }
         }
-        return new ParsedData(roman.toString(), arabicValue);
+        return new RomanInteger(roman.toString(), arabicValue);
     }
 }

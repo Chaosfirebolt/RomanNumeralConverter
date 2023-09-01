@@ -1,7 +1,7 @@
-package com.github.chaosfirebolt.converter.api;
+package com.github.chaosfirebolt.converter.api.cache;
 
 import com.github.chaosfirebolt.converter.constants.IntegerType;
-import com.github.chaosfirebolt.converter.parser.impl.Parser;
+import com.github.chaosfirebolt.converter.Parser;
 
 /**
  * Parser specialization of {@link Cache}

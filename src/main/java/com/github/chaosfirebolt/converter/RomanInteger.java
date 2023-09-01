@@ -1,16 +1,15 @@
 package com.github.chaosfirebolt.converter;
 
+import com.github.chaosfirebolt.converter.api.cache.MapParserCache;
+import com.github.chaosfirebolt.converter.api.cache.ParserCache;
+import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
-import com.github.chaosfirebolt.converter.constants.Patterns;
-import com.github.chaosfirebolt.converter.parser.ParserContainer;
-import com.github.chaosfirebolt.converter.parser.impl.Parser;
-import com.github.chaosfirebolt.converter.util.ParsedData;
-import com.github.chaosfirebolt.converter.util.Validator;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * This class represents roman numerals.
@@ -24,6 +23,14 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
     @Serial
     private static final long serialVersionUID = 2L;
 
+
+    private static final ParserCache PARSER_CACHE = new MapParserCache();
+
+    private static RomanIntegerCache valueCache = new NoOpRomanIntegerCache(PARSER_CACHE);
+
+    /**
+     * Comparator defining the natural ordering of roman integers.
+     */
     public static final Comparator<RomanInteger> NATURAL_ORDER_COMPARATOR = Comparator.comparingInt(RomanInteger::getArabic);
 
     /**
@@ -68,11 +75,10 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
     /**
      * Initializes new {@link RomanInteger} object with provided roman string and arabic integer.
      * For internal usage only.
-     *
      * @param romanRepresentation string representing roman numeral.
      * @param arabicRepresentation integer representing arabic value for provided roman numeral.
      */
-    private RomanInteger(String romanRepresentation, int arabicRepresentation) {
+    RomanInteger(String romanRepresentation, int arabicRepresentation) {
         this.romanRepresentation = romanRepresentation;
         this.arabicRepresentation = arabicRepresentation;
     }
@@ -89,16 +95,16 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
      *         or arabic number is not in valid range.
      */
     public RomanInteger(String romanRepresentation, String arabicRepresentation) {
-        this(validate(romanRepresentation, Integer.parseInt(Objects.requireNonNull(arabicRepresentation))));
+        this(romanRepresentation, validate(romanRepresentation, Integer.parseInt(Objects.requireNonNull(arabicRepresentation))));
     }
 
-    private static ParsedData validate(String romanRepresentation, int arabicRepresentation) {
-        Parser romanParser = ParserContainer.getInstance().getParser(IntegerType.ROMAN);
-        ParsedData dto = romanParser.parse(Objects.requireNonNull(romanRepresentation));
-        if (dto.arabic() != arabicRepresentation) {
+    private static int validate(String romanRepresentation, int arabicRepresentation) {
+        Parser romanParser = PARSER_CACHE.getValue(IntegerType.ROMAN);
+        RomanInteger parsed = romanParser.parse(Objects.requireNonNull(romanRepresentation));
+        if (parsed.arabicRepresentation != arabicRepresentation) {
             throw new IllegalArgumentException("Roman numeral must represent same value as provided arabic representation.");
         }
-        return dto;
+        return arabicRepresentation;
     }
 
     /**
@@ -110,8 +116,28 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
         this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation);
     }
 
-    private RomanInteger(ParsedData dto) {
-        this(dto.roman(), dto.arabic());
+    /**
+     * Enables caching of parsed roman integers.
+     */
+    public static void enableCache() {
+        setCache(MapRomanIntegerCache::new);
+    }
+
+    /**
+     * Disable caching of parsed roman integers.
+     * This is the default state.
+     */
+    public static void disableCache() {
+        setCache(NoOpRomanIntegerCache::new);
+    }
+
+    /**
+     * Sets the cache custom cache implementation.
+     * It is recommended, but not required, that the factory uses provided parser cache.
+     * @param cacheFactory factory responsible for creating the cache
+     */
+    public static void setCache(Function<ParserCache, RomanIntegerCache> cacheFactory) {
+        valueCache = cacheFactory.apply(PARSER_CACHE);
     }
 
     /**
@@ -126,35 +152,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
      * @throws NullPointerException if argument is null.
      */
     public static RomanInteger parse(String number) {
-        IntegerType type = resolveType(Objects.requireNonNull(number));
-        ParsedData dto =  ParserContainer.getInstance().getParser(type).parse(number);
-        return new RomanInteger(dto);
-    }
-
-    private static IntegerType resolveType(String number) {
-        try {
-            Validator.numberFormat(number, Patterns.ARABIC_PATTERN);
-            return IntegerType.ARABIC;
-        } catch (NumberFormatException ignored) {
-        }
-        Validator.numberFormat(number.toUpperCase(), Patterns.ROMAN_PATTERN);
-        return IntegerType.ROMAN;
-    }
-
-    /**
-     * Parses provided string to a RomanInteger object using parser for provided {@link IntegerType}.
-     * Throws exceptions in case of invalid input.
-     *
-     * @param number string to parse.
-     * @param integerType integer type of provided string.
-     * @return {@link RomanInteger} object in case of valid input.
-     * @throws NumberFormatException if provided string does not match required format for specified {@link IntegerType}.
-     * @throws IllegalArgumentException if arabic representation is not in valid range.
-     * @throws NullPointerException if either argument is null.
-     */
-    public static RomanInteger parse(String number, IntegerType integerType) {
-        ParsedData dto = ParserContainer.getInstance().getParser(Objects.requireNonNull(integerType)).parse(Objects.requireNonNull(number));
-        return new RomanInteger(dto);
+        return valueCache.getValue(Objects.requireNonNull(number, "Number to parse was 'null'"));
     }
 
     /**

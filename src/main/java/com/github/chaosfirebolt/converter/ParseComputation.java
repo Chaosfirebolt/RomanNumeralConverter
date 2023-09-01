@@ -1,9 +1,7 @@
-package com.github.chaosfirebolt.converter.api;
+package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.RomanInteger;
+import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
-import com.github.chaosfirebolt.converter.parser.impl.Parser;
-import com.github.chaosfirebolt.converter.util.ParsedData;
 
 import java.util.Locale;
 import java.util.function.Function;
@@ -31,8 +29,6 @@ class ParseComputation implements Function<String, RomanInteger> {
         String normalizedNumeral = numeral.trim().toUpperCase(Locale.ENGLISH);
         IntegerType integerType = IntegerType.fromNumeral(normalizedNumeral);
         Parser parser = this.parserCache.getValue(integerType);
-        ParsedData parsedData = parser.parse(normalizedNumeral);
-        //TODO change return from parser to RomanInteger
-        return null;
+        return parser.parse(numeral);
     }
 }

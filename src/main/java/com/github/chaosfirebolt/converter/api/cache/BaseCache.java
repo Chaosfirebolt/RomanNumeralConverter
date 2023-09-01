@@ -1,5 +1,6 @@
-package com.github.chaosfirebolt.converter.api;
+package com.github.chaosfirebolt.converter.api.cache;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -29,10 +30,11 @@ public abstract class BaseCache<K, V> implements Cache<K, V> {
      * @param key key to search the value by
      * @return the value
      * @throws RuntimeException if can't return a value
+     * @throws NullPointerException if key is null
      */
     @Override
     public final V getValue(K key) {
-        return computeIfAbsent(key, this.computation).orElseThrow(this.exceptionSupplier);
+        return computeIfAbsent(Objects.requireNonNull(key, "Key can't be null"), this.computation).orElseThrow(this.exceptionSupplier);
     }
 
     /**

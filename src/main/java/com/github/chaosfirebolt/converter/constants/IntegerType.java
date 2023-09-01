@@ -1,8 +1,8 @@
 package com.github.chaosfirebolt.converter.constants;
 
-import com.github.chaosfirebolt.converter.parser.impl.Parser;
-import com.github.chaosfirebolt.converter.parser.impl.ArabicParser;
-import com.github.chaosfirebolt.converter.parser.impl.RomanParser;
+import com.github.chaosfirebolt.converter.Parser;
+import com.github.chaosfirebolt.converter.ArabicParser;
+import com.github.chaosfirebolt.converter.RomanParser;
 
 import java.util.function.Supplier;
 import java.util.regex.Pattern;

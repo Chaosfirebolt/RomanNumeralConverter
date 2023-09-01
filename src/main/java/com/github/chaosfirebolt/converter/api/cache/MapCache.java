@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.api;
+package com.github.chaosfirebolt.converter.api.cache;
 
 import java.util.Map;
 import java.util.Optional;

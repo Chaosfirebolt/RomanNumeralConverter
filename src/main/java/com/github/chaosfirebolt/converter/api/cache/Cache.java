@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.api;
+package com.github.chaosfirebolt.converter.api.cache;
 
 /**
  * Represent a cache for values

@@ -1,6 +1,7 @@
 package com.github.chaosfirebolt.converter.parser.impl;
 
-import com.github.chaosfirebolt.converter.util.ParsedData;
+import com.github.chaosfirebolt.converter.ArabicParser;
+import com.github.chaosfirebolt.converter.RomanInteger;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,9 +21,9 @@ public class ArabicParserTests {
     @ParameterizedTest
     @MethodSource
     public void validInputShouldReturnCorrect(String input, String expected) {
-        ParsedData result = this.arabicParser.parse(input);
-        assertEquals(expected, result.roman(), "Roman representation not as expected");
-        assertEquals(Integer.parseInt(input.trim()), result.arabic(), "Arabic representation not as expected");
+        RomanInteger result = this.arabicParser.parse(input);
+        assertEquals(expected, result.getRoman(), "Roman representation not as expected");
+        assertEquals(Integer.parseInt(input.trim()), result.getArabic(), "Arabic representation not as expected");
     }
 
     private static Stream<Arguments> validInputShouldReturnCorrect() {
