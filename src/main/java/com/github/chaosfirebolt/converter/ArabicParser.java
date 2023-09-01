@@ -12,6 +12,9 @@ import java.util.NavigableMap;
  */
 public final class ArabicParser extends BaseParser {
 
+    /**
+     * Constructs a new instance, providing the required {@link IntegerType}
+     */
     public ArabicParser() {
         super(IntegerType.ARABIC);
     }

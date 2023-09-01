@@ -12,6 +12,9 @@ import java.util.Map;
  */
 public final class RomanParser extends BaseParser {
 
+    /**
+     * Constructs a new instance, providing the required {@link IntegerType}
+     */
     public RomanParser() {
         super(IntegerType.ROMAN);
     }
