@@ -1,7 +1,5 @@
-package com.github.chaosfirebolt.converter.parser;
+package com.github.chaosfirebolt.converter.api.cache;
 
-import com.github.chaosfirebolt.converter.api.cache.MapParserCache;
-import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.Parser;
 import org.junit.jupiter.api.Test;

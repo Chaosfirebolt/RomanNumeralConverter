@@ -1,7 +1,5 @@
-package com.github.chaosfirebolt.converter.parser.impl;
+package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.RomanInteger;
-import com.github.chaosfirebolt.converter.RomanParser;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

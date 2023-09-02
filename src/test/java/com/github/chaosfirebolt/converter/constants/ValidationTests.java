@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.util;
+package com.github.chaosfirebolt.converter.constants;
 
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import org.junit.jupiter.params.ParameterizedTest;

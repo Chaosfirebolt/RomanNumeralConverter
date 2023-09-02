@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.parser.impl;
+package com.github.chaosfirebolt.converter;
 
 import com.github.chaosfirebolt.converter.ArabicParser;
 import com.github.chaosfirebolt.converter.RomanInteger;
