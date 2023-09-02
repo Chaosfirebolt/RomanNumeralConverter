@@ -5,14 +5,15 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class RomanIntegerHashCodeTests {
 
     @Test
-    public void hashCode_DiffObjects_SameArabic_DiffRoman_ShouldReturnSameHashCodeValues() {
+    public void hashCode_DiffObjects_SameArabic_DiffRoman_ShouldReturnDifferentHashCodeValues() {
         RomanInteger romanInteger = new RomanInteger("DCCCC", "900");
         RomanInteger another = new RomanInteger("CM", "900");
-        assertEquals(romanInteger.hashCode(), another.hashCode(), "Romain integers representing same value returned different hash code");
+        assertNotEquals(romanInteger.hashCode(), another.hashCode(), "Romain integers representing same value returned different hash code");
     }
 
     @ParameterizedTest

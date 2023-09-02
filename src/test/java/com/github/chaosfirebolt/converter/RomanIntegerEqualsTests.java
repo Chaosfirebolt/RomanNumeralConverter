@@ -27,10 +27,10 @@ public class RomanIntegerEqualsTests {
     }
 
     @Test
-    public void equals_SameArabic_DiffRoman_ShouldReturnTrue() {
+    public void equals_SameArabic_DiffRoman_ShouldReturnFalse() {
         RomanInteger romanInteger = new RomanInteger("IX", "9");
         RomanInteger another = new RomanInteger("VIIII", "9");
-        assertEquals(romanInteger, another, "Roman integers were not equal");
+        assertNotEquals(romanInteger, another, "Roman integers were not equal");
     }
 
     @Test

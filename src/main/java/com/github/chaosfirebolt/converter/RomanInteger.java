@@ -175,15 +175,15 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(this.arabicRepresentation);
+        return Objects.hash(this.arabicRepresentation, this.romanRepresentation);
     }
 
     /**
      * Tests this object and provided object for equality.
      * This object is considered equal to provided object, if argument is
-     * instance of {@link RomanInteger} and their arabic representations are considered equal.
-     * E.g. instance holding roman - "XVIII" and arabic - 18 is equal to instance holding roman - "IIXX" and arabic - 18,
-     * because both represent same arabic value - 18.
+     * instance of {@link RomanInteger}, their arabic representations are equal and their roman representations are equal.
+     * E.g. instance holding roman - "XVIII" and arabic - 18 is <strong>not</strong> equal to instance holding roman - "IIXX" and arabic - 18,
+     * because the roman numerals are not the same, even though both represent same arabic value - 18.
      *
      * @param obj object to test against for equality.
      * @return {@code true} if objects are equal, {@code false} otherwise.
@@ -193,11 +193,10 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
         if (this == obj) {
             return true;
         }
-        if (this.getClass() != obj.getClass()) {
+        if (!(obj instanceof RomanInteger other)) {
             return false;
         }
-        RomanInteger other = (RomanInteger) obj;
-        return this.arabicRepresentation == other.arabicRepresentation;
+        return this.arabicRepresentation == other.arabicRepresentation && this.romanRepresentation.equals(other.romanRepresentation);
     }
 
     @Override
@@ -207,6 +206,9 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
 
     /**
      * Compares numerically this and provided {@link RomanInteger} objects.
+     * This implementation is <strong>NOT</strong> consistent with {@link RomanInteger#equals(Object)}.
+     * When comparing an instance holding arabic 18 and roman "XVIII" and an instance holding arabic 18 and roman "IIXX",
+     * the natural ordering will consider them equal, returning {@code 0}, while {@link #equals(Object)} would not, and return {@code false}.
      *
      * @param other another {@link RomanInteger}
      * @return {@code -1} if this {@link #arabicRepresentation} is numerically less than
