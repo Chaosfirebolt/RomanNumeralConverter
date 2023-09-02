@@ -5,6 +5,7 @@ import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -48,5 +49,34 @@ public class RomanIntegerParseTests {
         Exception exception = assertThrows(expectedException, executable, errorMessageSupplier);
         String message = exception.getMessage();
         assertTrue(message != null && !message.isEmpty(), "Message expected, but not found");
+    }
+
+    @ParameterizedTest()
+    @ValueSource(strings = { "1", "11", "111" })
+    public void cacheInitiallyDisabled_ShouldReturnDifferentInstances(String arabic) {
+        assertInstancesNotSame(arabic);
+    }
+
+    private static void assertInstancesNotSame(String value) {
+        RomanInteger first = RomanInteger.parse(value);
+        RomanInteger second = RomanInteger.parse(value);
+        assertNotSame(first, second, "Expected different instances, but were same");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "987", "1542", "3919" })
+    public void cacheEnabled_ShouldReturnSameInstances(String arabic) {
+        RomanInteger.enableCache();
+        RomanInteger first = RomanInteger.parse(arabic);
+        RomanInteger second = RomanInteger.parse(arabic);
+        assertSame(first, second, "Expected same instances, but were different");
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "VII", "IV", "XL" })
+    public void cacheDisabled_ShouldReturnDifferentInstances(String roman) {
+        RomanInteger.enableCache();
+        RomanInteger.disableCache();
+        assertInstancesNotSame(roman);
     }
 }
