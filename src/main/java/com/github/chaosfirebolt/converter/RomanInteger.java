@@ -137,7 +137,9 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
      * @param cacheFactory factory responsible for creating the cache
      */
     public static void setCache(Function<ParserCache, RomanIntegerCache> cacheFactory) {
+        RomanIntegerCache oldCache = valueCache;
         valueCache = cacheFactory.apply(PARSER_CACHE);
+        oldCache.clear();
     }
 
     /**

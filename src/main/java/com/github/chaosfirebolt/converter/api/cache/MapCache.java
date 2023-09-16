@@ -32,4 +32,9 @@ public abstract class MapCache<K, V> extends BaseCache<K, V> {
         V value = this.cache.computeIfAbsent(key, computation);
         return Optional.ofNullable(value);
     }
+
+    @Override
+    public void clear() {
+        this.cache.clear();
+    }
 }

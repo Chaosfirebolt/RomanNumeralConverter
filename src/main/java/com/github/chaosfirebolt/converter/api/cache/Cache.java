@@ -13,4 +13,9 @@ public interface Cache<K, V> {
      * @return cached value
      */
     V getValue(K key);
+
+    /**
+     * Clears all data from the cache.
+     */
+    void clear();
 }

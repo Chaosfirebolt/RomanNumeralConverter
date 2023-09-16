@@ -23,4 +23,8 @@ public abstract class NoOpCache<K, V> extends BaseCache<K, V> {
     protected Optional<V> computeIfAbsent(K key, Function<K, V> computation) {
         return Optional.ofNullable(computation.apply(key));
     }
+
+    @Override
+    public void clear() {
+    }
 }
