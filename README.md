@@ -12,6 +12,7 @@ Maven dependency
     <version>2.1.0</version>
 </dependency>
 ```
+[All artifacts in maven central](https://mvnrepository.com/artifact/com.github.chaosfirebolt.converter/roman-numeral-converter)
 
 # Usage
 Main class dealing with roman numerals is [RomanInteger](src/main/java/com/github/chaosfirebolt/converter/RomanInteger.java).
