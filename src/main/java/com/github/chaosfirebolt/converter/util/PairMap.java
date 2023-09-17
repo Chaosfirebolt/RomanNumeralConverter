@@ -45,14 +45,18 @@ public final class PairMap {
             add(toArab, toRoman, RomanInteger.HUNDRED);
             add(toArab, toRoman, RomanInteger.FIVE_HUNDRED);
             add(toArab, toRoman, RomanInteger.THOUSAND);
-            instance = new PairMap(Collections.unmodifiableMap(toArab), Collections.unmodifiableNavigableMap(toRoman));
+            instance = new PairMap(toArab, toRoman);
         }
         return instance;
     }
 
     private static void add(Map<String, Integer> toArab, NavigableMap<Integer, String> toRoman, RomanInteger romanInteger) {
-        toArab.put(romanInteger.getRoman(), romanInteger.getArabic());
-        toRoman.put(romanInteger.getArabic(), romanInteger.getRoman());
+        add(toArab, toRoman, romanInteger.getArabic(), romanInteger.getRoman());
+    }
+
+    private static void add(Map<String, Integer> toArab, NavigableMap<Integer, String> toRoman, int arabic, String roman) {
+        toArab.put(roman, arabic);
+        toRoman.put(arabic, roman);
     }
 
     /**
@@ -61,7 +65,7 @@ public final class PairMap {
      * @return unmodifiable mapping.
      */
     public Map<String, Integer> getRomanToArabic() {
-        return this.romanToArabic;
+        return Collections.unmodifiableMap(this.romanToArabic);
     }
 
     /**
@@ -70,6 +74,6 @@ public final class PairMap {
      * @return unmodifiable mapping.
      */
     public NavigableMap<Integer, String> getArabicToRoman() {
-        return this.arabicToRoman;
+        return Collections.unmodifiableNavigableMap(this.arabicToRoman);
     }
 }
