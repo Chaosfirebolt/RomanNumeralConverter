@@ -1,22 +1,29 @@
 # RomanNumeralConverter
 Library for converting roman numerals to arabic and vice versa.
 
+Versions before `3.0.0` require java 8. Since `3.0.0` required java version is 17.
+
 # Latest version
-Current latest version is 2.1.0
+Current latest version is `3.0.0`.
 <br/>
 Maven dependency
 ```
 <dependency>
     <groupId>com.github.chaosfirebolt.converter</groupId>
     <artifactId>roman-numeral-converter</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 [All artifacts in maven central](https://mvnrepository.com/artifact/com.github.chaosfirebolt.converter/roman-numeral-converter)
 
 # Usage
 Main class dealing with roman numerals is [RomanInteger](src/main/java/com/github/chaosfirebolt/converter/RomanInteger.java).
-It provides constants for basic numerals, used in roman system, public constructors, parsing methods, overrides for hashCode and equals, implementations of Comparable and Cloneable, and simple arithmetic operations. RomanInteger objects are immutable.
+It provides constants for basic numerals, used in roman system, public constructors, parsing methods, overrides for hashCode and equals, implementations of Comparable, Cloneable and Serializable.
+Comparable implementation is **NOT** consistent with equals.
+
+Caching of parsing results can be enabled/disabled, default state is disabled.
+
+RomanInteger objects are immutable.
 
 # Examples
 Valid
@@ -24,19 +31,29 @@ Valid
 RomanInteger validObject = new RomanInteger("XV", "15");
 RomanInteger validArabicParse = RomanInteger.parse("16");
 RomanInteger validRomanParse = RomanInteger.parse("XVI");
-
-RomanInteger res = validObject.add(validArabicParse);
-//result will be null
-RomanInteger result = RomanInteger.ONE.subtract(RomanInteger.TEN);
 ```
-
 Invalid(exceptions are thrown)
 ```
 RomanInteger invalidObject = new RomanInteger("XV", 16);
 RomanInteger invalidRomanParse = RomanInteger.parse("XG");
 RomanInteger invalidArabicParse = RomanInteger.parse("4000");
-//exception is thrown since arithmetic mode is set to strict for at least one operand
-RomanInteger result = RomanInteger.ONE.setArithmeticMode(ArithmeticMode.STRICT).subtract(RomanInteger.TEN);
+```
+Caching
+```
+//enable caching of parsed instances
+RomanInteger.enableCache();
+RomanInteger romanInteger1 = RomanInteger.parse("11");
+RomanInteger romanInteger2 = RomanInteger.parse("11");
+//romanInteger2 is the same instance as romanInteger1
+
+//disables caching and clears the cache
+RomanInteger.disableCache();
+RomanInteger romanInteger3 = RomanInteger.parse("11");
+RomanInteger romanInteger4 = RomanInteger.parse("11");
+//romanInteger3 and romanInteger4 are different instances
+
+//plug in custom cache implementation
+RomanInteger.setCache(parserCache -> new CustomCache(parserCache, otherDependency));
 ```
 
 # Licence
