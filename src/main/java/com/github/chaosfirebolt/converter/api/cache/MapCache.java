@@ -29,8 +29,19 @@ public abstract class MapCache<K, V> extends BaseCache<K, V> {
 
     @Override
     protected Optional<V> computeIfAbsent(K key, Function<K, V> computation) {
-        V value = this.cache.computeIfAbsent(key, computation);
+        V value = this.cacheIfAbsent(this.cache, key, computation);
         return Optional.ofNullable(value);
+    }
+
+    /**
+     * Computes and caches the key-value pair, if there is no mapping found for this key.
+     * @param cache cache to store value in
+     * @param key key to search the value by
+     * @param computation function to compute the value, if a cache is not found
+     * @return cached value, if present, otherwise computed and cached value
+     */
+    protected V cacheIfAbsent(Map<K, V> cache, K key, Function<K, V> computation) {
+        return cache.computeIfAbsent(key, computation);
     }
 
     @Override
