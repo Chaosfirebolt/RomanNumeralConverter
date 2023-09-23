@@ -23,7 +23,6 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
     @Serial
     private static final long serialVersionUID = 2L;
 
-
     private static final ParserCache PARSER_CACHE = new MapParserCache();
 
     private static RomanIntegerCache valueCache = new NoOpRomanIntegerCache(PARSER_CACHE);
