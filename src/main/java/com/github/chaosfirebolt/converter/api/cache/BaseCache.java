@@ -29,7 +29,8 @@ public abstract class BaseCache<K, V> implements Cache<K, V> {
      *
      * @param key key to search the value by
      * @return the value
-     * @throws RuntimeException if can't return a value
+     * @throws RuntimeException thrown if unable to return a value, more specifically provided implementations will throw an {@link com.github.chaosfirebolt.converter.api.InvalidResultException},
+     *         instead of returning {@code null}.
      * @throws NullPointerException if key is null
      */
     @Override

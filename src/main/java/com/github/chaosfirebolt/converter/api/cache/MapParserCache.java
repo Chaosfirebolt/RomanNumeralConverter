@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter.api.cache;
 
+import com.github.chaosfirebolt.converter.api.InvalidResultException;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 import com.github.chaosfirebolt.converter.Parser;
 
@@ -14,6 +15,6 @@ public class MapParserCache extends MapCache<IntegerType, Parser> implements Par
      * Constructs new instance of Map based cache for parsers
      */
     public MapParserCache() {
-        super(IntegerType::getParser, () -> new RuntimeException("Could not get a value"), new EnumMap<>(IntegerType.class));
+        super(IntegerType::getParser, () -> new InvalidResultException("Returned value was null"), new EnumMap<>(IntegerType.class));
     }
 }

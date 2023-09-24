@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
+import com.github.chaosfirebolt.converter.api.InvalidResultException;
 import com.github.chaosfirebolt.converter.api.cache.MapCache;
 import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
@@ -14,6 +15,6 @@ class MapRomanIntegerCache extends MapCache<String, RomanInteger> implements Rom
      * @param parserCache parsers cache
      */
     MapRomanIntegerCache(ParserCache parserCache) {
-        super(new ParseComputation(parserCache), () -> new RuntimeException("Could not get a value"), new RomanIntegerMap());
+        super(new ParseComputation(parserCache), () -> new InvalidResultException("Returned value was null"), new RomanIntegerMap());
     }
 }

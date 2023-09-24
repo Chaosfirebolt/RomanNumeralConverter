@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
+import com.github.chaosfirebolt.converter.api.InvalidResultException;
 import com.github.chaosfirebolt.converter.api.cache.NoOpCache;
 import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
@@ -14,6 +15,6 @@ class NoOpRomanIntegerCache extends NoOpCache<String, RomanInteger> implements R
      * @param parserCache parsers cache
      */
     NoOpRomanIntegerCache(ParserCache parserCache) {
-        super(new ParseComputation(parserCache), () -> new RuntimeException("Could not get a value"));
+        super(new ParseComputation(parserCache), () -> new InvalidResultException("Returned value was null"));
     }
 }
