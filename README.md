@@ -21,7 +21,7 @@ Main class dealing with roman numerals is [RomanInteger](src/main/java/com/githu
 It provides constants for basic numerals, used in roman system, public constructors, parsing methods, overrides for hashCode and equals, implementations of Comparable, Cloneable and Serializable.
 Comparable implementation is **NOT** consistent with equals.
 
-Caching of parsing results can be enabled/disabled, default state is disabled.
+Caching of parsing results can be enabled/disabled, default state is disabled. Supports plugging in custom [RomanIntegerCache](src/main/java/com/github/chaosfirebolt/converter/api/cache/RomanIntegerCache.java) implementations.
 
 RomanInteger objects are immutable.
 
