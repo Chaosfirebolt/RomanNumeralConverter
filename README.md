@@ -4,14 +4,14 @@ Library for converting roman numerals to arabic and vice versa.
 Versions before `3.0.0` require java 8. Since `3.0.0` required java version is 17.
 
 # Latest version
-Current latest version is `3.0.0`.
+Current latest version is `3.1.0`.
 <br/>
 Maven dependency
 ```
 <dependency>
     <groupId>com.github.chaosfirebolt.converter</groupId>
     <artifactId>roman-numeral-converter</artifactId>
-    <version>3.0.0</version>
+    <version>3.1.0</version>
 </dependency>
 ```
 [All artifacts in maven central](https://mvnrepository.com/artifact/com.github.chaosfirebolt.converter/roman-numeral-converter)
@@ -54,6 +54,7 @@ RomanInteger romanInteger4 = RomanInteger.parse("11");
 
 //plug in custom cache implementation
 RomanInteger.setCache(parserCache -> new CustomCache(parserCache, otherDependency));
+RomanInteger.setCache(BiDirectionalMapRomanIntegerCache::new);
 ```
 
 # Licence
