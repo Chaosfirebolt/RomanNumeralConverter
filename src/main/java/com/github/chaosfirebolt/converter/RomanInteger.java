@@ -3,6 +3,7 @@ package com.github.chaosfirebolt.converter;
 import com.github.chaosfirebolt.converter.api.cache.MapParserCache;
 import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
+import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCacheFactory;
 import com.github.chaosfirebolt.converter.api.initialization.InitializationCapable;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 
@@ -134,17 +135,36 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
     /**
      * Sets the cache with custom implementation.
      * It is recommended, but not required, that the factory uses provided parser cache.
-     * Old cache will be cleared if it supports the operation.
+     * New cache will be initialized and previous one will be cleared, if they support the operations.
+     * Deprecated in favour of {@link #setCache(RomanIntegerCacheFactory)}.
      * @param cacheFactory factory responsible for creating the cache
+     * @deprecated As of release 3.2.0, replaced by {@link #setCache(RomanIntegerCacheFactory)}
      */
+    @Deprecated(since = "3.2.0", forRemoval = true)
     public static void setCache(Function<ParserCache, RomanIntegerCache> cacheFactory) {
         RomanIntegerCache newCache = cacheFactory.apply(PARSER_CACHE);
+        handleSetCache(newCache);
+    }
+
+    private static void handleSetCache(RomanIntegerCache newCache) {
         if (newCache instanceof InitializationCapable initializationCapableCache) {
             initializationCapableCache.initialize();
         }
         RomanIntegerCache oldCache = valueCache;
         valueCache = newCache;
         oldCache.clear();
+    }
+
+    /**
+     * Sets the cache with custom implementation.
+     * It is recommended, but not required, that the factory uses provided parser cache.
+     * New cache will be initialized and previous one will be cleared, if they support the operations.
+     * @param cacheFactory factory responsible for creating the cache
+     * @since 3.2.0
+     */
+    public static void setCache(RomanIntegerCacheFactory cacheFactory) {
+        RomanIntegerCache newCache = cacheFactory.createCache(PARSER_CACHE);
+        handleSetCache(newCache);
     }
 
     /**
