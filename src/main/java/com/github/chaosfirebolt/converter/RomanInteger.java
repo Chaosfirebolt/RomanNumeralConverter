@@ -3,6 +3,7 @@ package com.github.chaosfirebolt.converter;
 import com.github.chaosfirebolt.converter.api.cache.MapParserCache;
 import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
+import com.github.chaosfirebolt.converter.api.initialization.InitializationCapable;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
 
 import java.io.Serial;
@@ -137,8 +138,12 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
      * @param cacheFactory factory responsible for creating the cache
      */
     public static void setCache(Function<ParserCache, RomanIntegerCache> cacheFactory) {
+        RomanIntegerCache newCache = cacheFactory.apply(PARSER_CACHE);
+        if (newCache instanceof InitializationCapable initializationCapableCache) {
+            initializationCapableCache.initialize();
+        }
         RomanIntegerCache oldCache = valueCache;
-        valueCache = cacheFactory.apply(PARSER_CACHE);
+        valueCache = newCache;
         oldCache.clear();
     }
 
