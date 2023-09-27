@@ -79,4 +79,21 @@ public class RomanIntegerParseTests {
         RomanInteger.disableCache();
         assertInstancesNotSame(roman);
     }
+
+    @ParameterizedTest
+    @MethodSource("basicNumerals")
+    public void enableCache_BasicNumeralsShouldBeCachedInBothDirections(RomanInteger basic) {
+        RomanInteger.enableCache();
+
+        RomanInteger parsedFromArabic = RomanInteger.parse(Integer.toString(basic.getArabic()));
+        assertSame(basic, parsedFromArabic, () -> String.format("Should have returned same instance when parsing from arabic for basic numeral: %s", basic));
+        RomanInteger parsedFromRoman = RomanInteger.parse(basic.getRoman());
+        assertSame(basic, parsedFromRoman, () -> String.format("Should have returned same instance when parsing from roman for basic numeral: %s", basic));
+
+        RomanInteger.disableCache();
+    }
+
+    private static Stream<Arguments> basicNumerals() {
+        return Stream.of(RomanInteger.ONE, RomanInteger.FIVE, RomanInteger.TEN, RomanInteger.FIFTY, RomanInteger.HUNDRED, RomanInteger.FIVE_HUNDRED, RomanInteger.THOUSAND).map(Arguments::of);
+    }
 }
