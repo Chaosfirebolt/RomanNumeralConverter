@@ -24,8 +24,15 @@ public class RangeInputSource implements InputSource<RomanInteger[]> {
      * @since 3.2.0
      */
     public RangeInputSource(int startInclusive, int endInclusive) {
+        validateStartIsBeforeEnd(startInclusive, endInclusive);
         this.startInclusive = IntegerType.ARABIC.validateRange(startInclusive);
         this.endInclusive = IntegerType.ARABIC.validateRange(endInclusive);
+    }
+
+    private static void validateStartIsBeforeEnd(int start, int end) {
+        if (start > end) {
+            throw new IllegalArgumentException("Start must be equal or less than end");
+        }
     }
 
     @Override
