@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.api.initialization;
+package com.github.chaosfirebolt.converter.api.initialization.source;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,6 @@ import java.io.UncheckedIOException;
  * @param <StreamResult> type of the data read from the stream
  * @since 3.2.0
  */
-//TODO repackage transformations, sources, etc.
 public abstract class InputStreamSource<StreamResult> implements InputSource<StreamResult> {
 
     private final String path;

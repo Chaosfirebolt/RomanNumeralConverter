@@ -1,6 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.api.initialization.ProvidedDataInitializationSource;
+import com.github.chaosfirebolt.converter.api.initialization.ProvidedInitializationData;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -12,8 +12,8 @@ public class ProvidedDataSourceTests {
 
     @Test
     public void providedDataSourceShouldReturnAllValues() {
-        ProvidedDataInitializationSource source = new ProvidedDataInitializationSource();
-        Map<String, RomanInteger> actual = source.getSource();
+        ProvidedInitializationData source = new ProvidedInitializationData();
+        Map<String, RomanInteger> actual = source.getData();
         Map<String, RomanInteger> expected = new HashMap<>();
         for (int number = 1; number <= 3999; number++) {
             RomanInteger romanInteger = RomanInteger.parse(Integer.toString(number));
@@ -25,8 +25,8 @@ public class ProvidedDataSourceTests {
 
     @Test
     public void sourceShouldBeCleanedAfterCleanUp() {
-        ProvidedDataInitializationSource source = new ProvidedDataInitializationSource();
-        Map<String, RomanInteger> actual = source.getSource();
+        ProvidedInitializationData source = new ProvidedInitializationData();
+        Map<String, RomanInteger> actual = source.getData();
         assertFalse(actual.isEmpty(), "Source should have had values");
         source.cleanup();
         assertTrue(actual.isEmpty(), "Source should have been empty after cleanup");

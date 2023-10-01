@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class RangeInitializationSourceTests {
+public class RangeInitializationDataTests {
 
     @ParameterizedTest
     @CsvSource({ "-1, 100", "0, 11", "-5, 233" })
@@ -20,7 +20,7 @@ public class RangeInitializationSourceTests {
 
     private static void assertExceptionThrownForInvalidInput(int start, int end) {
         Supplier<String> errorMessageSupplier = () -> String.format("Exception should have been thrown for range %d - %d", start, end);
-        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, () -> new RangeInitializationSource(start, end), errorMessageSupplier);
+        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, () -> new RangeInitializationData(start, end), errorMessageSupplier);
         assertTrue(exc.getMessage() != null && !exc.getMessage().isEmpty(), "Exception should have had a message");
     }
 
@@ -39,8 +39,8 @@ public class RangeInitializationSourceTests {
     @ParameterizedTest
     @CsvSource({ "2, 2", "11, 250", "9, 3947"})
     public void validaRange_ShouldReturnCorrectResult(int start, int end) {
-        RangeInitializationSource source = new RangeInitializationSource(start, end);
-        Map<String, RomanInteger> actualMap = source.getSource();
+        RangeInitializationData source = new RangeInitializationData(start, end);
+        Map<String, RomanInteger> actualMap = source.getData();
         int expectedSize = ((end - start) + 1) * 2;
         assertEquals(expectedSize, actualMap.size(), "Size not as expected");
 

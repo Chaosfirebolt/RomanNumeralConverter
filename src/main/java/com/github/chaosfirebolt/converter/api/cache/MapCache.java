@@ -1,8 +1,8 @@
 package com.github.chaosfirebolt.converter.api.cache;
 
 import com.github.chaosfirebolt.converter.api.initialization.InitializationCapable;
-import com.github.chaosfirebolt.converter.api.initialization.InitializationSource;
-import com.github.chaosfirebolt.converter.api.initialization.NoOpMapSource;
+import com.github.chaosfirebolt.converter.api.initialization.InitializationData;
+import com.github.chaosfirebolt.converter.api.initialization.NoOpMapData;
 
 import java.util.Map;
 import java.util.Optional;
@@ -20,7 +20,7 @@ public abstract class MapCache<K, V> extends BaseCache<K, V> implements Initiali
      * Map holding cached instances
      */
     private final Map<K, V> cache;
-    private final InitializationSource<Map<K, V>> initializationSource;
+    private final InitializationData<Map<K, V>> initializationData;
 
     /**
      * @param computation function to compute the value, if a cache is not found
@@ -28,19 +28,19 @@ public abstract class MapCache<K, V> extends BaseCache<K, V> implements Initiali
      * @param cache Map to store computed values in
      */
     protected MapCache(Function<K, V> computation, Supplier<? extends RuntimeException> exceptionSupplier, Map<K, V> cache) {
-        this(computation, exceptionSupplier, cache, new NoOpMapSource<>());
+        this(computation, exceptionSupplier, cache, new NoOpMapData<>());
     }
 
     /**
      * @param computation function to compute the value, if a cache is not found
      * @param exceptionSupplier supplier for an exception to be thrown, if a value can't be returned
      * @param cache Map to store computed values in
-     * @param initializationSource source of the initial data tobe stored in cache
+     * @param initializationData source of the initial data tobe stored in cache
      */
-    protected MapCache(Function<K, V> computation, Supplier<? extends RuntimeException> exceptionSupplier, Map<K, V> cache, InitializationSource<Map<K, V>> initializationSource) {
+    protected MapCache(Function<K, V> computation, Supplier<? extends RuntimeException> exceptionSupplier, Map<K, V> cache, InitializationData<Map<K, V>> initializationData) {
         super(computation, exceptionSupplier);
         this.cache = cache;
-        this.initializationSource = initializationSource;
+        this.initializationData = initializationData;
     }
 
     @Override
@@ -67,7 +67,7 @@ public abstract class MapCache<K, V> extends BaseCache<K, V> implements Initiali
 
     @Override
     public void initialize() {
-        this.cache.putAll(this.initializationSource.getSource());
-        this.initializationSource.cleanup();
+        this.cache.putAll(this.initializationData.getData());
+        this.initializationData.cleanup();
     }
 }

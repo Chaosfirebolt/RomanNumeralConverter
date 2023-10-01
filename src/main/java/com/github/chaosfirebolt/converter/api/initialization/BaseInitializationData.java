@@ -1,11 +1,14 @@
 package com.github.chaosfirebolt.converter.api.initialization;
 
+import com.github.chaosfirebolt.converter.api.initialization.source.InputSource;
+import com.github.chaosfirebolt.converter.api.initialization.transformation.Transformation;
+
 /**
- * Provides the skeleton for {@link InitializationSource} implementations.
+ * Provides the skeleton for {@link InitializationData} implementations.
  * @param <I> input source type
  * @param <O> result type
  */
-public non-sealed abstract class BaseInitializationSource<I, O> implements InitializationSource<O> {
+public non-sealed abstract class BaseInitializationData<I, O> implements InitializationData<O> {
 
     /**
      * The source of data.
@@ -29,13 +32,13 @@ public non-sealed abstract class BaseInitializationSource<I, O> implements Initi
      * @param inputSource a data source
      * @param transformation transformation from input to type required for initialization
      */
-    protected BaseInitializationSource(InputSource<I> inputSource, Transformation<I, O> transformation) {
+    protected BaseInitializationData(InputSource<I> inputSource, Transformation<I, O> transformation) {
         this.inputSource = inputSource;
         this.transformation = transformation;
     }
 
     @Override
-    public final O getSource() {
+    public final O getData() {
         this.input = this.inputSource.getInputData();
         this.output = this.transformation.transform(this.input);
         return this.output;

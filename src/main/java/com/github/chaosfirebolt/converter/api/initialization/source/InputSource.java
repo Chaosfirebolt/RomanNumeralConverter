@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.api.initialization;
+package com.github.chaosfirebolt.converter.api.initialization.source;
 
 /**
  * Represents a data source.

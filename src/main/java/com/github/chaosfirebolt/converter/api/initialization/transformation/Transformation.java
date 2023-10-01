@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.api.initialization;
+package com.github.chaosfirebolt.converter.api.initialization.transformation;
 
 /**
  * Represents a transformation from input to output

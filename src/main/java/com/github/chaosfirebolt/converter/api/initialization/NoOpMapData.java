@@ -7,12 +7,12 @@ import java.util.Map;
  * @param <K> type of map key
  * @param <V> type of map value
  */
-public class NoOpMapSource<K, V> extends BaseInitializationSource<Void, Map<K, V>> {
+public class NoOpMapData<K, V> extends BaseInitializationData<Void, Map<K, V>> {
 
     /**
      * Constructs new instance, with predefined input source and transformation to match no operation.
      */
-    public NoOpMapSource() {
+    public NoOpMapData() {
         super(() -> null, input -> Map.of());
     }
 

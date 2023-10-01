@@ -1,10 +1,12 @@
 package com.github.chaosfirebolt.converter.api.initialization;
 
+import com.github.chaosfirebolt.converter.api.initialization.source.RangeInputSource;
+
 /**
  * Initialization source implementation, using integer range.
  * @since 3.2.0
  */
-public class RangeInitializationSource extends RomanIntegerArrayInitializationSource {
+public class RangeInitializationData extends RomanIntegerArrayInitializationData {
 
     /**
      * Constructs a new instance using provided start and end for the range (inclusive).
@@ -14,7 +16,7 @@ public class RangeInitializationSource extends RomanIntegerArrayInitializationSo
      * @throws IllegalArgumentException if provided integer is not in valid range.
      * @since 3.2.0
      */
-    public RangeInitializationSource(int startInclusive, int endInclusive) {
+    public RangeInitializationData(int startInclusive, int endInclusive) {
         super(new RangeInputSource(startInclusive, endInclusive));
     }
 }
