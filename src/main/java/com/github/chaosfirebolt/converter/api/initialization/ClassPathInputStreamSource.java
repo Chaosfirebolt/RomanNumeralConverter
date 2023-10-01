@@ -4,8 +4,9 @@ import java.io.InputStream;
 
 /**
  * Generates an input stream from a resource on the classpath.
+ * @param <StreamResult> type of the data read from the stream
  */
-public class ClassPathInputStreamSource extends InputStreamSource {
+public abstract class ClassPathInputStreamSource<StreamResult> extends InputStreamSource<StreamResult> {
 
     private final ClassLoader classLoader;
 
