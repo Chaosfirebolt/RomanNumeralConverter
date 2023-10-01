@@ -134,6 +134,12 @@
                     <include>LICENSE</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>all-values-array.ser</include>
+                </includes>
+            </resource>
         </resources>
     </build>
 

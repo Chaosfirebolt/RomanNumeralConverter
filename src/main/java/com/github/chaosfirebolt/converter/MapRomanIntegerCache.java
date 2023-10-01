@@ -12,6 +12,7 @@ import java.util.HashMap;
 /**
  * Map based roman integer cache
  */
+//TODO make public to allow initialization through this path
 class MapRomanIntegerCache extends MapCache<String, RomanInteger> implements RomanIntegerCache {
 
     /**
