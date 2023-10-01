@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * Deserializes a roman integer array and transforms it to a map.
  */
+//TODO repackage transformations, sources, etc.
 public class SerializedArrayToMapTransformation extends GenericInputStreamTransformation<RomanInteger[], Map<String, RomanInteger>> {
 
     private final Transformation<RomanInteger[], Map<String, RomanInteger>> delegate;
@@ -33,6 +34,7 @@ public class SerializedArrayToMapTransformation extends GenericInputStreamTransf
     protected RomanInteger[] readInputStream(InputStream inputStream) throws IOException {
         ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
         try {
+            //TODO refactor!!! move this to input stream source
             return (RomanInteger[]) objectInputStream.readObject();
         } catch (ClassNotFoundException exc) {
             //TODO consider - rethrow as IO, or as custom unchecked exception
