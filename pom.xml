@@ -137,7 +137,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <includes>
-                    <include>all-values-array.ser</include>
+                    <include>values-array.ser</include>
                 </includes>
             </resource>
         </resources>
