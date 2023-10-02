@@ -37,7 +37,7 @@ public class RangeInitializationDataTests {
     }
 
     @ParameterizedTest
-    @CsvSource({ "2, 2", "11, 250", "9, 3947"})
+    @CsvSource({ "2, 2", "11, 250", "9, 3947", "1, 1111", "500, 1500" })
     public void validaRange_ShouldReturnCorrectResult(int start, int end) {
         RangeInitializationData source = new RangeInitializationData(start, end);
         Map<String, RomanInteger> actualMap = source.getData();

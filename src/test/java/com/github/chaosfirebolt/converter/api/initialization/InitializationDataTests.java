@@ -10,11 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.Mockito;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.UncheckedIOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class InitializationDataTests {
 
@@ -61,5 +63,21 @@ public class InitializationDataTests {
     public void romanIntegerArrayInitializationData_AssertResourcesAreFreed() {
         RomanIntegerArrayInitializationData data = new RomanIntegerArrayInitializationData(() -> this.resource);
         executeAndAssert(data);
+    }
+
+    @Test
+    public void deserializationFails_ShouldRethrowClassNotFoundExceptionAsIOException() {
+        try (MockedConstruction<ObjectInputStream> ignored = Mockito.mockConstruction(ObjectInputStream.class, (mock, context) -> Mockito.when(mock.readObject()).thenThrow(ClassNotFoundException.class))) {
+            SerializedArrayClassPathSource source = new SerializedArrayClassPathSource("", ClassLoader.getSystemClassLoader());
+            UncheckedIOException exc = assertThrows(UncheckedIOException.class, source::getInputData, "Should have thrown IOException on ClassNotFoundException when deserializing");
+            Throwable cause = exc.getCause();
+            assertCause(IOException.class, cause);
+            assertCause(ClassNotFoundException.class, cause.getCause());
+        }
+    }
+
+    private static void assertCause(Class<? extends Throwable> expectedCause, Throwable actualCause) {
+        assertNotNull(actualCause, "Missing cause");
+        assertEquals(expectedCause, actualCause.getClass(), () -> "Incorrect cause for " + actualCause.getClass().getSimpleName());
     }
 }
