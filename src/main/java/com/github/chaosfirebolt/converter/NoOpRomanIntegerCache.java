@@ -10,11 +10,12 @@ import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
  */
 class NoOpRomanIntegerCache extends NoOpCache<String, RomanInteger> implements RomanIntegerCache {
 
-    /**
-     * Constructs an instance of non caching roman integer cache
-     * @param parserCache parsers cache
-     */
-    NoOpRomanIntegerCache(ParserCache parserCache) {
-        super(new ParseComputation(parserCache), () -> new InvalidResultException("Returned value was null"));
-    }
+  /**
+   * Constructs an instance of non caching roman integer cache
+   *
+   * @param parserCache parsers cache
+   */
+  NoOpRomanIntegerCache(ParserCache parserCache) {
+    super(new ParseComputation(parserCache), () -> new InvalidResultException("Returned value was null"));
+  }
 }

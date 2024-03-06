@@ -33,9 +33,9 @@ public interface Computation<I, O> {
    * Adapts a {@link Function} as a {@link Computation}.
    *
    * @param function function to adapt
+   * @param <T>      type of the input
+   * @param <R>      type of the result
    * @return the function adapted as computation.
-   * @param <T> type of the input
-   * @param <R> type of the result
    */
   static <T, R> Computation<T, R> wrap(Function<T, R> function) {
     return new FunctionAdapter<>(function);
@@ -45,9 +45,9 @@ public interface Computation<I, O> {
    * Adapts a {@link Computation} as a {@link Function}.
    *
    * @param computation computation to adapt
+   * @param <T>         type of the input
+   * @param <R>         type of the result
    * @return the computation adapted as a function
-   * @param <T> type of the input
-   * @param <R> type of the result
    */
   static <T, R> Function<T, R> unwrap(Computation<T, R> computation) {
     return computation::compute;

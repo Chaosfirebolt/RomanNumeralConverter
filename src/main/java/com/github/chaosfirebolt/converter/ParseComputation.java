@@ -11,24 +11,25 @@ import java.util.function.Function;
  */
 class ParseComputation implements Function<String, RomanInteger> {
 
-    private final ParserCache parserCache;
+  private final ParserCache parserCache;
 
-    ParseComputation(ParserCache parserCache) {
-        this.parserCache = parserCache;
-    }
+  ParseComputation(ParserCache parserCache) {
+    this.parserCache = parserCache;
+  }
 
-    /**
-     * Parses provided input to {@link RomanInteger}.
-     * Detects automatically input type and parses using appropriate {@link Parser}
-     * @param numeral numeral to be parsed
-     * @return parsed RomanInteger
-     * @throws NumberFormatException if provided numeral does not match any format
-     */
-    @Override
-    public RomanInteger apply(String numeral) {
-        String normalizedNumeral = numeral.trim().toUpperCase(Locale.ENGLISH);
-        IntegerType integerType = IntegerType.fromNumeral(normalizedNumeral);
-        Parser parser = this.parserCache.getValue(integerType);
-        return parser.parse(numeral);
-    }
+  /**
+   * Parses provided input to {@link RomanInteger}.
+   * Detects automatically input type and parses using appropriate {@link Parser}
+   *
+   * @param numeral numeral to be parsed
+   * @return parsed RomanInteger
+   * @throws NumberFormatException if provided numeral does not match any format
+   */
+  @Override
+  public RomanInteger apply(String numeral) {
+    String normalizedNumeral = numeral.trim().toUpperCase(Locale.ENGLISH);
+    IntegerType integerType = IntegerType.fromNumeral(normalizedNumeral);
+    Parser parser = this.parserCache.getValue(integerType);
+    return parser.parse(numeral);
+  }
 }

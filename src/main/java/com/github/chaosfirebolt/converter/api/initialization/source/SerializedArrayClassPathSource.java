@@ -11,28 +11,28 @@ import java.io.ObjectInputStream;
  */
 public class SerializedArrayClassPathSource extends ClassPathInputStreamSource<RomanInteger[]> {
 
-    /**
-     * @param path path to the resource
-     * @param classLoader classLoader, responsible for creating the input stream
-     */
-    public SerializedArrayClassPathSource(String path, ClassLoader classLoader) {
-        super(path, classLoader);
-    }
+  /**
+   * @param path        path to the resource
+   * @param classLoader classLoader, responsible for creating the input stream
+   */
+  public SerializedArrayClassPathSource(String path, ClassLoader classLoader) {
+    super(path, classLoader);
+  }
 
-    /**
-     * @param path path to the resource
-     */
-    public SerializedArrayClassPathSource(String path) {
-        super(path);
-    }
+  /**
+   * @param path path to the resource
+   */
+  public SerializedArrayClassPathSource(String path) {
+    super(path);
+  }
 
-    @Override
-    protected RomanInteger[] readInputStream(InputStream inputStream) throws IOException {
-        ObjectInputStream stream = new ObjectInputStream(inputStream);
-        try {
-            return (RomanInteger[]) stream.readObject();
-        } catch (ClassNotFoundException exc) {
-            throw new IOException("Could read serialized roman integer array", exc);
-        }
+  @Override
+  protected RomanInteger[] readInputStream(InputStream inputStream) throws IOException {
+    ObjectInputStream stream = new ObjectInputStream(inputStream);
+    try {
+      return (RomanInteger[]) stream.readObject();
+    } catch (ClassNotFoundException exc) {
+      throw new IOException("Could read serialized roman integer array", exc);
     }
+  }
 }

@@ -15,7 +15,7 @@ public interface Storage<K, V> {
    * Stores the key-value pair. If the store previously contained a value associated with this key,
    * the old value is replaced by the new value.
    *
-   * @param key to associate the value with
+   * @param key   to associate the value with
    * @param value the value
    * @throws NullPointerException if either key or value is null
    */
@@ -34,7 +34,7 @@ public interface Storage<K, V> {
   /**
    * Retrieves the value associated with the key, if present, otherwise computes a value, using provided computation, stores and returns computed value.
    *
-   * @param key key to search the value by
+   * @param key         key to search the value by
    * @param computation function accepting the key  and computing a value, if value is not present
    * @return stored value if present, otherwise computed value
    * @throws NullPointerException if either key or computed value is null

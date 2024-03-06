@@ -5,11 +5,12 @@ package com.github.chaosfirebolt.converter.api;
  */
 public class InvalidResultException extends RuntimeException {
 
-    /**
-     * Construct a new exception with the specified message.
-     * @param message details message
-     */
-    public InvalidResultException(String message) {
-        super(message);
-    }
+  /**
+   * Construct a new exception with the specified message.
+   *
+   * @param message details message
+   */
+  public InvalidResultException(String message) {
+    super(message);
+  }
 }

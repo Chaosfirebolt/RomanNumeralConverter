@@ -7,8 +7,8 @@ import com.github.chaosfirebolt.converter.RomanInteger;
  */
 public class BasicNumeralsInputSource implements InputSource<RomanInteger[]> {
 
-    @Override
-    public RomanInteger[] getInputData() {
-        return new RomanInteger[]{ RomanInteger.ONE, RomanInteger.FIVE, RomanInteger.TEN, RomanInteger.FIFTY, RomanInteger.HUNDRED, RomanInteger.FIVE_HUNDRED, RomanInteger.THOUSAND };
-    }
+  @Override
+  public RomanInteger[] getInputData() {
+    return new RomanInteger[]{RomanInteger.ONE, RomanInteger.FIVE, RomanInteger.TEN, RomanInteger.FIFTY, RomanInteger.HUNDRED, RomanInteger.FIVE_HUNDRED, RomanInteger.THOUSAND};
+  }
 }

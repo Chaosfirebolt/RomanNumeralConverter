@@ -12,17 +12,18 @@ import java.util.Map;
  */
 public class RomanIntegerArrayInitializationData extends BaseInitializationData<RomanInteger[], Map<String, RomanInteger>> {
 
-    /**
-     * Constructs a new instance with provided roman integer array source.
-     * @param inputSource the array source
-     */
-    public RomanIntegerArrayInitializationData(InputSource<RomanInteger[]> inputSource) {
-        super(inputSource, new RomanIntegerArrayToMapTransformation());
-    }
+  /**
+   * Constructs a new instance with provided roman integer array source.
+   *
+   * @param inputSource the array source
+   */
+  public RomanIntegerArrayInitializationData(InputSource<RomanInteger[]> inputSource) {
+    super(inputSource, new RomanIntegerArrayToMapTransformation());
+  }
 
-    @Override
-    protected void doCleanup(RomanInteger[] input, Map<String, RomanInteger> output) {
-        Arrays.fill(input, null);
-        output.clear();
-    }
+  @Override
+  protected void doCleanup(RomanInteger[] input, Map<String, RomanInteger> output) {
+    Arrays.fill(input, null);
+    output.clear();
+  }
 }
