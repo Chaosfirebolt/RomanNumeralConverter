@@ -1,6 +1,5 @@
 package com.github.chaosfirebolt.converter.constants;
 
-import com.github.chaosfirebolt.converter.constants.IntegerType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
