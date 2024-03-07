@@ -3,7 +3,9 @@ package com.github.chaosfirebolt.converter.api.cache.storage;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * Map based storage implementation.
@@ -12,6 +14,9 @@ import java.util.Optional;
  * @param <V> value type
  */
 public class MapStorage<K, V> implements Storage<K, V> {
+
+  private static final String KEY_ERROR = "Null key";
+  private static final String VALUE_ERROR = "Null value";
 
   private final Map<K, V> map;
 
@@ -25,9 +30,6 @@ public class MapStorage<K, V> implements Storage<K, V> {
   }
 
   private static <K, V> Map<K, V> defensiveCopy(Map<K, V> map) {
-    if (map.isEmpty()) {
-      return map;
-    }
     try {
       @SuppressWarnings("unchecked")
       Map<K, V> copy = map.getClass().getConstructor(Map.class).newInstance(map);
@@ -46,22 +48,26 @@ public class MapStorage<K, V> implements Storage<K, V> {
 
   @Override
   public void store(K key, V value) {
-    map.put(key, value);
+    map.put(Objects.requireNonNull(key, KEY_ERROR), Objects.requireNonNull(value, VALUE_ERROR));
   }
 
   @Override
   public Optional<V> retrieve(K key) {
-    return Optional.ofNullable(map.get(key));
+    V storedValue = map.get(Objects.requireNonNull(key, KEY_ERROR));
+    return Optional.ofNullable(storedValue);
   }
 
   @Override
   public V compute(K key, Computation<K, V> computation) {
-    return map.computeIfAbsent(key, computation.unwrap());
+    Objects.requireNonNull(key, KEY_ERROR);
+    Function<K, V> adaptedFunction = Objects.requireNonNull(computation, "Null computation").unwrap();
+    V value = map.computeIfAbsent(key, adaptedFunction);
+    return Objects.requireNonNull(value, "Null computed value");
   }
 
   @Override
   public void remove(K key) {
-    map.remove(key);
+    map.remove(Objects.requireNonNull(key, KEY_ERROR));
   }
 
   @Override

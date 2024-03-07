@@ -37,7 +37,7 @@ public interface Storage<K, V> {
    * @param key         key to search the value by
    * @param computation function accepting the key  and computing a value, if value is not present
    * @return stored value if present, otherwise computed value
-   * @throws NullPointerException if either key or computed value is null
+   * @throws NullPointerException if either key, computation or computed value is null
    */
   default V compute(K key, Computation<K, V> computation) {
     Optional<V> storedValue = retrieve(key);

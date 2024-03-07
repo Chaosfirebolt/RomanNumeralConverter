@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter.api.cache.storage;
 
+import java.util.Objects;
 import java.util.function.Function;
 
 /**
@@ -36,9 +37,10 @@ public interface Computation<I, O> {
    * @param <T>      type of the input
    * @param <R>      type of the result
    * @return the function adapted as computation.
+   * @throws NullPointerException if function is null
    */
   static <T, R> Computation<T, R> wrap(Function<T, R> function) {
-    return new FunctionAdapter<>(function);
+    return new FunctionAdapter<>(Objects.requireNonNull(function, "Null function"));
   }
 
   /**
@@ -48,8 +50,9 @@ public interface Computation<I, O> {
    * @param <T>         type of the input
    * @param <R>         type of the result
    * @return the computation adapted as a function
+   * @throws NullPointerException if computation is null
    */
   static <T, R> Function<T, R> unwrap(Computation<T, R> computation) {
-    return computation::compute;
+    return Objects.requireNonNull(computation, "Null computation")::compute;
   }
 }
