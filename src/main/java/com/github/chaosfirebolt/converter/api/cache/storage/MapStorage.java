@@ -48,7 +48,7 @@ public class MapStorage<K, V> implements Storage<K, V> {
 
   @Override
   public void store(K key, V value) {
-    map.put(Objects.requireNonNull(key, KEY_ERROR), Objects.requireNonNull(value, VALUE_ERROR));
+    map.putIfAbsent(Objects.requireNonNull(key, KEY_ERROR), Objects.requireNonNull(value, VALUE_ERROR));
   }
 
   @Override

@@ -14,7 +14,9 @@ import java.util.function.Supplier;
  *
  * @param <K> type of the key, by which the value is saved
  * @param <V> type of the cached value
+ * @deprecated deprecated in favour of {@link DefaultCache}
  */
+@Deprecated(since = "3.3.0", forRemoval = true)
 public abstract class MapCache<K, V> extends BaseCache<K, V> implements InitializationCapable {
 
   /**
