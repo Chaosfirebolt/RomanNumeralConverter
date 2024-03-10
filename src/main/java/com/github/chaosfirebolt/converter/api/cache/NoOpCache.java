@@ -9,6 +9,7 @@ import java.util.function.Supplier;
  *
  * @param <K> type of the key, by which the value is saved
  * @param <V> type of the cached value
+ * @deprecated Deprecated since version 3.3.0
  */
 @Deprecated(since = "3.3.0", forRemoval = true)
 public abstract class NoOpCache<K, V> extends BaseCache<K, V> {

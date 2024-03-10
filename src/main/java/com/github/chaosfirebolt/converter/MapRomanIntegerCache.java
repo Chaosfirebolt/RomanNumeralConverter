@@ -12,7 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Map based roman integer cache
+ * Map based roman integer cache.
+ *
+ * @deprecated Deprecated in favour of {@link UniDirectionalRomanIntegerCache}
  */
 @Deprecated(since = "3.3.0", forRemoval = true)
 public class MapRomanIntegerCache extends MapCache<String, RomanInteger> implements RomanIntegerCache {

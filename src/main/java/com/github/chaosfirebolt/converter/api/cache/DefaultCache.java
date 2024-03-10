@@ -9,6 +9,12 @@ import com.github.chaosfirebolt.converter.api.initialization.NoOpMapData;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * The default cache implementation.
+ *
+ * @param <K> key type
+ * @param <V> value type
+ */
 public class DefaultCache<K, V> implements Cache<K, V>, InitializationCapable {
 
   private final Storage<K, V> storage;

@@ -1,6 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.api.cache.MapParserCache;
+import com.github.chaosfirebolt.converter.api.cache.DefaultParserCache;
 import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCacheFactory;
@@ -25,7 +25,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
   @Serial
   private static final long serialVersionUID = 2L;
 
-  private static final ParserCache PARSER_CACHE = new MapParserCache();
+  private static final ParserCache PARSER_CACHE = new DefaultParserCache();
 
   private static RomanIntegerCache valueCache = new NoOpRomanIntegerCache(PARSER_CACHE);
 
@@ -122,7 +122,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
    * Enables caching of parsed roman integers.
    */
   public static void enableCache() {
-    setCache(MapRomanIntegerCache::new);
+    setCache(UniDirectionalRomanIntegerCache::new);
   }
 
   /**

@@ -7,6 +7,8 @@ import java.util.function.Function;
 
 /**
  * Caches result in both directions - arabic and roman representations are mapped to the same {@link RomanInteger} instance.
+ *
+ * @deprecated Deprecated in favour of {@link BiDirectionalRomanIntegerCache}
  */
 @Deprecated(since = "3.3.0", forRemoval = true)
 public class BiDirectionalMapRomanIntegerCache extends MapRomanIntegerCache {

@@ -7,7 +7,9 @@ import com.github.chaosfirebolt.converter.constants.IntegerType;
 import java.util.EnumMap;
 
 /**
- * Cache for parsers, using a map
+ * Cache for parsers, using a map.
+ *
+ * @deprecated Deprecated in favour of {@link DefaultParserCache}
  */
 @Deprecated(since = "3.3.0", forRemoval = true)
 public class MapParserCache extends MapCache<IntegerType, Parser> implements ParserCache {
