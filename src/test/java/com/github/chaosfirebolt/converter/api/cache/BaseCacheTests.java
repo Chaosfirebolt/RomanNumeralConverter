@@ -1,5 +1,7 @@
 package com.github.chaosfirebolt.converter.api.cache;
 
+import com.github.chaosfirebolt.converter.BiDirectionalMapRomanIntegerCache;
+import com.github.chaosfirebolt.converter.RomanInteger;
 import com.github.chaosfirebolt.converter.api.InvalidResultException;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BaseCacheTests {
-
   @ParameterizedTest
   @MethodSource
   public void getValueWithNullKey_ShouldThrowNullPointerException(BaseCache<?, ?> cache) {
@@ -25,6 +26,8 @@ public class BaseCacheTests {
 
   private static List<Arguments> getValueWithNullKey_ShouldThrowNullPointerException() {
     return List.of(
+            Arguments.of(new MapParserCache()),
+            Arguments.of(new BiDirectionalMapRomanIntegerCache(new MapParserCache())),
             Arguments.of(new TestingBaseCache())
     );
   }
@@ -41,14 +44,14 @@ public class BaseCacheTests {
   }
 
   private static List<Arguments> returnNullValue_ShouldThrowInvalidResultException() {
-    return List.of(
+    return List.of(Arguments.of(
+            new TestingBidirectionalCache()),
             Arguments.of(new TestingBaseCache()),
             Arguments.of(new TestingMapCache())
     );
   }
 
   private static final class TestingBaseCache extends BaseCache<Object, Object> {
-
     private TestingBaseCache() {
       super(obj -> null, () -> new InvalidResultException("message"));
     }
@@ -64,13 +67,24 @@ public class BaseCacheTests {
   }
 
   private static final class TestingMapCache extends MapCache<Object, Object> {
-
     private TestingMapCache() {
       super(Function.identity(), () -> new InvalidResultException("message"), new HashMap<>());
     }
 
     @Override
     protected Object cacheIfAbsent(Map<Object, Object> cache, Object key, Function<Object, Object> computation) {
+      return null;
+    }
+  }
+
+  private static final class TestingBidirectionalCache extends BiDirectionalMapRomanIntegerCache {
+
+    public TestingBidirectionalCache() {
+      super(new MapParserCache());
+    }
+
+    @Override
+    protected RomanInteger cacheIfAbsent(Map<String, RomanInteger> cache, String key, Function<String, RomanInteger> computation) {
       return null;
     }
   }
