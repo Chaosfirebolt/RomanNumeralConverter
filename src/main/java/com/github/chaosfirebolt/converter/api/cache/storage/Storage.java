@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter.api.cache.storage;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -40,12 +41,12 @@ public interface Storage<K, V> {
    * @throws NullPointerException if either key, computation or computed value is null
    */
   default V compute(K key, Computation<K, V> computation) {
-    Optional<V> storedValue = retrieve(key);
+    Optional<V> storedValue = retrieve(Objects.requireNonNull(key, "Null key"));
     if (storedValue.isPresent()) {
       return storedValue.get();
     }
-    V computedValue = computation.compute(key);
-    store(key, computedValue);
+    V computedValue = Objects.requireNonNull(computation, "Null computation").compute(key);
+    store(key, Objects.requireNonNull(computedValue, "Null computed value"));
     return computedValue;
   }
 
