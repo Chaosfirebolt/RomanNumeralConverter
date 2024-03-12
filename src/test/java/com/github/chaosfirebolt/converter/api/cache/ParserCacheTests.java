@@ -8,9 +8,13 @@ import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ParserCacheTests {
+public abstract class ParserCacheTests {
 
-  private final ParserCache parserCache = new MapParserCache();
+  private final ParserCache parserCache;
+
+  protected ParserCacheTests(ParserCache parserCache) {
+    this.parserCache = parserCache;
+  }
 
   @ParameterizedTest
   @EnumSource

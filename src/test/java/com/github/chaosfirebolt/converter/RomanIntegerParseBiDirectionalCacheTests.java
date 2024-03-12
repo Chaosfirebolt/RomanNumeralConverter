@@ -1,7 +1,8 @@
 package com.github.chaosfirebolt.converter;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCacheFactory;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -12,15 +13,21 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-public class RomanIntegerParseBiDirectionalCacheTests {
+public abstract class RomanIntegerParseBiDirectionalCacheTests {
 
-  @BeforeAll
-  public static void setup() {
-    RomanInteger.setCache(BiDirectionalMapRomanIntegerCache::new);
+  private final RomanIntegerCacheFactory cacheFactory;
+
+  protected RomanIntegerParseBiDirectionalCacheTests(RomanIntegerCacheFactory cacheFactory) {
+    this.cacheFactory = cacheFactory;
   }
 
-  @AfterAll
-  public static void cleanup() {
+  @BeforeEach
+  public void setup() {
+    RomanInteger.setCache(cacheFactory);
+  }
+
+  @AfterEach
+  public void cleanup() {
     RomanInteger.disableCache();
   }
 

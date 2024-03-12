@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BaseCacheTests {
+
   @ParameterizedTest
   @MethodSource
   public void getValueWithNullKey_ShouldThrowNullPointerException(BaseCache<?, ?> cache) {
