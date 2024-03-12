@@ -19,7 +19,7 @@ import java.util.Map;
  *
  * @since 3.3.0
  */
-public class UniDirectionalRomanIntegerCache extends DefaultCache<String, RomanInteger> implements RomanIntegerCache {
+public final class UniDirectionalRomanIntegerCache extends DefaultCache<String, RomanInteger> implements RomanIntegerCache {
 
   /**
    * @param parserCache cache for parser instances

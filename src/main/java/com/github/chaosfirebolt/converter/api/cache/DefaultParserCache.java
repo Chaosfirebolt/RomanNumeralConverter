@@ -11,7 +11,7 @@ import java.util.EnumMap;
 /**
  * Default parser cache implementation
  */
-public class DefaultParserCache extends DefaultCache<IntegerType, Parser> implements ParserCache {
+public final class DefaultParserCache extends DefaultCache<IntegerType, Parser> implements ParserCache {
 
   /**
    * Creates new instance with default parameters

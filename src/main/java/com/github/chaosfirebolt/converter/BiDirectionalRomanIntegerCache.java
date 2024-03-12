@@ -21,7 +21,7 @@ import java.util.function.Supplier;
  *
  * @since 3.3.0
  */
-public class BiDirectionalRomanIntegerCache extends DefaultCache<String, RomanInteger> implements RomanIntegerCache {
+public final class BiDirectionalRomanIntegerCache extends DefaultCache<String, RomanInteger> implements RomanIntegerCache {
 
   /**
    * @param parserCache cache for parser instances
