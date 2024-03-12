@@ -4,14 +4,14 @@ Library for converting roman numerals to arabic and vice versa.
 Versions before `3.0.0` require java 8. Since `3.0.0` required java version is 17.
 
 # Latest version
-Current latest version is `3.2.0`.
+Current latest version is `3.3.0`.
 <br/>
 Maven dependency
 ```
 <dependency>
     <groupId>com.github.chaosfirebolt.converter</groupId>
     <artifactId>roman-numeral-converter</artifactId>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
 </dependency>
 ```
 [All artifacts in maven central](https://mvnrepository.com/artifact/com.github.chaosfirebolt.converter/roman-numeral-converter)
@@ -54,9 +54,12 @@ RomanInteger romanInteger4 = RomanInteger.parse("11");
 
 //plug in custom cache implementation
 RomanInteger.setCache(parserCache -> new CustomCache(parserCache, otherDependency));
-RomanInteger.setCache(BiDirectionalMapRomanIntegerCache::new);
+RomanInteger.setCache(BiDirectionalRomanIntegerCache::new);
 //plug in cache initialized in advance with provided data
-RomanInteger.setCache(parserCache -> new MapRomanIntegerCache(parserCache, new HashMap<>(), new ProvidedDataInitializationSource()));
+RomanInteger.setCache(parserCache -> new UniDirectionalRomanIntegerCache(parserCache, MapStorage.strict(TreeMap::new), new ProvidedInitializationData()));
+//plugin cache with custom storage
+RomanInteger.setCache(parserCache -> new DefaultRomanIntegerCache(parserCache, customStorage, new RomanIntegerArrayInitializationData(new BasicNumeralsInputSource())));
+RomanInteger.setCache(parserCache -> new DefaultRomanIntegerCache(parserCache, customStorage, new NoOpMapData<>()));
 ```
 
 # Licence

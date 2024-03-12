@@ -5,8 +5,8 @@ package com.github.chaosfirebolt.converter.api.initialization;
  */
 public interface InitializationCapable {
 
-    /**
-     * Performs the initialization.
-     */
-    void initialize();
+  /**
+   * Performs the initialization.
+   */
+  void initialize();
 }

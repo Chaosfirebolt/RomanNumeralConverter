@@ -10,13 +10,13 @@ import java.util.Map;
  */
 public class RomanIntegerArrayToMapTransformation implements Transformation<RomanInteger[], Map<String, RomanInteger>> {
 
-    @Override
-    public Map<String, RomanInteger> transform(RomanInteger[] romanIntegers) {
-        Map<String, RomanInteger> result = new HashMap<>(romanIntegers.length * 2);
-        for (RomanInteger romanInteger : romanIntegers) {
-            result.put(romanInteger.getRoman(), romanInteger);
-            result.put(Integer.toString(romanInteger.getArabic()), romanInteger);
-        }
-        return result;
+  @Override
+  public Map<String, RomanInteger> transform(RomanInteger[] romanIntegers) {
+    Map<String, RomanInteger> result = new HashMap<>(romanIntegers.length * 2);
+    for (RomanInteger romanInteger : romanIntegers) {
+      result.put(romanInteger.getRoman(), romanInteger);
+      result.put(Integer.toString(romanInteger.getArabic()), romanInteger);
     }
+    return result;
+  }
 }

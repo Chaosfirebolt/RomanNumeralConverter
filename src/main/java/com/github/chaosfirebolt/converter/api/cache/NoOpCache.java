@@ -6,25 +6,28 @@ import java.util.function.Supplier;
 
 /**
  * Does not cache anything, computes value every time.
+ *
  * @param <K> type of the key, by which the value is saved
  * @param <V> type of the cached value
+ * @deprecated Deprecated since version 3.3.0
  */
+@Deprecated(since = "3.3.0", forRemoval = true)
 public abstract class NoOpCache<K, V> extends BaseCache<K, V> {
 
-    /**
-     * @param computation function to compute the value, if a cache is not found
-     * @param exceptionSupplier supplier for an exception to be thrown, if a value can't be returned
-     */
-    protected NoOpCache(Function<K, V> computation, Supplier<? extends RuntimeException> exceptionSupplier) {
-        super(computation, exceptionSupplier);
-    }
+  /**
+   * @param computation       function to compute the value, if a cache is not found
+   * @param exceptionSupplier supplier for an exception to be thrown, if a value can't be returned
+   */
+  protected NoOpCache(Function<K, V> computation, Supplier<? extends RuntimeException> exceptionSupplier) {
+    super(computation, exceptionSupplier);
+  }
 
-    @Override
-    protected Optional<V> computeIfAbsent(K key, Function<K, V> computation) {
-        return Optional.ofNullable(computation.apply(key));
-    }
+  @Override
+  protected Optional<V> computeIfAbsent(K key, Function<K, V> computation) {
+    return Optional.ofNullable(computation.apply(key));
+  }
 
-    @Override
-    public void clear() {
-    }
+  @Override
+  public void clear() {
+  }
 }

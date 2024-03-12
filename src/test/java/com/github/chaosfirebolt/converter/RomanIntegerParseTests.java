@@ -14,86 +14,86 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RomanIntegerParseTests {
 
-    @Test
-    public void parseStringParam_ValidInputArabic_ShouldReturnCorrect() {
-        int input = 19;
-        RomanInteger result = RomanInteger.parse(Integer.toString(input));
-        assertEquals(input, result.getArabic(), "Arabic representation not as expected");
-        String expectedRoman = "XIX";
-        assertEquals(expectedRoman, result.getRoman(), "Roman representation not as expected");
-    }
+  @Test
+  public void parseStringParam_ValidInputArabic_ShouldReturnCorrect() {
+    int input = 19;
+    RomanInteger result = RomanInteger.parse(Integer.toString(input));
+    assertEquals(input, result.getArabic(), "Arabic representation not as expected");
+    String expectedRoman = "XIX";
+    assertEquals(expectedRoman, result.getRoman(), "Roman representation not as expected");
+  }
 
-    @Test
-    public void parseStringParam_ValidRomanInput_ShouldReturnCorrect() {
-        String input = "XxIV";
-        RomanInteger result = RomanInteger.parse(input);
+  @Test
+  public void parseStringParam_ValidRomanInput_ShouldReturnCorrect() {
+    String input = "XxIV";
+    RomanInteger result = RomanInteger.parse(input);
 
-        String expectedRoman = input.toUpperCase();
-        assertEquals(expectedRoman, result.getRoman());
-        int expectedArabic = 24;
-        assertEquals(expectedArabic, result.getArabic());
-    }
+    String expectedRoman = input.toUpperCase();
+    assertEquals(expectedRoman, result.getRoman());
+    int expectedArabic = 24;
+    assertEquals(expectedArabic, result.getArabic());
+  }
 
-    @ParameterizedTest
-    @MethodSource("invalidData")
-    public void invalidInput_ShouldThrowException(Class<? extends Exception> expectedException, String input) {
-        assertException(expectedException, () -> RomanInteger.parse(input), () -> String.format("%s expected, but not thrown for input - %s", expectedException.getSimpleName(), input));
-    }
+  @ParameterizedTest
+  @MethodSource("invalidData")
+  public void invalidInput_ShouldThrowException(Class<? extends Exception> expectedException, String input) {
+    assertException(expectedException, () -> RomanInteger.parse(input), () -> String.format("%s expected, but not thrown for input - %s", expectedException.getSimpleName(), input));
+  }
 
-    private static Stream<Arguments> invalidData() {
-        return Stream.of(Arguments.of(IllegalArgumentException.class, "-19"), Arguments.of(IllegalArgumentException.class, "4263"),
-                        Arguments.of(NumberFormatException.class, "X IV"), Arguments.of(NumberFormatException.class, "Vh"));
-    }
+  private static Stream<Arguments> invalidData() {
+    return Stream.of(Arguments.of(IllegalArgumentException.class, "-19"), Arguments.of(IllegalArgumentException.class, "4263"),
+            Arguments.of(NumberFormatException.class, "X IV"), Arguments.of(NumberFormatException.class, "Vh"));
+  }
 
-    private static void assertException(Class<? extends Exception> expectedException, Executable executable, Supplier<String> errorMessageSupplier) {
-        Exception exception = assertThrows(expectedException, executable, errorMessageSupplier);
-        String message = exception.getMessage();
-        assertTrue(message != null && !message.isEmpty(), "Message expected, but not found");
-    }
+  private static void assertException(Class<? extends Exception> expectedException, Executable executable, Supplier<String> errorMessageSupplier) {
+    Exception exception = assertThrows(expectedException, executable, errorMessageSupplier);
+    String message = exception.getMessage();
+    assertTrue(message != null && !message.isEmpty(), "Message expected, but not found");
+  }
 
-    @ParameterizedTest()
-    @ValueSource(strings = { "1", "11", "111" })
-    public void cacheInitiallyDisabled_ShouldReturnDifferentInstances(String arabic) {
-        assertInstancesNotSame(arabic);
-    }
+  @ParameterizedTest()
+  @ValueSource(strings = {"1", "11", "111"})
+  public void cacheInitiallyDisabled_ShouldReturnDifferentInstances(String arabic) {
+    assertInstancesNotSame(arabic);
+  }
 
-    private static void assertInstancesNotSame(String value) {
-        RomanInteger first = RomanInteger.parse(value);
-        RomanInteger second = RomanInteger.parse(value);
-        assertNotSame(first, second, "Expected different instances, but were same");
-    }
+  private static void assertInstancesNotSame(String value) {
+    RomanInteger first = RomanInteger.parse(value);
+    RomanInteger second = RomanInteger.parse(value);
+    assertNotSame(first, second, "Expected different instances, but were same");
+  }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "987", "1542", "3919" })
-    public void cacheEnabled_ShouldReturnSameInstances(String arabic) {
-        RomanInteger.enableCache();
-        RomanInteger first = RomanInteger.parse(arabic);
-        RomanInteger second = RomanInteger.parse(arabic);
-        assertSame(first, second, "Expected same instances, but were different");
-    }
+  @ParameterizedTest
+  @ValueSource(strings = {"987", "1542", "3919"})
+  public void cacheEnabled_ShouldReturnSameInstances(String arabic) {
+    RomanInteger.enableCache();
+    RomanInteger first = RomanInteger.parse(arabic);
+    RomanInteger second = RomanInteger.parse(arabic);
+    assertSame(first, second, "Expected same instances, but were different");
+  }
 
-    @ParameterizedTest
-    @ValueSource(strings = { "VII", "IV", "XL" })
-    public void cacheDisabled_ShouldReturnDifferentInstances(String roman) {
-        RomanInteger.enableCache();
-        RomanInteger.disableCache();
-        assertInstancesNotSame(roman);
-    }
+  @ParameterizedTest
+  @ValueSource(strings = {"VII", "IV", "XL"})
+  public void cacheDisabled_ShouldReturnDifferentInstances(String roman) {
+    RomanInteger.enableCache();
+    RomanInteger.disableCache();
+    assertInstancesNotSame(roman);
+  }
 
-    @ParameterizedTest
-    @MethodSource("basicNumerals")
-    public void enableCache_BasicNumeralsShouldBeCachedInBothDirections(RomanInteger basic) {
-        RomanInteger.enableCache();
+  @ParameterizedTest
+  @MethodSource("basicNumerals")
+  public void enableCache_BasicNumeralsShouldBeCachedInBothDirections(RomanInteger basic) {
+    RomanInteger.enableCache();
 
-        RomanInteger parsedFromArabic = RomanInteger.parse(Integer.toString(basic.getArabic()));
-        assertSame(basic, parsedFromArabic, () -> String.format("Should have returned same instance when parsing from arabic for basic numeral: %s", basic));
-        RomanInteger parsedFromRoman = RomanInteger.parse(basic.getRoman());
-        assertSame(basic, parsedFromRoman, () -> String.format("Should have returned same instance when parsing from roman for basic numeral: %s", basic));
+    RomanInteger parsedFromArabic = RomanInteger.parse(Integer.toString(basic.getArabic()));
+    assertSame(basic, parsedFromArabic, () -> String.format("Should have returned same instance when parsing from arabic for basic numeral: %s", basic));
+    RomanInteger parsedFromRoman = RomanInteger.parse(basic.getRoman());
+    assertSame(basic, parsedFromRoman, () -> String.format("Should have returned same instance when parsing from roman for basic numeral: %s", basic));
 
-        RomanInteger.disableCache();
-    }
+    RomanInteger.disableCache();
+  }
 
-    private static Stream<Arguments> basicNumerals() {
-        return Stream.of(RomanInteger.ONE, RomanInteger.FIVE, RomanInteger.TEN, RomanInteger.FIFTY, RomanInteger.HUNDRED, RomanInteger.FIVE_HUNDRED, RomanInteger.THOUSAND).map(Arguments::of);
-    }
+  private static Stream<Arguments> basicNumerals() {
+    return Stream.of(RomanInteger.ONE, RomanInteger.FIVE, RomanInteger.TEN, RomanInteger.FIFTY, RomanInteger.HUNDRED, RomanInteger.FIVE_HUNDRED, RomanInteger.THOUSAND).map(Arguments::of);
+  }
 }

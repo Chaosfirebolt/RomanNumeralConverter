@@ -12,44 +12,44 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RangeInitializationDataTests {
 
-    @ParameterizedTest
-    @CsvSource({ "-1, 100", "0, 11", "-5, 233" })
-    public void startOutsideOfRange_ShouldThrowIllegalArgumentException(int start, int end) {
-        assertExceptionThrownForInvalidInput(start, end);
-    }
+  @ParameterizedTest
+  @CsvSource({"-1, 100", "0, 11", "-5, 233"})
+  public void startOutsideOfRange_ShouldThrowIllegalArgumentException(int start, int end) {
+    assertExceptionThrownForInvalidInput(start, end);
+  }
 
-    private static void assertExceptionThrownForInvalidInput(int start, int end) {
-        Supplier<String> errorMessageSupplier = () -> String.format("Exception should have been thrown for range %d - %d", start, end);
-        IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, () -> new RangeInitializationData(start, end), errorMessageSupplier);
-        assertTrue(exc.getMessage() != null && !exc.getMessage().isEmpty(), "Exception should have had a message");
-    }
+  private static void assertExceptionThrownForInvalidInput(int start, int end) {
+    Supplier<String> errorMessageSupplier = () -> String.format("Exception should have been thrown for range %d - %d", start, end);
+    IllegalArgumentException exc = assertThrows(IllegalArgumentException.class, () -> new RangeInitializationData(start, end), errorMessageSupplier);
+    assertTrue(exc.getMessage() != null && !exc.getMessage().isEmpty(), "Exception should have had a message");
+  }
 
-    @ParameterizedTest
-    @CsvSource({ "1, 4000", "526, 5698", "3999, 25987" })
-    public void endOutsideOfRange_ShouldThrowIllegalArgumentException(int start, int end) {
-        assertExceptionThrownForInvalidInput(start, end);
-    }
+  @ParameterizedTest
+  @CsvSource({"1, 4000", "526, 5698", "3999, 25987"})
+  public void endOutsideOfRange_ShouldThrowIllegalArgumentException(int start, int end) {
+    assertExceptionThrownForInvalidInput(start, end);
+  }
 
-    @ParameterizedTest
-    @CsvSource({ "35, 11", "3999, 3998", "749, 123" })
-    public void startIsLargerThanEnd_ShouldThrowIllegalArgumentException(int start, int end) {
-        assertExceptionThrownForInvalidInput(start, end);
-    }
+  @ParameterizedTest
+  @CsvSource({"35, 11", "3999, 3998", "749, 123"})
+  public void startIsLargerThanEnd_ShouldThrowIllegalArgumentException(int start, int end) {
+    assertExceptionThrownForInvalidInput(start, end);
+  }
 
-    @ParameterizedTest
-    @CsvSource({ "2, 2", "11, 250", "9, 3947", "1, 1111", "500, 1500" })
-    public void validaRange_ShouldReturnCorrectResult(int start, int end) {
-        RangeInitializationData source = new RangeInitializationData(start, end);
-        Map<String, RomanInteger> actualMap = source.getData();
-        int expectedSize = ((end - start) + 1) * 2;
-        assertEquals(expectedSize, actualMap.size(), "Size not as expected");
+  @ParameterizedTest
+  @CsvSource({"2, 2", "11, 250", "9, 3947", "1, 1111", "500, 1500"})
+  public void validaRange_ShouldReturnCorrectResult(int start, int end) {
+    RangeInitializationData source = new RangeInitializationData(start, end);
+    Map<String, RomanInteger> actualMap = source.getData();
+    int expectedSize = ((end - start) + 1) * 2;
+    assertEquals(expectedSize, actualMap.size(), "Size not as expected");
 
-        Map<String, RomanInteger> expectedMap = new HashMap<>();
-        for (int i = start; i <= end; i++) {
-            RomanInteger romanInteger = RomanInteger.parse(Integer.toString(i));
-            expectedMap.put(romanInteger.getRoman(), romanInteger);
-            expectedMap.put(Integer.toString(romanInteger.getArabic()), romanInteger);
-        }
-        assertEquals(expectedMap, actualMap, "Result not as expected");
+    Map<String, RomanInteger> expectedMap = new HashMap<>();
+    for (int i = start; i <= end; i++) {
+      RomanInteger romanInteger = RomanInteger.parse(Integer.toString(i));
+      expectedMap.put(romanInteger.getRoman(), romanInteger);
+      expectedMap.put(Integer.toString(romanInteger.getArabic()), romanInteger);
     }
+    assertEquals(expectedMap, actualMap, "Result not as expected");
+  }
 }
