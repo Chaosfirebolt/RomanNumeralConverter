@@ -1,6 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.api.InvalidResultException;
+import com.github.chaosfirebolt.converter.api.OperationFailure;
 import com.github.chaosfirebolt.converter.api.cache.DefaultCache;
 import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
@@ -18,7 +18,7 @@ class NoOpRomanIntegerCache extends DefaultCache<String, RomanInteger> implement
    * @param parserCache parsers cache
    */
   NoOpRomanIntegerCache(ParserCache parserCache) {
-    super(null, Computation.wrap(new ParseComputation(parserCache)), () -> new InvalidResultException("Returned value was null"));
+    super(null, Computation.wrap(new ParseComputation(parserCache)), () -> new OperationFailure("Caching failure"));
   }
 
   @Override

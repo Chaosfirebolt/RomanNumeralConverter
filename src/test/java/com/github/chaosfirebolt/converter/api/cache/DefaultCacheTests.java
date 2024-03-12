@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter.api.cache;
 
+import com.github.chaosfirebolt.converter.api.OperationFailure;
 import com.github.chaosfirebolt.converter.api.cache.storage.Computation;
 import com.github.chaosfirebolt.converter.api.cache.storage.Storage;
 import com.github.chaosfirebolt.converter.api.initialization.InitializationData;
@@ -19,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class DefaultCacheTests {
-  
+
   private static final String UNEXPECTED_EXCEPTION = "Expected exception not thrown";
 
   private final Storage<String, String> storage;
@@ -45,8 +46,7 @@ public class DefaultCacheTests {
       return valueFromKey(arg);
     });
 
-    //does not matter what exception is created
-    when(exceptionSupplier.get()).thenReturn(new IllegalStateException("something went wrong"));
+    when(exceptionSupplier.get()).thenReturn(new OperationFailure("something went wrong"));
 
     this.cache = spy(new DefaultCache<>(storage, computation, initializationData, exceptionSupplier));
   }
@@ -101,7 +101,7 @@ public class DefaultCacheTests {
   public void someException_ShouldBeWrappedAndReThrownByExceptionSupplier(Exception realException) {
     doThrow(realException).when(cache).computeIfAbsent(any(), any(), any());
 
-    IllegalStateException thrownException = assertThrows(IllegalStateException.class, () -> cache.getValue("qwerty"), UNEXPECTED_EXCEPTION);
+    OperationFailure thrownException = assertThrows(OperationFailure.class, () -> cache.getValue("qwerty"), UNEXPECTED_EXCEPTION);
     assertNotSame(realException, thrownException, "Incorrect exception thrown");
     assertSame(realException, thrownException.getCause(), "Real exception should have been cause");
     verify(exceptionSupplier).get();

@@ -1,6 +1,6 @@
 package com.github.chaosfirebolt.converter;
 
-import com.github.chaosfirebolt.converter.api.InvalidResultException;
+import com.github.chaosfirebolt.converter.api.OperationFailure;
 import com.github.chaosfirebolt.converter.api.cache.DefaultCache;
 import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
@@ -34,6 +34,6 @@ public class UniDirectionalRomanIntegerCache extends DefaultCache<String, RomanI
    * @param initializationData data to pre initialize the cache with
    */
   public UniDirectionalRomanIntegerCache(ParserCache parserCache, Storage<String, RomanInteger> storage, InitializationData<Map<String, RomanInteger>> initializationData) {
-    super(storage, Computation.wrap(new ParseComputation(parserCache)), initializationData, () -> new InvalidResultException("Returned value was null"));
+    super(storage, Computation.wrap(new ParseComputation(parserCache)), initializationData, () -> new OperationFailure("Caching failure"));
   }
 }
