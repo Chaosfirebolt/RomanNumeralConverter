@@ -27,6 +27,7 @@ public class DefaultCacheTests {
   private final Computation<String, String> computation;
   private final InitializationData<Map<String, String>> initializationData;
   private final Supplier<RuntimeException> exceptionSupplier;
+  private final Extraction<String, String> extraction;
 
   private DefaultCache<String, String> cache;
 
@@ -35,6 +36,15 @@ public class DefaultCacheTests {
     this.computation = mock();
     this.initializationData = spy(new NoOpMapData<>());
     this.exceptionSupplier = mock();
+    this.extraction = spy(new DefaultExtraction());
+  }
+
+  private static final class DefaultExtraction implements Extraction<String, String> {
+
+    @Override
+    public String extract(Storage<String, String> storage, String key, Computation<String, String> computation) {
+      return storage.compute(key, computation);
+    }
   }
 
   @BeforeEach
@@ -48,7 +58,7 @@ public class DefaultCacheTests {
 
     when(exceptionSupplier.get()).thenReturn(new OperationFailure("something went wrong"));
 
-    this.cache = spy(new DefaultCache<>(storage, computation, initializationData, exceptionSupplier));
+    this.cache = spy(new DefaultCache<>(storage, computation, initializationData, exceptionSupplier, extraction));
   }
 
   private static String valueFromKey(String key) {
@@ -79,31 +89,37 @@ public class DefaultCacheTests {
   @Test
   public void npeForWhateverReason_ShouldBeRethrown() {
     NullPointerException expectedException = new NullPointerException("msg");
-    doThrow(expectedException).when(cache).computeIfAbsent(any(), any(), any());
+    doThrow(expectedException).when(extraction).extract(any(), any(), any());
 
     NullPointerException thrownException = assertThrows(NullPointerException.class, () -> cache.getValue("qwerty"), UNEXPECTED_EXCEPTION);
     assertSame(expectedException, thrownException, "Null pointer exception was not rethrown");
+
+    verify(extraction).extract(any(), any(), any());
     verify(exceptionSupplier, never()).get();
   }
 
   @Test
   public void illegalArgumentExceptionForWhateverReason_ShouldBeRethrown() {
     IllegalArgumentException expectedException = new IllegalArgumentException("msg");
-    doThrow(expectedException).when(cache).computeIfAbsent(any(), any(), any());
+    doThrow(expectedException).when(extraction).extract(any(), any(), any());
 
     IllegalArgumentException thrownException = assertThrows(IllegalArgumentException.class, () -> cache.getValue("qwerty"), UNEXPECTED_EXCEPTION);
     assertSame(expectedException, thrownException, "Illegal argument exception was not rethrown");
+
+    verify(extraction).extract(any(), any(), any());
     verify(exceptionSupplier, never()).get();
   }
 
   @ParameterizedTest
   @MethodSource("exceptions")
   public void someException_ShouldBeWrappedAndReThrownByExceptionSupplier(Exception realException) {
-    doThrow(realException).when(cache).computeIfAbsent(any(), any(), any());
+    doThrow(realException).when(extraction).extract(any(), any(), any());
 
     OperationFailure thrownException = assertThrows(OperationFailure.class, () -> cache.getValue("qwerty"), UNEXPECTED_EXCEPTION);
     assertNotSame(realException, thrownException, "Incorrect exception thrown");
     assertSame(realException, thrownException.getCause(), "Real exception should have been cause");
+
+    verify(extraction).extract(any(), any(), any());
     verify(exceptionSupplier).get();
   }
 
