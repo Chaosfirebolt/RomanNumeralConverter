@@ -21,6 +21,7 @@ public class DefaultCache<K, V> implements Cache<K, V>, InitializationCapable {
   private final Computation<K, V> computation;
   private final InitializationData<Map<K, V>> initializationData;
   private final Supplier<? extends RuntimeException> exceptionSupplier;
+  private final Extraction<K, V> extraction;
 
   /**
    * Defaults to no initialization data.
@@ -40,10 +41,23 @@ public class DefaultCache<K, V> implements Cache<K, V>, InitializationCapable {
    * @param exceptionSupplier  supplier for an exception to be thrown, if a value can't be returned
    */
   public DefaultCache(Storage<K, V> storage, Computation<K, V> computation, InitializationData<Map<K, V>> initializationData, Supplier<? extends RuntimeException> exceptionSupplier) {
+    this(storage, computation, initializationData, exceptionSupplier, Storage::compute);
+  }
+
+  /**
+   * @param storage            storage for cached values
+   * @param computation        function to compute the value, if a cache is not found
+   * @param initializationData source of the initial data tobe stored in cache
+   * @param exceptionSupplier  supplier for an exception to be thrown, if a value can't be returned
+   * @param extraction         operation to extract the value
+   */
+  public DefaultCache(Storage<K, V> storage, Computation<K, V> computation, InitializationData<Map<K, V>> initializationData,
+                      Supplier<? extends RuntimeException> exceptionSupplier, Extraction<K, V> extraction) {
     this.storage = storage;
     this.computation = computation;
     this.initializationData = initializationData;
     this.exceptionSupplier = exceptionSupplier;
+    this.extraction = extraction;
   }
 
   /**
@@ -74,7 +88,7 @@ public class DefaultCache<K, V> implements Cache<K, V>, InitializationCapable {
    * @return the value
    */
   protected V computeIfAbsent(Storage<K, V> storage, K key, Computation<K, V> computation) {
-    return storage.compute(key, computation);
+    return extraction.extract(storage, key, computation);
   }
 
   @Override
