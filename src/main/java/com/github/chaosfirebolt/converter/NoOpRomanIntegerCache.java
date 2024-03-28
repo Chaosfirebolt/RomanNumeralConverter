@@ -18,7 +18,7 @@ class NoOpRomanIntegerCache extends DefaultCache<String, RomanInteger> implement
    * @param parserCache parsers cache
    */
   NoOpRomanIntegerCache(ParserCache parserCache) {
-    super(null, Computation.wrap(new ParseComputation(parserCache)), () -> new OperationFailure("Caching failure"));
+    super(null, new DelegatingParser(parserCache), () -> new OperationFailure("Caching failure"));
   }
 
   @Override

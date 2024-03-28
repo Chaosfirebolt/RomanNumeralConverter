@@ -36,6 +36,6 @@ public class MapRomanIntegerCache extends MapCache<String, RomanInteger> impleme
    * @param initializationData source to initialize the cache with
    */
   public MapRomanIntegerCache(ParserCache parserCache, Map<String, RomanInteger> cache, InitializationData<Map<String, RomanInteger>> initializationData) {
-    super(new ParseComputation(parserCache), () -> new InvalidResultException("Returned value was null"), cache, initializationData);
+    super(new DelegatingParser(parserCache), () -> new InvalidResultException("Returned value was null"), cache, initializationData);
   }
 }
