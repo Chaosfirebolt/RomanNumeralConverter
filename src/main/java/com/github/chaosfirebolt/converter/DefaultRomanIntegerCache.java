@@ -4,7 +4,6 @@ import com.github.chaosfirebolt.converter.api.OperationFailure;
 import com.github.chaosfirebolt.converter.api.cache.DefaultCache;
 import com.github.chaosfirebolt.converter.api.cache.ParserCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
-import com.github.chaosfirebolt.converter.api.cache.storage.Computation;
 import com.github.chaosfirebolt.converter.api.cache.storage.MapStorage;
 import com.github.chaosfirebolt.converter.api.cache.storage.Storage;
 import com.github.chaosfirebolt.converter.api.initialization.InitializationData;
@@ -34,6 +33,6 @@ public class DefaultRomanIntegerCache extends DefaultCache<String, RomanInteger>
    * @param initializationData data to pre initialize the cache with
    */
   public DefaultRomanIntegerCache(ParserCache parserCache, Storage<String, RomanInteger> storage, InitializationData<Map<String, RomanInteger>> initializationData) {
-    super(storage, Computation.wrap(new ParseComputation(parserCache)), initializationData, () -> new OperationFailure("Caching failure"));
+    super(storage, new DelegatingParser(parserCache), initializationData, () -> new OperationFailure("Caching failure"));
   }
 }
