@@ -41,14 +41,14 @@ public non-sealed abstract class BaseInitializationData<I, O> implements Initial
 
   @Override
   public final O getData() {
-    this.input = this.inputSource.getInputData();
-    this.output = this.transformation.transform(this.input);
-    return this.output;
+    input = inputSource.getInputData();
+    output = transformation.transform(input);
+    return output;
   }
 
   @Override
   public final void cleanup() {
-    this.doCleanup(this.input, this.output);
+    doCleanup(input, output);
   }
 
   /**

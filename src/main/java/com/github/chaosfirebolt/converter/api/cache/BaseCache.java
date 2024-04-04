@@ -38,7 +38,7 @@ public abstract class BaseCache<K, V> implements Cache<K, V> {
    */
   @Override
   public final V getValue(K key) {
-    return computeIfAbsent(Objects.requireNonNull(key, "Key can't be null"), this.computation).orElseThrow(this.exceptionSupplier);
+    return computeIfAbsent(Objects.requireNonNull(key, "Key can't be null"), computation).orElseThrow(exceptionSupplier);
   }
 
   /**

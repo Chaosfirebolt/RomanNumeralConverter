@@ -33,6 +33,6 @@ public abstract class ClassPathInputStreamSource<StreamResult> extends InputStre
 
   @Override
   protected InputStream createInputStream(String path) {
-    return this.classLoader.getResourceAsStream(path);
+    return classLoader.getResourceAsStream(path);
   }
 }

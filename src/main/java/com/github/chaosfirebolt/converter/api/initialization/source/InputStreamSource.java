@@ -31,8 +31,8 @@ public abstract class InputStreamSource<StreamResult> implements InputSource<Str
    */
   @Override
   public final StreamResult getInputData() {
-    try (InputStream inputStream = this.createInputStream(this.path)) {
-      return this.readInputStream(inputStream);
+    try (InputStream inputStream = createInputStream(path)) {
+      return readInputStream(inputStream);
     } catch (IOException exc) {
       throw new UncheckedIOException(exc);
     }

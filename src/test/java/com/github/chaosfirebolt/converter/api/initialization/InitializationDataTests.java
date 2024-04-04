@@ -27,18 +27,18 @@ public class InitializationDataTests {
   @BeforeEach
   public void setup() {
     this.initializationData = new HashMap<>(Map.of(RomanInteger.ONE.getRoman(), RomanInteger.ONE));
-    this.mockedTransformation = Mockito.mockConstructionWithAnswer(RomanIntegerArrayToMapTransformation.class, invocation -> this.initializationData);
+    this.mockedTransformation = Mockito.mockConstructionWithAnswer(RomanIntegerArrayToMapTransformation.class, invocation -> initializationData);
     this.resource = new RomanInteger[]{RomanInteger.ONE};
   }
 
   @AfterEach
   public void cleanup() {
-    this.mockedTransformation.close();
+    mockedTransformation.close();
   }
 
   @Test
   public void providedInitializationData_AssertResourcesAreFreed() {
-    try (MockedConstruction<SerializedArrayClassPathSource> ignored = Mockito.mockConstructionWithAnswer(SerializedArrayClassPathSource.class, invocation -> this.resource)) {
+    try (MockedConstruction<SerializedArrayClassPathSource> ignored = Mockito.mockConstructionWithAnswer(SerializedArrayClassPathSource.class, invocation -> resource)) {
       ProvidedInitializationData providedInitializationData = new ProvidedInitializationData();
       executeAndAssert(providedInitializationData);
     }
@@ -47,13 +47,13 @@ public class InitializationDataTests {
   private void executeAndAssert(BaseInitializationData<RomanInteger[], Map<String, RomanInteger>> initializationData) {
     initializationData.getData();
     initializationData.cleanup();
-    assertArrayEquals(new RomanInteger[]{null}, this.resource, "Source result not cleaned");
+    assertArrayEquals(new RomanInteger[]{null}, resource, "Source result not cleaned");
     assertTrue(this.initializationData.isEmpty(), "Transformation result not cleaned");
   }
 
   @Test
   public void rangeInitializationData_AssertResourcesAreFreed() {
-    try (MockedConstruction<RangeInputSource> ignored = Mockito.mockConstructionWithAnswer(RangeInputSource.class, invocation -> this.resource)) {
+    try (MockedConstruction<RangeInputSource> ignored = Mockito.mockConstructionWithAnswer(RangeInputSource.class, invocation -> resource)) {
       RangeInitializationData rangeInitializationData = new RangeInitializationData(1, 1);
       executeAndAssert(rangeInitializationData);
     }
@@ -61,7 +61,7 @@ public class InitializationDataTests {
 
   @Test
   public void romanIntegerArrayInitializationData_AssertResourcesAreFreed() {
-    RomanIntegerArrayInitializationData data = new RomanIntegerArrayInitializationData(() -> this.resource);
+    RomanIntegerArrayInitializationData data = new RomanIntegerArrayInitializationData(() -> resource);
     executeAndAssert(data);
   }
 

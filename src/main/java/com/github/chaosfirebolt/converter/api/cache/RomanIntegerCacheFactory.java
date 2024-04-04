@@ -19,6 +19,6 @@ public interface RomanIntegerCacheFactory extends Function<ParserCache, RomanInt
    * @since 3.2.0
    */
   default RomanIntegerCache createCache(ParserCache parserCache) {
-    return this.apply(parserCache);
+    return apply(parserCache);
   }
 }

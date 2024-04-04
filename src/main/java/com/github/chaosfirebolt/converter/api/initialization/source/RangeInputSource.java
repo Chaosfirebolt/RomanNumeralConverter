@@ -40,7 +40,7 @@ public class RangeInputSource implements InputSource<RomanInteger[]> {
   @Override
   public RomanInteger[] getInputData() {
     Parser arabicParser = IntegerType.ARABIC.getParser();
-    return IntStream.rangeClosed(this.startInclusive, this.endInclusive)
+    return IntStream.rangeClosed(startInclusive, endInclusive)
             .mapToObj(num -> fromArabic(num, arabicParser))
             .toArray(RomanInteger[]::new);
   }
