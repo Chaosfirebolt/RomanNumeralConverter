@@ -26,6 +26,13 @@ public class SerializedArrayClassPathSource extends ClassPathInputStreamSource<R
     super(path);
   }
 
+  /**
+   * @param path path to the resource
+   */
+  public SerializedArrayClassPathSource(String path, Class<?> classLoader) {
+    super(path, classLoader);
+  }
+
   @Override
   protected RomanInteger[] readInputStream(InputStream inputStream) throws IOException {
     ObjectInputStream stream = new ObjectInputStream(inputStream);
