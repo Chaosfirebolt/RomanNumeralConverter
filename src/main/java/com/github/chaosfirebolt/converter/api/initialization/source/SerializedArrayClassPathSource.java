@@ -14,14 +14,18 @@ public class SerializedArrayClassPathSource extends ClassPathInputStreamSource<R
   /**
    * @param path        path to the resource
    * @param classLoader classLoader, responsible for creating the input stream
+   * @deprecated since 3.4.2, use {@link #SerializedArrayClassPathSource(String, Class)}
    */
+  @Deprecated(forRemoval = true, since = "3.4.2")
   public SerializedArrayClassPathSource(String path, ClassLoader classLoader) {
     super(path, classLoader);
   }
 
   /**
    * @param path path to the resource
+   * @deprecated since 3.4.2, use {@link #SerializedArrayClassPathSource(String, Class)}
    */
+  @Deprecated(forRemoval = true, since = "3.4.2")
   public SerializedArrayClassPathSource(String path) {
     super(path);
   }
