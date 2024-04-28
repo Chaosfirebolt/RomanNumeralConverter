@@ -35,6 +35,10 @@ public abstract class ClassPathInputStreamSource<StreamResult> extends InputStre
     this(path, ClassLoader.getSystemClassLoader());
   }
 
+  /**
+   * @param path path to the resource
+   * @param classLoader class to create an input stream for the resource
+   */
   public ClassPathInputStreamSource(String path, Class<?> classLoader) {
     super(path);
     this.resourceFactory = new ClassResourceFactory(classLoader);

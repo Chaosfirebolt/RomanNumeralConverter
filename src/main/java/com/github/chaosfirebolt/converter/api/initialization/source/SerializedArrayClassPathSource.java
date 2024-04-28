@@ -32,6 +32,7 @@ public class SerializedArrayClassPathSource extends ClassPathInputStreamSource<R
 
   /**
    * @param path path to the resource
+   * @param classLoader class, responsible for creating the input stream
    */
   public SerializedArrayClassPathSource(String path, Class<?> classLoader) {
     super(path, classLoader);
