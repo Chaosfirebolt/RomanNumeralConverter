@@ -19,7 +19,7 @@ public abstract class ClassPathInputStreamSource<StreamResult> extends InputStre
    * @deprecated since 3.4.2, prefer {@link #ClassPathInputStreamSource(String, Class)}
    */
   @Deprecated(forRemoval = true, since = "3.4.2")
-  public ClassPathInputStreamSource(String path, ClassLoader classLoader) {
+  protected ClassPathInputStreamSource(String path, ClassLoader classLoader) {
     super(path);
     this.resourceFactory = new ClassLoaderResourceFactory(classLoader);
   }
@@ -31,7 +31,7 @@ public abstract class ClassPathInputStreamSource<StreamResult> extends InputStre
    * @deprecated since 3.4.2, prefer {@link #ClassPathInputStreamSource(String, Class)}
    */
   @Deprecated(forRemoval = true, since = "3.4.2")
-  public ClassPathInputStreamSource(String path) {
+  protected ClassPathInputStreamSource(String path) {
     this(path, ClassLoader.getSystemClassLoader());
   }
 
@@ -39,7 +39,7 @@ public abstract class ClassPathInputStreamSource<StreamResult> extends InputStre
    * @param path path to the resource
    * @param classLoader class to create an input stream for the resource
    */
-  public ClassPathInputStreamSource(String path, Class<?> classLoader) {
+  protected ClassPathInputStreamSource(String path, Class<?> classLoader) {
     super(path);
     this.resourceFactory = new ClassResourceFactory(classLoader);
   }
