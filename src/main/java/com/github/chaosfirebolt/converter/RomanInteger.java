@@ -191,7 +191,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
    * @return arabic number representing this RomanInteger.
    */
   public int getArabic() {
-    return this.arabicRepresentation;
+    return arabicRepresentation;
   }
 
   /**
@@ -200,12 +200,12 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
    * @return roman number representing this RomanInteger.
    */
   public String getRoman() {
-    return this.romanRepresentation;
+    return romanRepresentation;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.arabicRepresentation, this.romanRepresentation);
+    return Objects.hash(arabicRepresentation, romanRepresentation);
   }
 
   /**
@@ -226,12 +226,12 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
     if (!(obj instanceof RomanInteger other)) {
       return false;
     }
-    return this.arabicRepresentation == other.arabicRepresentation && this.romanRepresentation.equals(other.romanRepresentation);
+    return arabicRepresentation == other.arabicRepresentation && romanRepresentation.equals(other.romanRepresentation);
   }
 
   @Override
   public String toString() {
-    return this.arabicRepresentation + " - " + this.romanRepresentation;
+    return arabicRepresentation + " - " + romanRepresentation;
   }
 
   /**

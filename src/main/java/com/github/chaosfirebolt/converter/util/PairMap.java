@@ -69,7 +69,7 @@ public final class PairMap {
    * @return unmodifiable mapping.
    */
   public Map<String, Integer> getRomanToArabic() {
-    return Collections.unmodifiableMap(this.romanToArabic);
+    return Collections.unmodifiableMap(romanToArabic);
   }
 
   /**
@@ -78,6 +78,6 @@ public final class PairMap {
    * @return unmodifiable mapping.
    */
   public NavigableMap<Integer, String> getArabicToRoman() {
-    return Collections.unmodifiableNavigableMap(this.arabicToRoman);
+    return Collections.unmodifiableNavigableMap(arabicToRoman);
   }
 }

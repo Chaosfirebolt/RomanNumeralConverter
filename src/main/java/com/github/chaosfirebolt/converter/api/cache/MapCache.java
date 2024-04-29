@@ -48,7 +48,7 @@ public abstract class MapCache<K, V> extends BaseCache<K, V> implements Initiali
 
   @Override
   protected Optional<V> computeIfAbsent(K key, Function<K, V> computation) {
-    V value = this.cacheIfAbsent(this.cache, key, computation);
+    V value = cacheIfAbsent(cache, key, computation);
     return Optional.ofNullable(value);
   }
 
@@ -66,12 +66,12 @@ public abstract class MapCache<K, V> extends BaseCache<K, V> implements Initiali
 
   @Override
   public void clear() {
-    this.cache.clear();
+    cache.clear();
   }
 
   @Override
   public void initialize() {
-    this.cache.putAll(this.initializationData.getData());
-    this.initializationData.cleanup();
+    cache.putAll(initializationData.getData());
+    initializationData.cleanup();
   }
 }

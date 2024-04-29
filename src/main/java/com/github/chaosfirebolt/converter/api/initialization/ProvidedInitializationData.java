@@ -12,13 +12,13 @@ import java.util.Map;
  */
 public class ProvidedInitializationData extends BaseInitializationData<RomanInteger[], Map<String, RomanInteger>> {
 
-  private static final String PATH = "values-array.ser";
+  private static final String PATH = "/values-array.ser";
 
   /**
    * Constructs new instance providing required source and transformation.
    */
   public ProvidedInitializationData() {
-    super(new SerializedArrayClassPathSource(PATH), new RomanIntegerArrayToMapTransformation());
+    super(new SerializedArrayClassPathSource(PATH, ProvidedInitializationData.class), new RomanIntegerArrayToMapTransformation());
   }
 
   @Override

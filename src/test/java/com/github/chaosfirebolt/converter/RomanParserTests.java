@@ -20,7 +20,7 @@ public class RomanParserTests {
   @ParameterizedTest
   @MethodSource
   public void validInputShouldReturnCorrectValue(String input, int expected) {
-    RomanInteger result = this.romanParser.parse(input);
+    RomanInteger result = romanParser.parse(input);
     assertEquals(expected, result.getArabic(), "Arabic representation not as expected");
     assertEquals(input.toUpperCase(Locale.ENGLISH).trim(), result.getRoman(), "Roman representation not as expected");
   }
@@ -38,7 +38,7 @@ public class RomanParserTests {
   @ParameterizedTest
   @MethodSource
   public void invalidInputShouldThrowException(Class<? extends Exception> expectedException, String input) {
-    Exception exc = assertThrows(expectedException, () -> this.romanParser.parse(input), () -> expectedException.getSimpleName() + " should have been thrown for input - " + input);
+    Exception exc = assertThrows(expectedException, () -> romanParser.parse(input), () -> expectedException.getSimpleName() + " should have been thrown for input - " + input);
     String message = exc.getMessage();
     assertTrue(message != null && !message.isEmpty(), "Error message expected, but not found");
   }

@@ -19,7 +19,7 @@ final class DelegatingParser implements Parser, Function<String, RomanInteger>, 
   public RomanInteger parse(String numeral) {
     String normalizedNumeral = numeral.trim().toUpperCase(Locale.ENGLISH);
     IntegerType integerType = IntegerType.fromNumeral(normalizedNumeral);
-    Parser parser = this.parserCache.getValue(integerType);
+    Parser parser = parserCache.getValue(integerType);
     return parser.parse(numeral);
   }
 

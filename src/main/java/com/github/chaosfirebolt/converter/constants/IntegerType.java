@@ -67,7 +67,7 @@ public enum IntegerType {
    * @return the parser
    */
   public Parser getParser() {
-    return this.supplier.get();
+    return supplier.get();
   }
 
   /**
