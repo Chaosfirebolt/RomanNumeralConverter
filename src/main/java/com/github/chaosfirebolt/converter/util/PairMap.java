@@ -4,9 +4,11 @@ import com.github.chaosfirebolt.converter.RomanInteger;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.function.Predicate;
 
 /**
  * Singleton holding mappings from arabic to roman, and roman to arabic basic numerals.
@@ -79,5 +81,50 @@ public final class PairMap {
    */
   public NavigableMap<Integer, String> getArabicToRoman() {
     return Collections.unmodifiableNavigableMap(arabicToRoman);
+  }
+
+  /**
+   * Experimental feature. Extend the range of roman numerals.
+   *
+   * @param romanSymbolFive symbol for the next order of five based numeral
+   * @param romanSymbolTen symbol for the next order of ten based numeral
+   * @throws IllegalArgumentException if the symbols are not ASCII letters or are already registered, or any other reason to consider them invalid
+   */
+  //TODO better parameter names!
+  public void registerNextOrder(char romanSymbolFive, char romanSymbolTen) {
+    if (romanSymbolFive == romanSymbolTen) {
+      throw new IllegalArgumentException("Duplicate symbols");
+    }
+    String fiveString = Character.toString(romanSymbolFive).toUpperCase(Locale.ENGLISH);
+    if (isNotLetter(romanSymbolFive) || romanToArabic.containsKey(fiveString)) {
+      throw new IllegalArgumentException(buildExceptionMessage(fiveString));
+    }
+    String tenString = Character.toString(romanSymbolTen).toUpperCase(Locale.ENGLISH);
+    if (isNotLetter(romanSymbolTen) || romanToArabic.containsKey(tenString)) {
+      throw new IllegalArgumentException(buildExceptionMessage(tenString));
+    }
+
+    int forTen = arabicToRoman.lastKey() * 10;
+    int forFive = forTen / 2;
+
+    add(romanToArabic, arabicToRoman, forTen, tenString);
+    add(romanToArabic, arabicToRoman, forFive, fiveString);
+  }
+
+  private static boolean isNotLetter(char ch) {
+    return (ch < 'A' || ch > 'Z') && (ch < 'a' || ch > 'z');
+  }
+
+  private static String buildExceptionMessage(String existingSymbol) {
+    return String.format("Symbol '%s' is already registered", existingSymbol);
+  }
+
+  public void clearAdditionalOrders() {
+    clearMap(romanToArabic, entry -> entry.getValue() > RomanInteger.THOUSAND.getArabic());
+    clearMap(arabicToRoman, entry -> entry.getKey() > RomanInteger.THOUSAND.getArabic());
+  }
+
+  private <K, V> void clearMap(Map<K, V> map, Predicate<Map.Entry<K, V>> removeCondition) {
+    map.entrySet().removeIf(removeCondition);
   }
 }

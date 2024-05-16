@@ -3,6 +3,7 @@ package com.github.chaosfirebolt.converter.constants;
 import com.github.chaosfirebolt.converter.ArabicParser;
 import com.github.chaosfirebolt.converter.Parser;
 import com.github.chaosfirebolt.converter.RomanParser;
+import com.github.chaosfirebolt.converter.util.PairMap;
 
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -15,11 +16,11 @@ public enum IntegerType {
   /**
    * Representation for arabic format integers.
    */
-  ARABIC(ArabicParser::new, Pattern.compile("^\\d+$")),
+  ARABIC(ArabicParser::new, new ArabicIntegerTypePatternFactory()),
   /**
    * Representation for roman format integers.
    */
-  ROMAN(RomanParser::new, Pattern.compile("^[IVXLCDM]+$"));
+  ROMAN(RomanParser::new, getRomanPatternFactory());
 
   private static final IntegerType[] VALUES = IntegerType.values();
   /**
@@ -34,15 +35,21 @@ public enum IntegerType {
   /**
    * Supplier for instances of parsers.
    */
-  private final Supplier<Parser> supplier;
+  private final Supplier<Parser> parserFactory;
   /**
    * The pattern that matches this integer type
    */
-  private final Pattern typePattern;
+  private final Supplier<Pattern> typePatternFactory;
 
-  IntegerType(Supplier<Parser> supplier, Pattern typePattern) {
-    this.supplier = supplier;
-    this.typePattern = typePattern;
+  IntegerType(Supplier<Parser> parserFactory, Supplier<Pattern> typePatternFactory) {
+    this.parserFactory = parserFactory;
+    this.typePatternFactory = typePatternFactory;
+  }
+
+  private static Supplier<Pattern> getRomanPatternFactory() {
+    Supplier<Pattern> patternFactory = new ResultCachingSupplier<>(new RomanIntegerTypePatternFactory(), new RecalculateByMapSize());
+    boolean shouldSynchronize = Boolean.getBoolean("r.n.c.sync");
+    return shouldSynchronize ? new SynchronizedSupplier<>(patternFactory) : patternFactory;
   }
 
   /**
@@ -54,7 +61,7 @@ public enum IntegerType {
    */
   public static IntegerType fromNumeral(String numeral) {
     for (IntegerType integerType : VALUES) {
-      if (integerType.typePattern.matcher(numeral).find()) {
+      if (integerType.typePatternFactory.get().matcher(numeral).find()) {
         return integerType;
       }
     }
@@ -62,23 +69,23 @@ public enum IntegerType {
   }
 
   /**
-   * Gets the corresponding parser for this integer type
+   * Gets the corresponding parser for this integer type.
    *
    * @return the parser
    */
   public Parser getParser() {
-    return supplier.get();
+    return parserFactory.get();
   }
 
   /**
-   * Verifies that provided string the pattern for this type.
+   * Verifies that provided string matches the pattern for this type.
    *
    * @param representation string to verify.
    * @return provided string if it matches pattern.
    * @throws NumberFormatException if provided string does not match pattern.
    */
   public String validateFormat(String representation) {
-    if (!typePattern.matcher(representation).find()) {
+    if (!typePatternFactory.get().matcher(representation).find()) {
       throw new NumberFormatException("Numeral does not match required format for string: " + representation);
     }
     return representation;
@@ -92,7 +99,7 @@ public enum IntegerType {
    * @throws IllegalArgumentException if provided integer is not in valid range.
    */
   public int validateRange(int arabic) {
-    if (arabic < MIN || arabic > MAX) {
+    if (arabic < MIN || arabic > MaxCalculator.calculateMax(PairMap.getInstance().getArabicToRoman().lastKey())) {
       throw new IllegalArgumentException(String.format("Valid range for roman integers is from %d to %d inclusive.", MIN, MAX));
     }
     return arabic;
