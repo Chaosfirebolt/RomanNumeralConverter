@@ -86,21 +86,21 @@ public final class PairMap {
   /**
    * Experimental feature. Extend the range of roman numerals.
    *
-   * @param romanSymbolFive symbol for the next order of five based numeral
-   * @param romanSymbolTen symbol for the next order of ten based numeral
+   * @param symbolNextOrderFive symbol for the next order of five based numeral
+   * @param symbolNextOrderTen symbol for the next order of ten based numeral
    * @throws IllegalArgumentException if the symbols are not ASCII letters or are already registered, or any other reason to consider them invalid
    */
   //TODO better parameter names!
-  public void registerNextOrder(char romanSymbolFive, char romanSymbolTen) {
-    if (romanSymbolFive == romanSymbolTen) {
+  public void registerNextOrder(char symbolNextOrderFive, char symbolNextOrderTen) {
+    if (symbolNextOrderFive == symbolNextOrderTen) {
       throw new IllegalArgumentException("Duplicate symbols");
     }
-    String fiveString = Character.toString(romanSymbolFive).toUpperCase(Locale.ENGLISH);
-    if (isNotLetter(romanSymbolFive) || romanToArabic.containsKey(fiveString)) {
+    String fiveString = Character.toString(symbolNextOrderFive).toUpperCase(Locale.ENGLISH);
+    if (isNotLetter(symbolNextOrderFive) || romanToArabic.containsKey(fiveString)) {
       throw new IllegalArgumentException(buildExceptionMessage(fiveString));
     }
-    String tenString = Character.toString(romanSymbolTen).toUpperCase(Locale.ENGLISH);
-    if (isNotLetter(romanSymbolTen) || romanToArabic.containsKey(tenString)) {
+    String tenString = Character.toString(symbolNextOrderTen).toUpperCase(Locale.ENGLISH);
+    if (isNotLetter(symbolNextOrderTen) || romanToArabic.containsKey(tenString)) {
       throw new IllegalArgumentException(buildExceptionMessage(tenString));
     }
 
@@ -119,6 +119,9 @@ public final class PairMap {
     return String.format("Symbol '%s' is already registered", existingSymbol);
   }
 
+  /**
+   * Experimental! Clears additional registered orders.
+   */
   public void clearAdditionalOrders() {
     clearMap(romanToArabic, entry -> entry.getValue() > RomanInteger.THOUSAND.getArabic());
     clearMap(arabicToRoman, entry -> entry.getKey() > RomanInteger.THOUSAND.getArabic());

@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter.constants;
 
+//TODO move to PairMap, maybe cache result?
 class MaxCalculator {
 
   static int calculateMax(int maxRegisteredValue) {
