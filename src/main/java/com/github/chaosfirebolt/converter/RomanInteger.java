@@ -246,7 +246,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
     if (!(obj instanceof RomanInteger other)) {
       return false;
     }
-    return arabicRepresentation == other.arabicRepresentation && romanRepresentation.equals(other.romanRepresentation);
+    return Objects.equals(arabicRepresentation, other.arabicRepresentation) && Objects.equals(romanRepresentation, other.romanRepresentation);
   }
 
   @Override
