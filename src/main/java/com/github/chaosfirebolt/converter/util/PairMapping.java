@@ -3,6 +3,9 @@ package com.github.chaosfirebolt.converter.util;
 import java.util.Map;
 import java.util.NavigableMap;
 
+/**
+ * The mapping of roman to arabic pairs.
+ */
 public sealed interface PairMapping permits PairMap {
 
   /**
@@ -56,7 +59,7 @@ public sealed interface PairMapping permits PairMap {
   default void validateRange(int arabic) {
     int min = calculateMin();
     int max = calculateMax();
-    if (arabic < min || arabic > min) {
+    if (arabic < min || arabic > max) {
       throw new IllegalArgumentException(String.format("Valid range for roman integers is from %d to %d inclusive.", min, max));
     }
   }

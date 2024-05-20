@@ -66,33 +66,16 @@ public final class PairMap implements PairMapping {
     toRoman.put(arabic, roman);
   }
 
-  /**
-   * Getter method for roman to arabic mapping.
-   *
-   * @return unmodifiable mapping.
-   */
   @Override
   public Map<String, Integer> getRomanToArabic() {
     return Collections.unmodifiableMap(romanToArabic);
   }
 
-  /**
-   * Getter method for arabic to roman mapping.
-   *
-   * @return unmodifiable mapping.
-   */
   @Override
   public NavigableMap<Integer, String> getArabicToRoman() {
     return Collections.unmodifiableNavigableMap(arabicToRoman);
   }
 
-  /**
-   * Experimental feature. Extend the range of roman numerals.
-   *
-   * @param symbolNextOrderFive symbol for the next order of five based numeral
-   * @param symbolNextOrderTen symbol for the next order of ten based numeral
-   * @throws IllegalArgumentException if the symbols are not ASCII letters or are already registered, or any other reason to consider them invalid
-   */
   @Override
   public void registerNextOrder(char symbolNextOrderFive, char symbolNextOrderTen) {
     if (symbolNextOrderFive == symbolNextOrderTen) {
@@ -122,9 +105,6 @@ public final class PairMap implements PairMapping {
     return String.format("Symbol '%s' is already registered", existingSymbol);
   }
 
-  /**
-   * Experimental! Clears additional registered orders.
-   */
   @Override
   public void clearAdditionalOrders() {
     clearMap(romanToArabic, entry -> entry.getValue() > RomanInteger.THOUSAND.getArabic());
