@@ -23,14 +23,6 @@ public enum IntegerType {
   ROMAN(RomanParser::new, getRomanPatternFactory());
 
   private static final IntegerType[] VALUES = IntegerType.values();
-  /**
-   * Minimal possible value of roman numeral.
-   */
-  private static final int MIN = 1;
-  /**
-   * Maximum possible value of roman numeral.
-   */
-  private static final int MAX = 3999;
 
   /**
    * Supplier for instances of parsers.
@@ -99,9 +91,7 @@ public enum IntegerType {
    * @throws IllegalArgumentException if provided integer is not in valid range.
    */
   public int validateRange(int arabic) {
-    if (arabic < MIN || arabic > MaxCalculator.calculateMax(PairMap.getInstance().getArabicToRoman().lastKey())) {
-      throw new IllegalArgumentException(String.format("Valid range for roman integers is from %d to %d inclusive.", MIN, MAX));
-    }
+    PairMap.getInstance().validateRange(arabic);
     return arabic;
   }
 }

@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.constants;
+package com.github.chaosfirebolt.converter.util;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;

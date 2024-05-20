@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 /**
  * Singleton holding mappings from arabic to roman, and roman to arabic basic numerals.
  */
-public final class PairMap {
+public final class PairMap implements PairMapping {
 
   /**
    * Instance of the class.
@@ -39,6 +39,7 @@ public final class PairMap {
    *
    * @return single instance of the class.
    */
+  //TODO instantiate the static instance variable directly
   public static PairMap getInstance() {
     if (instance == null) {
       Map<String, Integer> toArab = new HashMap<>();
@@ -70,6 +71,7 @@ public final class PairMap {
    *
    * @return unmodifiable mapping.
    */
+  @Override
   public Map<String, Integer> getRomanToArabic() {
     return Collections.unmodifiableMap(romanToArabic);
   }
@@ -79,6 +81,7 @@ public final class PairMap {
    *
    * @return unmodifiable mapping.
    */
+  @Override
   public NavigableMap<Integer, String> getArabicToRoman() {
     return Collections.unmodifiableNavigableMap(arabicToRoman);
   }
@@ -90,7 +93,7 @@ public final class PairMap {
    * @param symbolNextOrderTen symbol for the next order of ten based numeral
    * @throws IllegalArgumentException if the symbols are not ASCII letters or are already registered, or any other reason to consider them invalid
    */
-  //TODO better parameter names!
+  @Override
   public void registerNextOrder(char symbolNextOrderFive, char symbolNextOrderTen) {
     if (symbolNextOrderFive == symbolNextOrderTen) {
       throw new IllegalArgumentException("Duplicate symbols");
@@ -122,6 +125,7 @@ public final class PairMap {
   /**
    * Experimental! Clears additional registered orders.
    */
+  @Override
   public void clearAdditionalOrders() {
     clearMap(romanToArabic, entry -> entry.getValue() > RomanInteger.THOUSAND.getArabic());
     clearMap(arabicToRoman, entry -> entry.getKey() > RomanInteger.THOUSAND.getArabic());
@@ -129,5 +133,15 @@ public final class PairMap {
 
   private <K, V> void clearMap(Map<K, V> map, Predicate<Map.Entry<K, V>> removeCondition) {
     map.entrySet().removeIf(removeCondition);
+  }
+
+  @Override
+  public int calculateMin() {
+    return 1;
+  }
+
+  @Override
+  public int calculateMax() {
+    return MaxCalculator.calculateMax(arabicToRoman.lastKey());
   }
 }
