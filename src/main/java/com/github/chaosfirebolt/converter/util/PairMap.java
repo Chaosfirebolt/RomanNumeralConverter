@@ -4,12 +4,14 @@ import com.github.chaosfirebolt.converter.RomanInteger;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Singleton holding mappings from arabic to roman, and roman to arabic basic numerals.
@@ -159,5 +161,18 @@ public final class PairMap implements PairMapping {
   @Override
   public Optional<Pair> getFloorPair(int arabic) {
     return pairFromEntry(arabicToRoman.floorEntry(arabic));
+  }
+
+  @Override
+  public int count() {
+    return romanToArabic.size();
+  }
+
+  @Override
+  public List<Pair> pairs() {
+    return romanToArabic.entrySet()
+            .stream()
+            .map(entry -> new Pair(entry.getKey(), entry.getValue()))
+            .toList();
   }
 }

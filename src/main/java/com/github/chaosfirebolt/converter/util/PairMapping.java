@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter.util;
 
+import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Optional;
@@ -15,7 +16,6 @@ public sealed interface PairMapping permits PairMap {
    * @return unmodifiable mapping
    * @deprecated Method added for backwards compatibility
    */
-  //TODO don't use outside of tests
   @Deprecated(forRemoval = true, since = "3.5.0")
   Map<String, Integer> getRomanToArabic();
 
@@ -111,4 +111,18 @@ public sealed interface PairMapping permits PairMap {
    * @return optional describing the pair
    */
   Optional<Pair> getFloorPair(int arabic);
+
+  /**
+   * The count of stored pairs.
+   *
+   * @return the count of all pairs
+   */
+  int count();
+
+  /**
+   * Get all registered pairs.
+   *
+   * @return list of all pairs
+   */
+  List<Pair> pairs();
 }

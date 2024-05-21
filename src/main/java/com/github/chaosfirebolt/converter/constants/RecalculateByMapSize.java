@@ -13,7 +13,7 @@ class RecalculateByMapSize implements BooleanSupplier {
   private int expectedSize;
 
   RecalculateByMapSize() {
-    this(() -> PairMap.getInstance().getRomanToArabic().size());
+    this(() -> PairMap.getInstance().count());
   }
 
   RecalculateByMapSize(IntSupplier sizeSupplier) {
