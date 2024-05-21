@@ -128,23 +128,24 @@ public final class PairMap implements PairMapping {
 
   @Override
   public Optional<Pair> getPair(String roman) {
-    return fromValues(roman, romanToArabic.get(roman));
-  }
-
-  private static Optional<Pair> fromValues(String roman, Integer arabic) {
-    if (roman == null || arabic == null) {
+    Integer arabic = romanToArabic.get(roman);
+    if (arabic == null) {
       return Optional.empty();
     }
     return Optional.of(new Pair(roman, arabic));
   }
 
   @Override
-  public Optional<Pair> getPair(Integer arabic) {
-    return fromValues(arabicToRoman.get(arabic), arabic);
+  public Optional<Pair> getPair(int arabic) {
+    String roman = arabicToRoman.get(arabic);
+    if (roman == null) {
+      return Optional.empty();
+    }
+    return Optional.of(new Pair(roman, arabic));
   }
 
   @Override
-  public Optional<Pair> getHigherPair(Integer arabic) {
+  public Optional<Pair> getHigherPair(int arabic) {
     return pairFromEntry(arabicToRoman.higherEntry(arabic));
   }
 
@@ -156,7 +157,7 @@ public final class PairMap implements PairMapping {
   }
 
   @Override
-  public Optional<Pair> getFloorPair(Integer arabic) {
+  public Optional<Pair> getFloorPair(int arabic) {
     return pairFromEntry(arabicToRoman.floorEntry(arabic));
   }
 }

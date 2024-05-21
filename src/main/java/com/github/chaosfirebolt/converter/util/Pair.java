@@ -6,5 +6,5 @@ package com.github.chaosfirebolt.converter.util;
  * @param roman  basic roman numeral
  * @param arabic the arabic counterpart
  */
-public record Pair(String roman, Integer arabic) {
+public record Pair(String roman, int arabic) {
 }

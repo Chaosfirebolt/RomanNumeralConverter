@@ -93,7 +93,7 @@ public sealed interface PairMapping permits PairMap {
    * @param arabic arabic numeral to find the pair by
    * @return optional describing the pair
    */
-  Optional<Pair> getPair(Integer arabic);
+  Optional<Pair> getPair(int arabic);
 
   /**
    * Get the pair strictly greater than the specified arabic numeral.
@@ -101,7 +101,7 @@ public sealed interface PairMapping permits PairMap {
    * @param arabic arabic numeral
    * @return optional describing the pair
    */
-  Optional<Pair> getHigherPair(Integer arabic);
+  Optional<Pair> getHigherPair(int arabic);
 
   /**
    * Get the pair with the greatest value less than or equal to the specified numeral
@@ -109,5 +109,5 @@ public sealed interface PairMapping permits PairMap {
    * @param arabic arabic numeral
    * @return optional describing the pair
    */
-  Optional<Pair> getFloorPair(Integer arabic);
+  Optional<Pair> getFloorPair(int arabic);
 }
