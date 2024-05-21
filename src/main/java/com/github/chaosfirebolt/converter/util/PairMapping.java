@@ -2,6 +2,7 @@ package com.github.chaosfirebolt.converter.util;
 
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Optional;
 
 /**
  * The mapping of roman to arabic pairs.
@@ -11,15 +12,19 @@ public sealed interface PairMapping permits PairMap {
   /**
    * Getter method for roman to arabic mapping.
    *
-   * @return unmodifiable mapping.
+   * @return unmodifiable mapping
+   * @deprecated Method added for backwards compatibility
    */
+  @Deprecated(forRemoval = true, since = "3.5.0")
   Map<String, Integer> getRomanToArabic();
 
   /**
    * Getter method for arabic to roman mapping.
    *
-   * @return unmodifiable mapping.
+   * @return unmodifiable mapping
+   * @deprecated Method added for backwards compatibility
    */
+  @Deprecated(forRemoval = true, since = "3.5.0")
   NavigableMap<Integer, String> getArabicToRoman();
 
   /**
@@ -63,4 +68,46 @@ public sealed interface PairMapping permits PairMap {
       throw new IllegalArgumentException(String.format("Valid range for roman integers is from %d to %d inclusive.", min, max));
     }
   }
+
+  /**
+   * Get the corresponding roman-arabic pair using the roman numeral.
+   *
+   * @param roman roman numeral to find the pair by
+   * @return optional describing the pair
+   */
+  Optional<Pair> getPair(String roman);
+
+  /**
+   * Get the corresponding roman-arabic pair using the roman numeral.
+   *
+   * @param roman roman numeral to find the pair by
+   * @return optional describing the pair
+   */
+  default Optional<Pair> getPair(char roman) {
+    return getPair(Character.toString(roman));
+  }
+
+  /**
+   * Get the corresponding roman-arabic pair using the arabic numeral.
+   *
+   * @param arabic arabic numeral to find the pair by
+   * @return optional describing the pair
+   */
+  Optional<Pair> getPair(Integer arabic);
+
+  /**
+   * Get the pair strictly greater than the specified arabic numeral.
+   *
+   * @param arabic arabic numeral
+   * @return optional describing the pair
+   */
+  Optional<Pair> getHigherPair(Integer arabic);
+
+  /**
+   * Get the pair with the greatest value less than or equal to the specified numeral
+   *
+   * @param arabic arabic numeral
+   * @return optional describing the pair
+   */
+  Optional<Pair> getFloorPair(Integer arabic);
 }

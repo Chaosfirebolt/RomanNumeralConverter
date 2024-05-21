@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 
@@ -123,5 +124,39 @@ public final class PairMap implements PairMapping {
   @Override
   public int calculateMax() {
     return MaxCalculator.calculateMax(arabicToRoman.lastKey());
+  }
+
+  @Override
+  public Optional<Pair> getPair(String roman) {
+    return fromValues(roman, romanToArabic.get(roman));
+  }
+
+  private static Optional<Pair> fromValues(String roman, Integer arabic) {
+    if (roman == null || arabic == null) {
+      return Optional.empty();
+    }
+    return Optional.of(new Pair(roman, arabic));
+  }
+
+  @Override
+  public Optional<Pair> getPair(Integer arabic) {
+    return fromValues(arabicToRoman.get(arabic), arabic);
+  }
+
+  @Override
+  public Optional<Pair> getHigherPair(Integer arabic) {
+    return pairFromEntry(arabicToRoman.higherEntry(arabic));
+  }
+
+  private static Optional<Pair> pairFromEntry(Map.Entry<Integer, String> entry) {
+    if (entry == null) {
+      return Optional.empty();
+    }
+    return Optional.of(new Pair(entry.getValue(), entry.getKey()));
+  }
+
+  @Override
+  public Optional<Pair> getFloorPair(Integer arabic) {
+    return pairFromEntry(arabicToRoman.floorEntry(arabic));
   }
 }
