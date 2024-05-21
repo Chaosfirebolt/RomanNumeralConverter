@@ -15,6 +15,7 @@ public sealed interface PairMapping permits PairMap {
    * @return unmodifiable mapping
    * @deprecated Method added for backwards compatibility
    */
+  //TODO don't use outside of tests
   @Deprecated(forRemoval = true, since = "3.5.0")
   Map<String, Integer> getRomanToArabic();
 
