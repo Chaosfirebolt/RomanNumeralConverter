@@ -3,15 +3,16 @@ package com.github.chaosfirebolt.converter.util;
 import com.github.chaosfirebolt.converter.RomanInteger;
 import com.github.chaosfirebolt.converter.api.initialization.source.BasicNumeralsInputSource;
 
+import java.util.AbstractMap;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * Singleton holding mappings from arabic to roman, and roman to arabic basic numerals.
@@ -23,11 +24,11 @@ public final class PairMap implements PairMapping {
   /**
    * Roman to arabic unmodifiable mapping.
    */
-  private final Map<String, Integer> romanToArabic;
+  private final Map<Character, Integer> romanToArabic;
   /**
    * Arabic to roman unmodifiable mapping.
    */
-  private final NavigableMap<Integer, String> arabicToRoman;
+  private final NavigableMap<Integer, Character> arabicToRoman;
 
   private PairMap() {
     this.romanToArabic = new HashMap<>();
@@ -38,11 +39,11 @@ public final class PairMap implements PairMapping {
   private void initData() {
     RomanInteger[] basicNumerals = new BasicNumeralsInputSource().getInputData();
     for (RomanInteger romanInteger : basicNumerals) {
-      add(romanInteger.getRoman(), romanInteger.getArabic());
+      add(romanInteger.getRoman().charAt(0), romanInteger.getArabic());
     }
   }
 
-  private void add(String roman, int arabic) {
+  private void add(char roman, int arabic) {
     romanToArabic.put(roman, arabic);
     arabicToRoman.put(arabic, roman);
   }
@@ -58,12 +59,20 @@ public final class PairMap implements PairMapping {
 
   @Override
   public Map<String, Integer> getRomanToArabic() {
-    return Collections.unmodifiableMap(romanToArabic);
+    return romanToArabic.entrySet()
+            .stream()
+            .map(entry -> new AbstractMap.SimpleEntry<>(Character.toString(entry.getKey()), entry.getValue()))
+            .collect(Collectors.collectingAndThen(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue), Collections::unmodifiableMap));
   }
 
   @Override
   public NavigableMap<Integer, String> getArabicToRoman() {
-    return Collections.unmodifiableNavigableMap(arabicToRoman);
+    return arabicToRoman.entrySet()
+            .stream()
+            .map(entry -> new AbstractMap.SimpleEntry<>(entry.getKey(), Character.toString(entry.getValue())))
+            .collect(Collectors.collectingAndThen(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> {
+              throw new IllegalStateException("Unexpected duplicate");
+            }, TreeMap::new), Collections::unmodifiableNavigableMap));
   }
 
   @Override
@@ -71,11 +80,11 @@ public final class PairMap implements PairMapping {
     if (symbolNextOrderFive == symbolNextOrderTen) {
       throw new IllegalArgumentException("Duplicate symbols");
     }
-    String romanSymbolFive = Character.toString(symbolNextOrderFive).toUpperCase(Locale.ENGLISH);
+    char romanSymbolFive = Character.toUpperCase(symbolNextOrderFive);
     if (isNotLetter(symbolNextOrderFive) || romanToArabic.containsKey(romanSymbolFive)) {
       throw new IllegalArgumentException(buildExceptionMessage(romanSymbolFive));
     }
-    String romanSymbolTen = Character.toString(symbolNextOrderTen).toUpperCase(Locale.ENGLISH);
+    char romanSymbolTen = Character.toUpperCase(symbolNextOrderTen);
     if (isNotLetter(symbolNextOrderTen) || romanToArabic.containsKey(romanSymbolTen)) {
       throw new IllegalArgumentException(buildExceptionMessage(romanSymbolTen));
     }
@@ -91,7 +100,7 @@ public final class PairMap implements PairMapping {
     return (ch < 'A' || ch > 'Z') && (ch < 'a' || ch > 'z');
   }
 
-  private static String buildExceptionMessage(String existingSymbol) {
+  private static String buildExceptionMessage(char existingSymbol) {
     return String.format("Symbol '%s' is already registered", existingSymbol);
   }
 
@@ -116,7 +125,7 @@ public final class PairMap implements PairMapping {
   }
 
   @Override
-  public Optional<Pair> getPair(String roman) {
+  public Optional<Pair> getPair(char roman) {
     Integer arabic = romanToArabic.get(roman);
     if (arabic == null) {
       return Optional.empty();
@@ -126,7 +135,7 @@ public final class PairMap implements PairMapping {
 
   @Override
   public Optional<Pair> getPair(int arabic) {
-    String roman = arabicToRoman.get(arabic);
+    Character roman = arabicToRoman.get(arabic);
     if (roman == null) {
       return Optional.empty();
     }
@@ -138,7 +147,7 @@ public final class PairMap implements PairMapping {
     return pairFromEntry(arabicToRoman.higherEntry(arabic));
   }
 
-  private static Optional<Pair> pairFromEntry(Map.Entry<Integer, String> entry) {
+  private static Optional<Pair> pairFromEntry(Map.Entry<Integer, Character> entry) {
     if (entry == null) {
       return Optional.empty();
     }

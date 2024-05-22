@@ -76,17 +76,7 @@ public sealed interface PairMapping permits PairMap {
    * @param roman roman numeral to find the pair by
    * @return optional describing the pair
    */
-  Optional<Pair> getPair(String roman);
-
-  /**
-   * Get the corresponding roman-arabic pair using the roman numeral.
-   *
-   * @param roman roman numeral to find the pair by
-   * @return optional describing the pair
-   */
-  default Optional<Pair> getPair(char roman) {
-    return getPair(Character.toString(roman));
-  }
+  Optional<Pair> getPair(char roman);
 
   /**
    * Get the corresponding roman-arabic pair using the arabic numeral.

@@ -48,7 +48,7 @@ public final class ArabicParser extends BaseParser {
     return new RomanInteger(roman.toString(), arabicValue);
   }
 
-  private String roman(int arabic) {
+  private char roman(int arabic) {
     return pairMapping.getPair(arabic)
             .orElseThrow(ERR)
             .roman();

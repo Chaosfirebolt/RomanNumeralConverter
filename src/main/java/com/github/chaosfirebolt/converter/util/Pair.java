@@ -7,5 +7,5 @@ package com.github.chaosfirebolt.converter.util;
  * @param arabic the arabic counterpart
  */
 //TODO roman to char
-public record Pair(String roman, int arabic) {
+public record Pair(char roman, int arabic) {
 }
