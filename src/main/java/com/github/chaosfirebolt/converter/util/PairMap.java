@@ -1,6 +1,7 @@
 package com.github.chaosfirebolt.converter.util;
 
 import com.github.chaosfirebolt.converter.RomanInteger;
+import com.github.chaosfirebolt.converter.api.initialization.source.BasicNumeralsInputSource;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,17 +12,13 @@ import java.util.NavigableMap;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * Singleton holding mappings from arabic to roman, and roman to arabic basic numerals.
  */
 public final class PairMap implements PairMapping {
 
-  /**
-   * Instance of the class.
-   */
-  private static PairMap instance;
+  private static final PairMap INSTANCE = new PairMap();
 
   /**
    * Roman to arabic unmodifiable mapping.
@@ -32,9 +29,22 @@ public final class PairMap implements PairMapping {
    */
   private final NavigableMap<Integer, String> arabicToRoman;
 
-  private PairMap(Map<String, Integer> romanToArabic, NavigableMap<Integer, String> arabicToRoman) {
-    this.romanToArabic = romanToArabic;
-    this.arabicToRoman = arabicToRoman;
+  private PairMap() {
+    this.romanToArabic = new HashMap<>();
+    this.arabicToRoman = new TreeMap<>();
+    initData();
+  }
+
+  private void initData() {
+    RomanInteger[] basicNumerals = new BasicNumeralsInputSource().getInputData();
+    for (RomanInteger romanInteger : basicNumerals) {
+      add(romanInteger.getRoman(), romanInteger.getArabic());
+    }
+  }
+
+  private void add(String roman, int arabic) {
+    romanToArabic.put(roman, arabic);
+    arabicToRoman.put(arabic, roman);
   }
 
   /**
@@ -42,31 +52,8 @@ public final class PairMap implements PairMapping {
    *
    * @return single instance of the class.
    */
-  //TODO instantiate the static instance variable directly
   public static PairMap getInstance() {
-    if (instance == null) {
-      Map<String, Integer> toArab = new HashMap<>();
-      NavigableMap<Integer, String> toRoman = new TreeMap<>();
-
-      add(toArab, toRoman, RomanInteger.ONE);
-      add(toArab, toRoman, RomanInteger.FIVE);
-      add(toArab, toRoman, RomanInteger.TEN);
-      add(toArab, toRoman, RomanInteger.FIFTY);
-      add(toArab, toRoman, RomanInteger.HUNDRED);
-      add(toArab, toRoman, RomanInteger.FIVE_HUNDRED);
-      add(toArab, toRoman, RomanInteger.THOUSAND);
-      instance = new PairMap(toArab, toRoman);
-    }
-    return instance;
-  }
-
-  private static void add(Map<String, Integer> toArab, NavigableMap<Integer, String> toRoman, RomanInteger romanInteger) {
-    add(toArab, toRoman, romanInteger.getArabic(), romanInteger.getRoman());
-  }
-
-  private static void add(Map<String, Integer> toArab, NavigableMap<Integer, String> toRoman, int arabic, String roman) {
-    toArab.put(roman, arabic);
-    toRoman.put(arabic, roman);
+    return INSTANCE;
   }
 
   @Override
@@ -84,20 +71,20 @@ public final class PairMap implements PairMapping {
     if (symbolNextOrderFive == symbolNextOrderTen) {
       throw new IllegalArgumentException("Duplicate symbols");
     }
-    String fiveString = Character.toString(symbolNextOrderFive).toUpperCase(Locale.ENGLISH);
-    if (isNotLetter(symbolNextOrderFive) || romanToArabic.containsKey(fiveString)) {
-      throw new IllegalArgumentException(buildExceptionMessage(fiveString));
+    String romanSymbolFive = Character.toString(symbolNextOrderFive).toUpperCase(Locale.ENGLISH);
+    if (isNotLetter(symbolNextOrderFive) || romanToArabic.containsKey(romanSymbolFive)) {
+      throw new IllegalArgumentException(buildExceptionMessage(romanSymbolFive));
     }
-    String tenString = Character.toString(symbolNextOrderTen).toUpperCase(Locale.ENGLISH);
-    if (isNotLetter(symbolNextOrderTen) || romanToArabic.containsKey(tenString)) {
-      throw new IllegalArgumentException(buildExceptionMessage(tenString));
+    String romanSymbolTen = Character.toString(symbolNextOrderTen).toUpperCase(Locale.ENGLISH);
+    if (isNotLetter(symbolNextOrderTen) || romanToArabic.containsKey(romanSymbolTen)) {
+      throw new IllegalArgumentException(buildExceptionMessage(romanSymbolTen));
     }
 
-    int forTen = arabicToRoman.lastKey() * 10;
-    int forFive = forTen / 2;
+    int arabicValueTen = arabicToRoman.lastKey() * 10;
+    int arabicValueFive = arabicValueTen / 2;
 
-    add(romanToArabic, arabicToRoman, forTen, tenString);
-    add(romanToArabic, arabicToRoman, forFive, fiveString);
+    add(romanSymbolTen, arabicValueTen);
+    add(romanSymbolFive, arabicValueFive);
   }
 
   private static boolean isNotLetter(char ch) {
