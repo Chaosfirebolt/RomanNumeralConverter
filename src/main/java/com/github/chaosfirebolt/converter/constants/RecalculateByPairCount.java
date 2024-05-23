@@ -5,25 +5,25 @@ import com.github.chaosfirebolt.converter.util.PairMap;
 import java.util.function.BooleanSupplier;
 import java.util.function.IntSupplier;
 
-class RecalculateByMapSize implements BooleanSupplier {
+class RecalculateByPairCount implements BooleanSupplier {
 
-  private static final int INITIAL_SIZE = -1;
+  private static final int INITIAL_COUNT = -1;
 
   private final IntSupplier sizeSupplier;
   private int expectedSize;
 
-  RecalculateByMapSize() {
+  RecalculateByPairCount() {
     this(() -> PairMap.getInstance().count());
   }
 
-  RecalculateByMapSize(IntSupplier sizeSupplier) {
+  RecalculateByPairCount(IntSupplier sizeSupplier) {
     this.sizeSupplier = sizeSupplier;
-    this.expectedSize = INITIAL_SIZE;
+    this.expectedSize = INITIAL_COUNT;
   }
 
   @Override
   public boolean getAsBoolean() {
-    if (expectedSize == INITIAL_SIZE) {
+    if (expectedSize == INITIAL_COUNT) {
       expectedSize = sizeSupplier.getAsInt();
       return true;
     }

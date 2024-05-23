@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-public class RecalculateByMapSizeTests {
+public class RecalculateByPairCountTests {
 
   private final IntSupplier sizeSupplier = mock(IntSupplier.class);
-  private final RecalculateByMapSize recalculateByMapSize = new RecalculateByMapSize(sizeSupplier);
+  private final RecalculateByPairCount recalculateByPairCount = new RecalculateByPairCount(sizeSupplier);
 
   @BeforeEach
   public void setUp() {
@@ -25,7 +25,7 @@ public class RecalculateByMapSizeTests {
   }
 
   private void assertFirstInvocation() {
-    boolean shouldRecalculate = recalculateByMapSize.getAsBoolean();
+    boolean shouldRecalculate = recalculateByPairCount.getAsBoolean();
     assertTrue(shouldRecalculate, "Initial invocation should return true");
     verify(sizeSupplier).getAsInt();
   }
@@ -34,11 +34,11 @@ public class RecalculateByMapSizeTests {
   public void testConsecutiveInvocations() {
     assertFirstInvocation();
 
-    boolean secondResult = recalculateByMapSize.getAsBoolean();
+    boolean secondResult = recalculateByPairCount.getAsBoolean();
     assertFalse(secondResult, "Incorrect result for 2nd invocation");
     verify(sizeSupplier, times(2)).getAsInt();
 
-    boolean thirdResult = recalculateByMapSize.getAsBoolean();
+    boolean thirdResult = recalculateByPairCount.getAsBoolean();
     assertTrue(thirdResult, "Incorrect result for 3rd invocation");
     verify(sizeSupplier, times(3)).getAsInt();
   }

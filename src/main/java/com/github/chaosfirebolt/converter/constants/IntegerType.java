@@ -3,6 +3,7 @@ package com.github.chaosfirebolt.converter.constants;
 import com.github.chaosfirebolt.converter.ArabicParser;
 import com.github.chaosfirebolt.converter.Parser;
 import com.github.chaosfirebolt.converter.RomanParser;
+import com.github.chaosfirebolt.converter.api.property.ConverterProperties;
 import com.github.chaosfirebolt.converter.util.PairMap;
 
 import java.util.function.Supplier;
@@ -39,8 +40,8 @@ public enum IntegerType {
   }
 
   private static Supplier<Pattern> getRomanPatternFactory() {
-    Supplier<Pattern> patternFactory = new ResultCachingSupplier<>(new RomanIntegerTypePatternFactory(), new RecalculateByMapSize());
-    boolean shouldSynchronize = Boolean.getBoolean("r.n.c.sync");
+    Supplier<Pattern> patternFactory = new ResultCachingSupplier<>(new RomanIntegerTypePatternFactory(), new RecalculateByPairCount());
+    boolean shouldSynchronize = ConverterProperties.getSyncProperty();
     return shouldSynchronize ? new SynchronizedSupplier<>(patternFactory) : patternFactory;
   }
 
