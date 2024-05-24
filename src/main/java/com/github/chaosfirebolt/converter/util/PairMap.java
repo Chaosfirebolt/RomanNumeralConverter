@@ -5,6 +5,7 @@ import com.github.chaosfirebolt.converter.api.initialization.source.BasicNumeral
 
 import java.util.AbstractMap;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -106,8 +107,9 @@ public final class PairMap implements PairMapping {
 
   @Override
   public void clearAdditionalOrders() {
-    clearMap(romanToArabic, entry -> entry.getValue() > RomanInteger.THOUSAND.getArabic());
-    clearMap(arabicToRoman, entry -> entry.getKey() > RomanInteger.THOUSAND.getArabic());
+    int maxDefault = RomanInteger.THOUSAND.getArabic();
+    clearMap(romanToArabic, entry -> entry.getValue() > maxDefault);
+    clearMap(arabicToRoman, entry -> entry.getKey() > maxDefault);
   }
 
   private <K, V> void clearMap(Map<K, V> map, Predicate<Map.Entry<K, V>> removeCondition) {
@@ -169,6 +171,7 @@ public final class PairMap implements PairMapping {
     return romanToArabic.entrySet()
             .stream()
             .map(entry -> new Pair(entry.getKey(), entry.getValue()))
+            .sorted(Comparator.comparingInt(Pair::arabic))
             .toList();
   }
 }

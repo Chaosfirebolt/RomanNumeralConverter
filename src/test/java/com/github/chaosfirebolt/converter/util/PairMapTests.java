@@ -1,25 +1,30 @@
 package com.github.chaosfirebolt.converter.util;
 
 import com.github.chaosfirebolt.converter.RomanInteger;
-import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.MockedStatic;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class PairMapTests {
 
-  @AfterAll
-  public static void afterAll() {
+  @AfterEach
+  public void cleanUp() {
     PairMap.getInstance().clearAdditionalOrders();
   }
 
@@ -131,5 +136,101 @@ public class PairMapTests {
       String arabicToRomanValue = PairMap.getInstance().getArabicToRoman().get(basicNumeral.getArabic());
       assertEquals(basicNumeral.getRoman(), arabicToRomanValue, messageSupplier);
     }
+  }
+
+  @Test
+  public void minimumValue_ShouldBeOne() {
+    assertEquals(1, PairMap.getInstance().calculateMin(), "Incorrect minimum value");
+  }
+
+  @Test
+  public void maximumValue_ShouldInvokeCalc() {
+    try (MockedStatic<MaxCalculator> calculator = mockStatic(MaxCalculator.class)) {
+      calculator.when(() -> MaxCalculator.calculateMax(anyInt())).thenCallRealMethod();
+      PairMap.getInstance().calculateMax();
+      calculator.verify(() -> MaxCalculator.calculateMax(anyInt()));
+    }
+  }
+
+  @Test
+  public void getPair_SymbolExists_ShouldReturnCorrect() {
+    char symbol = 'X';
+    Optional<Pair> result = PairMap.getInstance().getPair(symbol);
+    assertTrue(result.isPresent(), "Expected pair not found");
+    assertEquals(new Pair(symbol, 10), result.get(), "Incorrect pair found");
+  }
+
+  @Test
+  public void getPair_SymbolDoesNotExist_ShouldReturnEmpty() {
+    char symbol = 'R';
+    Optional<Pair> result = PairMap.getInstance().getPair(symbol);
+    assertTrue(result.isEmpty(), "Unexpected pair found");
+  }
+
+  @Test
+  public void getPair_ArabicExists_ShouldReturnCorrect() {
+    int arabic = 50;
+    Optional<Pair> result = PairMap.getInstance().getPair(arabic);
+    assertTrue(result.isPresent(), "Expected pair not found");
+    assertEquals(new Pair('L', arabic), result.get(), "Incorrect pair found");
+  }
+
+  @Test
+  public void getPair_ArabicDoesNotExist_ShouldReturnEmpty() {
+    int arabic = 11;
+    Optional<Pair> result = PairMap.getInstance().getPair(arabic);
+    assertTrue(result.isEmpty(), "Unexpected pair found");
+  }
+
+  @Test
+  public void higherPair_NoSuchPair_ShouldReturnEmpty() {
+    Optional<Pair> result = PairMap.getInstance().getHigherPair(RomanInteger.THOUSAND.getArabic());
+    assertTrue(result.isEmpty(), "Unexpected pair found");
+  }
+
+  @Test
+  public void higherPair_ShouldReturnCorrect() {
+    Optional<Pair> result = PairMap.getInstance().getHigherPair(RomanInteger.FIVE_HUNDRED.getArabic());
+    assertTrue(result.isPresent(), "Expected pair not found");
+    assertEquals(new Pair('M', 1000), result.get(), "Incorrect pair found");
+  }
+
+  @Test
+  public void floorPair_NoSuchPair_ShouldReturnEmpty() {
+    Optional<Pair> result = PairMap.getInstance().getFloorPair(0);
+    assertTrue(result.isEmpty(), "Unexpected pair found");
+  }
+
+  @Test
+  public void floorPair_ShouldReturnCorrect() {
+    Optional<Pair> result = PairMap.getInstance().getFloorPair(RomanInteger.ONE.getArabic());
+    assertTrue(result.isPresent(), "Expected pair not found");
+    assertEquals(new Pair('I', 1), result.get(), "Incorrect pair found");
+  }
+
+  @Test
+  public void count_ShouldBeCorrect() {
+    PairMap pairMap = PairMap.getInstance();
+    assertEquals(7, pairMap.count(), "Incorrect initial pair count");
+    pairMap.registerNextOrder('a', 's');
+    assertEquals(9, pairMap.count(), "Incorrect pair count after registering next order");
+  }
+
+  @Test
+  public void pairs_ShouldBeCorrect() {
+    PairMap pairMap = PairMap.getInstance();
+
+    List<Pair> actualPairs = pairMap.pairs();
+    List<Pair> expectedPairs = basicNumerals()
+            .stream()
+            .map(ri -> new Pair(ri.getRoman().charAt(0), ri.getArabic()))
+            .collect(Collectors.toCollection(ArrayList::new));
+    assertEquals(expectedPairs, actualPairs, "Incorrect pairs");
+
+    pairMap.registerNextOrder('a', 's');
+    actualPairs = pairMap.pairs();
+    expectedPairs.add(new Pair('A', 5_000));
+    expectedPairs.add(new Pair('S', 10_000));
+    assertEquals(expectedPairs, actualPairs, "Incorrect pairs after registering next order");
   }
 }
