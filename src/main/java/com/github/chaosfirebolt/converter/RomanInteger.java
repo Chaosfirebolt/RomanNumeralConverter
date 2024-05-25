@@ -6,6 +6,7 @@ import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCache;
 import com.github.chaosfirebolt.converter.api.cache.RomanIntegerCacheFactory;
 import com.github.chaosfirebolt.converter.api.initialization.InitializationCapable;
 import com.github.chaosfirebolt.converter.constants.IntegerType;
+import com.github.chaosfirebolt.converter.util.PairMap;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -119,6 +120,25 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
   }
 
   /**
+   * Experimental feature! Extends the range of roman integers by registering symbols for the next order.
+   * Throws exception, if the symbols are considered invalid for any reason.
+   *
+   * @param symbolNextOrderFive symbol for the next order of five based numeral
+   * @param symbolNextOrderTen symbol for the next order of ten based numeral
+   * @throws IllegalArgumentException if the symbols are not ASCII letters or are already registered, or any other reason to consider them invalid
+   */
+  public static void extend(char symbolNextOrderFive, char symbolNextOrderTen) {
+    PairMap.getInstance().registerNextOrder(symbolNextOrderFive, symbolNextOrderTen);
+  }
+
+  /**
+   * Removes all registered extensions of the roman numeral range, leaving only the basic symbols.
+   */
+  public static void clearExtensions() {
+    PairMap.getInstance().clearAdditionalOrders();
+  }
+
+  /**
    * Enables caching of parsed roman integers.
    */
   public static void enableCache() {
@@ -226,7 +246,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
     if (!(obj instanceof RomanInteger other)) {
       return false;
     }
-    return arabicRepresentation == other.arabicRepresentation && romanRepresentation.equals(other.romanRepresentation);
+    return Objects.equals(arabicRepresentation, other.arabicRepresentation) && Objects.equals(romanRepresentation, other.romanRepresentation);
   }
 
   @Override
