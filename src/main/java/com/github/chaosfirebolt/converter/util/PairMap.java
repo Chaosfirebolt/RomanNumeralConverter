@@ -107,9 +107,9 @@ public final class PairMap implements PairMapping {
 
   @Override
   public void clearAdditionalOrders() {
-    int maxDefault = RomanInteger.THOUSAND.getArabic();
-    clearMap(romanToArabic, entry -> entry.getValue() > maxDefault);
-    clearMap(arabicToRoman, entry -> entry.getKey() > maxDefault);
+    int defaultMaxArabic = RomanInteger.THOUSAND.getArabic();
+    clearMap(romanToArabic, entry -> entry.getValue() > defaultMaxArabic);
+    clearMap(arabicToRoman, entry -> entry.getKey() > defaultMaxArabic);
   }
 
   private <K, V> void clearMap(Map<K, V> map, Predicate<Map.Entry<K, V>> removeCondition) {
