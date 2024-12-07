@@ -32,7 +32,9 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
 
   /**
    * Comparator defining the natural ordering of roman integers.
+   * @deprecated As of release 3.6.0, replaced by {@link #naturalOrder()}.
    */
+  @Deprecated(since = "3.6.0", forRemoval = true)
   public static final Comparator<RomanInteger> NATURAL_ORDER_COMPARATOR = Comparator.comparingInt(RomanInteger::getArabic);
 
   /**
@@ -117,6 +119,15 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
    */
   public RomanInteger(RomanInteger romanInteger) {
     this(romanInteger.romanRepresentation, romanInteger.arabicRepresentation);
+  }
+
+  /**
+   * Comparator defining the natural ordering of roman integers.
+   *
+   * @return the natural order comparator
+   */
+  public static Comparator<RomanInteger> naturalOrder() {
+    return NATURAL_ORDER_COMPARATOR;
   }
 
   /**
@@ -268,7 +279,7 @@ public final class RomanInteger implements Comparable<RomanInteger>, Cloneable, 
    */
   @Override
   public int compareTo(RomanInteger other) {
-    return NATURAL_ORDER_COMPARATOR.compare(this, other);
+    return naturalOrder().compare(this, other);
   }
 
   @Override
