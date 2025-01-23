@@ -1,5 +1,7 @@
 package com.github.chaosfirebolt.converter.exec.io;
 
+import java.util.Arrays;
+
 /**
  * Represent possible channels for input/output.
  */
@@ -32,11 +34,9 @@ public enum IOType {
     if (option == null) {
       return CONSOLE;
     }
-    for (IOType type : values()) {
-      if (option.equalsIgnoreCase(type.shortName)) {
-        return type;
-      }
-    }
-    throw new IllegalArgumentException("Invalid option");
+    return Arrays.stream(values())
+            .filter(type -> type.shortName.equalsIgnoreCase(option))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Invalid option"));
   }
 }
