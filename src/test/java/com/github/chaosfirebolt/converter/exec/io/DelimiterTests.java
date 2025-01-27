@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.exec.io.input;
+package com.github.chaosfirebolt.converter.exec.io;
 
 import org.junit.jupiter.api.Test;
 

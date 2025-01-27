@@ -1,5 +1,6 @@
 package com.github.chaosfirebolt.converter.exec.io.input;
 
+import com.github.chaosfirebolt.converter.exec.io.Delimiter;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;

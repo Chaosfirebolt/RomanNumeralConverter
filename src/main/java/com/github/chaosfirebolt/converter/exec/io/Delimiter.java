@@ -1,4 +1,4 @@
-package com.github.chaosfirebolt.converter.exec.io.input;
+package com.github.chaosfirebolt.converter.exec.io;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
  * Represents a delimiter used to split a string.
  * An empty delimiter does not split the string.
  */
+//TODO refactor into a record
 public class Delimiter implements Function<String, String[]> {
 
   private final String value;
@@ -65,5 +66,9 @@ public class Delimiter implements Function<String, String[]> {
   @Override
   public String[] apply(String line) {
     return split(line);
+  }
+
+  public String value() {
+    return value;
   }
 }

@@ -1,5 +1,7 @@
 package com.github.chaosfirebolt.converter.exec.io.input;
 
+import com.github.chaosfirebolt.converter.exec.io.Delimiter;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,7 +14,7 @@ import java.util.stream.Stream;
 /**
  * The default implementation of a {@link Reader}.
  */
-public class DefaultReader implements Reader {
+public final class DefaultReader implements Reader {
 
   private final InputStream inputStream;
   private final Delimiter delimiter;
