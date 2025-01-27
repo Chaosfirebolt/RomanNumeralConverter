@@ -6,8 +6,7 @@ import java.io.IOException;
 /**
  * Represents a writer of values.
  */
-//TODO seal
-public interface Writer extends Closeable {
+public sealed interface Writer extends Closeable permits DefaultWriter {
 
   /**
    * Writes a string.

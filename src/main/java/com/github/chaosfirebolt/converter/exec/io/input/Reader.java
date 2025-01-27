@@ -5,8 +5,7 @@ import java.util.stream.Stream;
 /**
  * Represents a reader of values to parse from a source.
  */
-//TODO seal
-public interface Reader {
+public sealed interface Reader permits DefaultReader {
 
   /**
    * Reads a source and returns a stream of elements to parse.
