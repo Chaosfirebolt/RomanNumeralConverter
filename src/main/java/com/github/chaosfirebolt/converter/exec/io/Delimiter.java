@@ -8,14 +8,7 @@ import java.util.regex.Pattern;
  * Represents a delimiter used to split a string.
  * An empty delimiter does not split the string.
  */
-//TODO refactor into a record
-public class Delimiter implements Function<String, String[]> {
-
-  private final String value;
-
-  private Delimiter(String value) {
-    this.value = value;
-  }
+public record Delimiter(String value) implements Function<String, String[]> {
 
   /**
    * Creates a delimiter. Invoking this method with empty (null or empty string) value creates an empty delimiter.
@@ -68,10 +61,11 @@ public class Delimiter implements Function<String, String[]> {
     return split(line);
   }
 
-  public String value() {
-    return value;
-  }
-
+  /**
+   * Test whether this delimiter is empty.
+   *
+   * @return true if the delimiter is empty, false otherwise
+   */
   public boolean isEmpty() {
     return isEmpty(value);
   }
