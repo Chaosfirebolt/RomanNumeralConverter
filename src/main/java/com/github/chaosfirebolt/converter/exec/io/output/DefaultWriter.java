@@ -42,11 +42,16 @@ public final class DefaultWriter implements Writer {
       writer.write(System.lineSeparator());
       writtenPerLine = 0;
     }
-    if (writtenPerLine >= 1) {
+    if (writtenPerLine >= 1 && !delimiter.isEmpty()) {
       writer.write(delimiter.value());
     }
     writer.write(value);
     writtenPerLine++;
+  }
+
+  @Override
+  public void close() throws IOException {
+    writer.close();
   }
 
   /**

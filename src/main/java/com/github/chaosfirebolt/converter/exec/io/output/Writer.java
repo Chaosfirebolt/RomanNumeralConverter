@@ -1,13 +1,13 @@
 package com.github.chaosfirebolt.converter.exec.io.output;
 
+import java.io.Closeable;
 import java.io.IOException;
 
 /**
  * Represents a writer of values.
  */
 //TODO seal
-//TODO make autocloseable
-public interface Writer {
+public interface Writer extends Closeable {
 
   /**
    * Writes a string.

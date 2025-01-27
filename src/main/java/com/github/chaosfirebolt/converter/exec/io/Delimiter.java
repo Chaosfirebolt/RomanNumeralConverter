@@ -71,4 +71,8 @@ public class Delimiter implements Function<String, String[]> {
   public String value() {
     return value;
   }
+
+  public boolean isEmpty() {
+    return isEmpty(value);
+  }
 }
