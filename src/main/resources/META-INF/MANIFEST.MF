@@ -1,1 +1,2 @@
 Built-By: Chaosfire
+Main-Class: com.github.chaosfirebolt.converter.exec.Main
