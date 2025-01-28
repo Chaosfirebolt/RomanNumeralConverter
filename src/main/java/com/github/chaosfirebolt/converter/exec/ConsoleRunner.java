@@ -25,11 +25,8 @@ class ConsoleRunner implements Runnable {
     Reader reader = readerFactory.createReader();
     try (Stream<String> values = reader.read();
          Writer writer = writerFactory.createWriter()) {
-      //TODO handle parse failures
-      //TODO handle parse result
       values
-              .map(RomanInteger::parse)
-              .map(RomanInteger::toString)
+              .map(new ElementParser(RomanInteger::parse, RomanInteger::toString, Throwable::getMessage))
               .forEach(new WritingConsumer(writer));
     } catch (IOException exc) {
       throw new UnrecoverableException(exc);
