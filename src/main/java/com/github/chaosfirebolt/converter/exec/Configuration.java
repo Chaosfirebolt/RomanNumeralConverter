@@ -1,0 +1,72 @@
+package com.github.chaosfirebolt.converter.exec;
+
+import com.github.chaosfirebolt.converter.exec.io.Delimiter;
+import com.github.chaosfirebolt.converter.exec.io.input.DefaultReader;
+import com.github.chaosfirebolt.converter.exec.io.input.Reader;
+import com.github.chaosfirebolt.converter.exec.io.input.ReaderFactory;
+import com.github.chaosfirebolt.converter.exec.io.output.DefaultWriter;
+import com.github.chaosfirebolt.converter.exec.io.output.Writer;
+import com.github.chaosfirebolt.converter.exec.io.output.WriterFactory;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
+class Configuration implements ReaderFactory, WriterFactory {
+
+  private static final Charset CHARSET = StandardCharsets.UTF_8;
+
+  private InputStream inputStream;
+  private Delimiter inputDelimiter;
+  private int ioBufferSize;
+
+  private OutputStream outputStream;
+  private Delimiter outputDelimiter;
+  private int elementsPerLine;
+
+  void setInputStream(InputStream inputStream) {
+    this.inputStream = inputStream;
+  }
+
+  void setInputDelimiter(Delimiter inputDelimiter) {
+    this.inputDelimiter = inputDelimiter;
+  }
+
+  void setIoBufferSize(int ioBufferSize) {
+    this.ioBufferSize = ioBufferSize;
+  }
+
+  void setOutputStream(OutputStream outputStream) {
+    this.outputStream = outputStream;
+  }
+
+  void setOutputDelimiter(Delimiter outputDelimiter) {
+    this.outputDelimiter = outputDelimiter;
+  }
+
+  void setElementsPerLine(int elementsPerLine) {
+    this.elementsPerLine = elementsPerLine;
+  }
+
+  @Override
+  public Reader createReader() {
+    return DefaultReader.builder()
+            .setInputStream(inputStream)
+            .setDelimiter(inputDelimiter)
+            .setBufferSize(ioBufferSize)
+            .setCharset(CHARSET)
+            .build();
+  }
+
+  @Override
+  public Writer createWriter() {
+    return DefaultWriter.builder()
+            .setOutputStream(outputStream)
+            .setDelimiter(outputDelimiter)
+            .setBufferSize(ioBufferSize)
+            .setCharset(CHARSET)
+            .setElementsPerLine(elementsPerLine)
+            .build();
+  }
+}
