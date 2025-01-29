@@ -42,6 +42,7 @@ public final class DefaultReader implements Reader {
     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, charset), bufferSize);
     return reader
             .lines()
+            .takeWhile(line -> !line.isEmpty())
             .map(delimiter)
             .flatMap(Arrays::stream);
   }
