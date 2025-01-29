@@ -1,5 +1,7 @@
 package com.github.chaosfirebolt.converter.exec;
 
+import com.beust.jcommander.Parameter;
+import com.github.chaosfirebolt.converter.exec.converter.DelimiterConverter;
 import com.github.chaosfirebolt.converter.exec.io.Delimiter;
 import com.github.chaosfirebolt.converter.exec.io.input.DefaultReader;
 import com.github.chaosfirebolt.converter.exec.io.input.Reader;
@@ -13,6 +15,7 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+@SuppressWarnings("unused")
 class Configuration implements ReaderFactory, WriterFactory {
 
   private static final Charset CHARSET = StandardCharsets.UTF_8;
@@ -29,10 +32,12 @@ class Configuration implements ReaderFactory, WriterFactory {
     this.inputStream = inputStream;
   }
 
+  @Parameter(names = {"--input-delimiter", "-id"}, description = "Delimiter for reading", converter = DelimiterConverter.class)
   void setInputDelimiter(Delimiter inputDelimiter) {
     this.inputDelimiter = inputDelimiter;
   }
 
+  @Parameter(names = {"--buffer", "-b"}, description = "Buffer size for reading/writing")
   void setIoBufferSize(int ioBufferSize) {
     this.ioBufferSize = ioBufferSize;
   }
@@ -41,6 +46,7 @@ class Configuration implements ReaderFactory, WriterFactory {
     this.outputStream = outputStream;
   }
 
+  @Parameter(names = {"--output-delimiter", "-od"}, description = "Delimiter for writing", converter = DelimiterConverter.class)
   void setOutputDelimiter(Delimiter outputDelimiter) {
     this.outputDelimiter = outputDelimiter;
   }
