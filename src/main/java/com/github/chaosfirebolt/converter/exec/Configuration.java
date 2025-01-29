@@ -30,17 +30,19 @@ class Configuration implements ReaderFactory, WriterFactory {
   private Delimiter outputDelimiter;
   private int elementsPerLine;
 
+  private boolean help;
+
   @Parameter(names = {"--input", "-i"}, description = "Input to read from", converter = InputStreamConverter.class)
   void setInputStream(InputStream inputStream) {
     this.inputStream = inputStream;
   }
 
-  @Parameter(names = {"--input-delimiter", "-id"}, description = "Delimiter for reading", converter = DelimiterConverter.class)
+  @Parameter(names = {"--input-delimiter", "-id"}, description = "Delimiter for reading", converter = DelimiterConverter.class, defaultValueDescription = "No delimiter")
   void setInputDelimiter(Delimiter inputDelimiter) {
     this.inputDelimiter = inputDelimiter;
   }
 
-  @Parameter(names = {"--buffer", "-b"}, description = "Buffer size for reading/writing")
+  @Parameter(names = {"--buffer", "-b"}, description = "Buffer size for reading/writing", defaultValueDescription = "2048")
   void setIoBufferSize(int ioBufferSize) {
     this.ioBufferSize = ioBufferSize;
   }
@@ -50,14 +52,23 @@ class Configuration implements ReaderFactory, WriterFactory {
     this.outputStream = outputStream;
   }
 
-  @Parameter(names = {"--output-delimiter", "-od"}, description = "Delimiter for writing", converter = DelimiterConverter.class)
+  @Parameter(names = {"--output-delimiter", "-od"}, description = "Delimiter for writing", converter = DelimiterConverter.class, defaultValueDescription = "No delimiter")
   void setOutputDelimiter(Delimiter outputDelimiter) {
     this.outputDelimiter = outputDelimiter;
   }
 
-  @Parameter(names = {"--elements", "-e"}, description = "Number of elements to write on a single line")
+  @Parameter(names = {"--elements", "-e"}, description = "Number of elements to write on a single line", defaultValueDescription = "10")
   void setElementsPerLine(int elementsPerLine) {
     this.elementsPerLine = elementsPerLine;
+  }
+
+  boolean isHelp() {
+    return help;
+  }
+
+  @Parameter(names = {"--help", "-h"}, description = "List commands", help = true)
+  void setHelp(boolean help) {
+    this.help = help;
   }
 
   @Override

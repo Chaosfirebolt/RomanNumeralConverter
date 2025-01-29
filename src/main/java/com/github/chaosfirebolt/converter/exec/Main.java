@@ -14,7 +14,12 @@ public class Main {
    */
   public static void main(String[] args) {
     Configuration configuration = new Configuration();
-    JCommander.newBuilder().addObject(configuration).build().parse(args);
+    JCommander jCommander = JCommander.newBuilder().addObject(configuration).programName("Roman Numeral Converter").build();
+    jCommander.parse(args);
+    if (configuration.isHelp()) {
+      jCommander.usage();
+      return;
+    }
     ConsoleRunner runner = new ConsoleRunner(configuration, configuration);
     runner.run();
   }
