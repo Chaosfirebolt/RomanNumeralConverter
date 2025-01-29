@@ -2,6 +2,8 @@ package com.github.chaosfirebolt.converter.exec;
 
 import com.beust.jcommander.Parameter;
 import com.github.chaosfirebolt.converter.exec.converter.DelimiterConverter;
+import com.github.chaosfirebolt.converter.exec.converter.InputStreamConverter;
+import com.github.chaosfirebolt.converter.exec.converter.OutputStreamConverter;
 import com.github.chaosfirebolt.converter.exec.io.Delimiter;
 import com.github.chaosfirebolt.converter.exec.io.input.DefaultReader;
 import com.github.chaosfirebolt.converter.exec.io.input.Reader;
@@ -28,6 +30,7 @@ class Configuration implements ReaderFactory, WriterFactory {
   private Delimiter outputDelimiter;
   private int elementsPerLine;
 
+  @Parameter(names = {"--input", "-i"}, description = "Input to read from", converter = InputStreamConverter.class)
   void setInputStream(InputStream inputStream) {
     this.inputStream = inputStream;
   }
@@ -42,6 +45,7 @@ class Configuration implements ReaderFactory, WriterFactory {
     this.ioBufferSize = ioBufferSize;
   }
 
+  @Parameter(names = {"--output", "-o"}, description = "Output to write to", converter = OutputStreamConverter.class)
   void setOutputStream(OutputStream outputStream) {
     this.outputStream = outputStream;
   }
@@ -51,6 +55,7 @@ class Configuration implements ReaderFactory, WriterFactory {
     this.outputDelimiter = outputDelimiter;
   }
 
+  @Parameter(names = {"--elements", "-e"}, description = "Number of elements to write on a single line")
   void setElementsPerLine(int elementsPerLine) {
     this.elementsPerLine = elementsPerLine;
   }
