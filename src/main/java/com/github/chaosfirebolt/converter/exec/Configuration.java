@@ -49,7 +49,7 @@ class Configuration implements ReaderFactory, WriterFactory {
   }
 
   @Parameter(names = {"--end-line", "-el"}, description = "Line describing the end of input", defaultValueDescription = "Empty line")
-  public void setEndLine(String endLine) {
+  void setEndLine(String endLine) {
     this.endLine = endLine;
   }
 
