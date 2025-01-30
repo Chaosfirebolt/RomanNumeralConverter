@@ -20,12 +20,14 @@ public final class DefaultReader implements Reader {
   private final Delimiter delimiter;
   private final int bufferSize;
   private final Charset charset;
+  private final String endLine;
 
-  private DefaultReader(InputStream inputStream, Delimiter delimiter, int bufferSize, Charset charset) {
+  private DefaultReader(InputStream inputStream, Delimiter delimiter, int bufferSize, Charset charset, String endLine) {
     this.inputStream = inputStream;
     this.delimiter = delimiter;
     this.bufferSize = bufferSize;
     this.charset = charset;
+    this.endLine = endLine;
   }
 
   /**
@@ -42,7 +44,7 @@ public final class DefaultReader implements Reader {
     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, charset), bufferSize);
     return reader
             .lines()
-            .takeWhile(line -> !line.isEmpty())
+            .takeWhile(line -> line.equals(endLine))
             .map(delimiter)
             .flatMap(Arrays::stream);
   }
@@ -56,6 +58,7 @@ public final class DefaultReader implements Reader {
     private Delimiter delimiter = Delimiter.empty();
     private int bufferSize = 2048;
     private Charset charset = StandardCharsets.UTF_8;
+    private String endLine = "";
 
     private Builder() {
     }
@@ -114,6 +117,20 @@ public final class DefaultReader implements Reader {
     }
 
     /**
+     * Sets the line value describing the end of input. The default is empty string.
+     * Does not set null.
+     *
+     * @param endLine end of input value
+     * @return this builder
+     */
+    public Builder setEndLine(String endLine) {
+      if (endLine != null) {
+        this.endLine = endLine;
+      }
+      return this;
+    }
+
+    /**
      * Creates a new {@link DefaultReader} instance.
      * Throws exception if no input stream to read has been set.
      *
@@ -121,7 +138,7 @@ public final class DefaultReader implements Reader {
      * @throws NullPointerException if {@link #inputStream} is null
      */
     public DefaultReader build() {
-      return new DefaultReader(Objects.requireNonNull(inputStream, "inputStream is null"), delimiter, bufferSize, charset);
+      return new DefaultReader(Objects.requireNonNull(inputStream, "inputStream is null"), delimiter, bufferSize, charset, endLine);
     }
   }
 }

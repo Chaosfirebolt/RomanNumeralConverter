@@ -25,6 +25,7 @@ class Configuration implements ReaderFactory, WriterFactory {
   private InputStream inputStream;
   private Delimiter inputDelimiter;
   private int ioBufferSize;
+  private String endLine;
 
   private OutputStream outputStream;
   private Delimiter outputDelimiter;
@@ -45,6 +46,11 @@ class Configuration implements ReaderFactory, WriterFactory {
   @Parameter(names = {"--buffer", "-b"}, description = "Buffer size for reading/writing", defaultValueDescription = "2048")
   void setIoBufferSize(int ioBufferSize) {
     this.ioBufferSize = ioBufferSize;
+  }
+
+  @Parameter(names = {"--end-line", "-el"}, description = "Line describing the end of input", defaultValueDescription = "Empty line")
+  public void setEndLine(String endLine) {
+    this.endLine = endLine;
   }
 
   @Parameter(names = {"--output", "-o"}, description = "Output to write to", converter = OutputStreamConverter.class)
@@ -78,6 +84,7 @@ class Configuration implements ReaderFactory, WriterFactory {
             .setDelimiter(inputDelimiter)
             .setBufferSize(ioBufferSize)
             .setCharset(CHARSET)
+            .setEndLine(endLine)
             .build();
   }
 
